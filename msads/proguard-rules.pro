@@ -24,5 +24,9 @@
 -keep interface com.meritumads.setting.MsAdsDelegate
 -keep class com.meritumads.setting.MsAdsBanner
 
+-keepclassmembers class com.meritumads.setting.MsAdsSdk{
+	public static MsAdsSdk getInstance();
+}
+
 
 
