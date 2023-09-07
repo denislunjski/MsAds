@@ -53,6 +53,9 @@ public class AdsAdapter extends PagerAdapter {
         this.scrollView = scrollView;
         try {
             this.scrollTime = Float.parseFloat(scrollTime);
+            if(this.scrollTime < 0.1){
+                this.scrollTime = 3;
+            }
         }catch (Exception e){
             this.scrollTime = 3;
         }
