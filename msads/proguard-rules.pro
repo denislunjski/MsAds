@@ -18,9 +18,11 @@
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
-#-renamesourcefileattribute SourceFile
+-renamesourcefileattribute SourceFile
 
 -keep class com.meritumads.settings.MsAdsSdk
 -keep interface com.meritumads.setting.MsAdsDelegate
 -keep class com.meritumads.setting.MsAdsBanner
+
+
 
