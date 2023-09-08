@@ -76,8 +76,10 @@ class MainService extends MsAdsSdk{
                                         for (int j = 0; j < body.getAdsApplication().getCampaigns().get(i).getPositions().size(); j++) {
                                             if (body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getStatus().equals("1")) {
                                                 if (Util.isTimeEnabled(context, body.getAdsApplication().getCampaigns().get(i).getPositions().get(j))) {
-                                                    body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getBanners().get(i)
-                                                            .setMainCampaignUrl(body.getAdsApplication().getCampaigns().get(i).getUrlTarget());
+                                                    for(int z = 0; z < body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getBanners().size(); z++) {
+                                                        body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getBanners().get(i)
+                                                                .setMainCampaignUrl(body.getAdsApplication().getCampaigns().get(i).getUrlTarget());
+                                                    }
                                                     if (body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getPositionType().equals("1")) {
                                                         inListBanners.add(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
                                                     } else if (body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getPositionType().equals("2")) {
