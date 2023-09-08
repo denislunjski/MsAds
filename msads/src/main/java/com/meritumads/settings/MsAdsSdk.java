@@ -40,6 +40,13 @@ public abstract class MsAdsSdk{
     private String arrowBackColor = "#ffffff";
     private String actionBarColor = "#000000";
 
+    /**
+     * Begin a load of ms ads
+     *
+     * This is the main class for executing MsAds banners
+     * Trough that method you can call two init methods
+     * @return
+     */
     public static MsAdsSdk getInstance() {
         if(mainService == null){
             mainService = new MainService();
@@ -47,6 +54,15 @@ public abstract class MsAdsSdk{
         return mainService;
     }
 
+    /**
+     * Begin of loading ms ads. It works as async task. It can be called in any position in application
+     * where you have application context
+     *
+     * This method starts download of ms ads that are setup in admin environment.
+     * @param context - application context
+     * @param appId - main app id that is setup in admin
+     * @param token - token is connection to specific environment that you will get in admin
+     */
     public void init(Context context, String appId, String token) {
         this.context = context;
         this.appId = appId;
@@ -55,6 +71,17 @@ public abstract class MsAdsSdk{
         mainService.downloadData(appId, token, null);
     }
 
+    /**
+     * Begin of loading ms ads. It works as async task. It can be called in any position in application
+     * where you have application context
+     *
+     * This method starts download of ms ads that are setup in admin environment.
+     * @param context - application context
+     * @param appId - main app id that is setup in admin
+     * @param token  - token is connection to specific environment that you will get in admin
+     * @param msAdsDelegate - interface that returns response of downloading data, responses are OK-everything is okay
+     *                      or ERROR-specific reason what is the problem.
+     */
     public void init(Context context, String appId, String token, MsAdsDelegate msAdsDelegate) {
         this.context = context;
         this.appId = appId;
@@ -83,6 +110,12 @@ public abstract class MsAdsSdk{
         return guestStatusDroid;
     }
 
+    /**
+     * status of opening screen. When user taps on banner it opens sponsor link
+     *  1 - opens webView inside application
+     *  0 - open mobile webView, outside application
+     * @return
+     */
     public int getWebviewDroid() {
         return webviewDroid;
     }
@@ -95,26 +128,52 @@ public abstract class MsAdsSdk{
         return guestAfterRunDroid;
     }
 
+    /**
+     * returns list of in list banner ids. It is used to setup banners
+     * in recyclerview or scrollview. You can pass specific id of banner that you want to show
+     * or you can just iterate all ids to be shown in recyclerView
+     * @return
+     */
     public LinkedHashMap<String, String> getInListBannersIds() {
         return inListBannersIds;
     }
 
+    /**
+     * returns list of popup banners setup in admin
+     * @return
+     */
     public ArrayList<Position> getPopupBanners() {
         return popupBanners;
     }
 
+    /**
+     * returns list of fullScreen banners setup in admin
+     * @return
+     */
     public ArrayList<Position> getFullScreenBanners() {
         return fullScreenBanners;
     }
 
+    /**
+     * returns list of preRoll banners setup in admin
+     * @return
+     */
     public ArrayList<Position> getPrerollBanners() {
         return prerollBanners;
     }
 
+    /**
+     * return list of in list banners setup in admin
+     * @return
+     */
     public ArrayList<Position> getInListBanners() {
         return inListBanners;
     }
 
+    /**
+     * internal use, required for nice presentation of views and videos
+     * @return
+     */
     public int getScreenWidth() {
         return screenWidth;
     }
@@ -131,21 +190,40 @@ public abstract class MsAdsSdk{
         screenWidth = displaymetrics.widthPixels;
     }
 
+    /**
+     * returns hashColor of arrow back color used in sdk
+     * @return String
+     */
     public String getArrowBackColor() {
         return arrowBackColor;
     }
 
-    //color of back arrow in screens
+    /**
+     * Setup of arrow back color used in sdk, example is local webView that contains
+     * back arrow in actionbar
+     * Color has to be in hash format("#ffffff")
+     * @param arrowBackColor
+     */
     public void setArrowBackColor(String arrowBackColor) {
         if(arrowBackColor.contains("#")) {
             this.arrowBackColor = arrowBackColor;
         }
     }
 
+    /**
+     * returns hashColor of actionBar color used in sdk
+     * @return String
+     */
     public String getActionBarColor() {
         return actionBarColor;
     }
 
+    /**
+     * Setup of action bar color for screens used in sdk, example is local webView
+     * that goes to sponsor
+     * Color has to be in hash format("#ffffff")
+     * @param actionBarColor
+     */
     public void setActionBarColor(String actionBarColor) {
         if(actionBarColor.contains("#")) {
             this.actionBarColor = actionBarColor;

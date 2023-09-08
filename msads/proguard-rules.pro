@@ -27,7 +27,7 @@
 	*;
 }
 -keep class com.meritumads.settings.MsAdsBanner{
-	*;
+	public <methods>;
 }
 
 
