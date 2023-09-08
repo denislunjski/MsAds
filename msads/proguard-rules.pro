@@ -20,15 +20,12 @@
 # hide the original source file name.
 -renamesourcefileattribute SourceFile
 
--keep class com.meritumads.settings.MsAdsSdk
--keep class com.meritumads.setting.MsAdsDelegate
--keep class com.meritumads.setting.MsAdsBanner
-
-
--keepclassmembers class com.meritumads.setting.MsAdsSdk{
-	public static MsAdsSdk getInstance();
-	public String getActionBarColor();
+-keep class com.meritumads.settings.MsAdsSdk{
+	public <methods>;
 }
+-keep class com.meritumads.settings.MsAdsDelegate
+-keep class com.meritumads.settings.MsAdsBanner
+
 
 
 

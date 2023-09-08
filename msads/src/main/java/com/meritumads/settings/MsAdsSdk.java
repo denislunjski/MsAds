@@ -58,11 +58,11 @@ public abstract class MsAdsSdk{
         mainService.downloadData(appId, token, msAdsDelegate);
     }
 
-    public String getError() {
+    private String getError() {
         return error;
     }
 
-    public int getActiveDroid() {
+    private int getActiveDroid() {
         return activeDroid;
     }
 
@@ -70,11 +70,11 @@ public abstract class MsAdsSdk{
         return appName;
     }
 
-    public int getRegisStatusDroid() {
+    private int getRegisStatusDroid() {
         return regisStatusDroid;
     }
 
-    public int getGuestStatusDroid() {
+    private int getGuestStatusDroid() {
         return guestStatusDroid;
     }
 
@@ -82,11 +82,11 @@ public abstract class MsAdsSdk{
         return webviewDroid;
     }
 
-    public int getRegisAfterRunDroid() {
+    private int getRegisAfterRunDroid() {
         return regisAfterRunDroid;
     }
 
-    public int getGuestAfterRunDroid() {
+    private int getGuestAfterRunDroid() {
         return guestAfterRunDroid;
     }
 
