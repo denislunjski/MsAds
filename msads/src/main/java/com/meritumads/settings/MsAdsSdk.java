@@ -21,11 +21,11 @@ public abstract class MsAdsSdk{
     Context context;
     private static MainService mainService;
 
-    private ArrayList<Position> inListBanners;
-    private LinkedHashMap<String, String> inListBannersIds;
-    private ArrayList<Position> popupBanners;
-    private ArrayList<Position> fullScreenBanners;
-    private ArrayList<Position> prerollBanners;
+    protected ArrayList<Position> inListBanners;
+    protected LinkedHashMap<String, String> inListBannersIds;
+    protected ArrayList<Position> popupBanners;
+    protected ArrayList<Position> fullScreenBanners;
+    protected ArrayList<Position> prerollBanners;
 
     int activeDroid = -1;
     String appName = "";
@@ -164,7 +164,7 @@ public abstract class MsAdsSdk{
 
     /**
      * return list of in list banners setup in admin
-     * @return
+     * @return inListBanners
      */
     public ArrayList<Position> getInListBanners() {
         return inListBanners;
@@ -172,7 +172,7 @@ public abstract class MsAdsSdk{
 
     /**
      * internal use, required for nice presentation of views and videos
-     * @return
+     * @return screenWidth
      */
     public int getScreenWidth() {
         return screenWidth;
@@ -202,7 +202,7 @@ public abstract class MsAdsSdk{
      * Setup of arrow back color used in sdk, example is local webView that contains
      * back arrow in actionbar
      * Color has to be in hash format("#ffffff")
-     * @param arrowBackColor
+     * @param arrowBackColor -arrow back color
      */
     public void setArrowBackColor(String arrowBackColor) {
         if(arrowBackColor.contains("#")) {
@@ -222,7 +222,7 @@ public abstract class MsAdsSdk{
      * Setup of action bar color for screens used in sdk, example is local webView
      * that goes to sponsor
      * Color has to be in hash format("#ffffff")
-     * @param actionBarColor
+     * @param actionBarColor - action bar color
      */
     public void setActionBarColor(String actionBarColor) {
         if(actionBarColor.contains("#")) {
