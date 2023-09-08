@@ -30,8 +30,8 @@
 	public <methods>;
 }
 
--keepclasseswithmembers class * {
-    @retrofit2.http.* <methods>;
+-keepclasseswithmembers com.meritumads.settings.MainService {
+    public <methods>;
 }
 
 
