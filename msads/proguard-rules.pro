@@ -27,6 +27,7 @@
 
 -keepclassmembers class com.meritumads.setting.MsAdsSdk{
 	public static MsAdsSdk getInstance();
+	public String getActionBarColor();
 }
 
 
