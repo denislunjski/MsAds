@@ -22,7 +22,7 @@ class InListBanner {
         this.mainView = mainView;
         this.recyclerView = recyclerView;
         this.scrollView = scrollView;
-        ArrayList<Position> inListBanners = MsAdsSdk.getInstance().inListBanners;
+        ArrayList<Position> inListBanners = MsAdsSdk.getInstance().getInListBanners();
         for(int i = 0; i < inListBanners.size(); i++){
             if(bannerId.equals(inListBanners.get(i).getPositionId())){
                 currentBanner = inListBanners.get(i);

@@ -12,15 +12,13 @@ import java.util.ArrayList;
 
 public abstract class MsAdsBanner  {
 
-    String bannerId = "";
-    View view;
     private static  ArrayList<View> addedBanners = new ArrayList<>();
 
     private static InListBanner inListBanner;
 
 
-    public static void getInstance(String bannerId, View view){
-        runBanners(bannerId, view, null, null);
+    public static void getInstance(String bannerId, View layoutHolder){
+        runBanners(bannerId, layoutHolder, null, null);
     }
 
     public static void getInstance(String bannerId, View view, RecyclerView recyclerView){

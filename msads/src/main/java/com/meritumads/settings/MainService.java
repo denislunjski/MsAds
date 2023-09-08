@@ -79,13 +79,13 @@ class MainService extends MsAdsSdk{
                                                     body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getBanners().get(i)
                                                             .setMainCampaignUrl(body.getAdsApplication().getCampaigns().get(i).getUrlTarget());
                                                     if (body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getPositionType().equals("1")) {
-                                                        inListBanners.add(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
+                                                        getInListBanners().add(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
                                                     } else if (body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getPositionType().equals("2")) {
-                                                        prerollBanners.add(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
+                                                        getPrerollBanners().add(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
                                                     } else if (body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getPositionType().equals("3")) {
-                                                        popupBanners.add(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
+                                                        getPopupBanners().add(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
                                                     } else if (body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getPositionType().equals("4")) {
-                                                        fullScreenBanners.add(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
+                                                        getFullScreenBanners().add(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
                                                     }
                                                 }
                                             }
@@ -96,15 +96,15 @@ class MainService extends MsAdsSdk{
                         }
                     }
                 }
-                if(inListBanners.size()>0){
-                    Collections.sort(inListBanners, new Comparator<Position>() {
+                if(getInListBanners().size()>0){
+                    Collections.sort(getInListBanners(), new Comparator<Position>() {
                         @Override
                         public int compare(Position o1, Position o2) {
                             return o1.getInListPosition() - o2.getInListPosition();
                         }
                     });
-                    for(int i = 0; i < inListBanners.size(); i++){
-                        inListBannersIds.put(String.valueOf(inListBanners.get(i).getInListPosition()), inListBanners.get(i).getPositionId());
+                    for(int i = 0; i < getInListBanners().size(); i++){
+                        getInListBannersIds().put(String.valueOf(getInListBanners().get(i).getInListPosition()), getInListBanners().get(i).getPositionId());
                     }
                 }
                 if (msAdsDelegate != null) {

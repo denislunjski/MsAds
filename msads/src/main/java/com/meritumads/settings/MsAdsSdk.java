@@ -16,15 +16,16 @@ public abstract class MsAdsSdk{
 
 
     String error = "";
-    MainXml mainXml = null;
+    String appId;
+    String token;
     Context context;
     private static MainService mainService;
 
-    ArrayList<Position> inListBanners;
-    LinkedHashMap<String, String> inListBannersIds;
-    ArrayList<Position> popupBanners;
-    ArrayList<Position> fullScreenBanners;
-    ArrayList<Position> prerollBanners;
+    private ArrayList<Position> inListBanners;
+    private LinkedHashMap<String, String> inListBannersIds;
+    private ArrayList<Position> popupBanners;
+    private ArrayList<Position> fullScreenBanners;
+    private ArrayList<Position> prerollBanners;
 
     int activeDroid = -1;
     String appName = "";
@@ -34,10 +35,10 @@ public abstract class MsAdsSdk{
     int regisAfterRunDroid = -1;
     int guestAfterRunDroid = -1;
 
-    int screenWidth = 0;
+    private int screenWidth = 0;
 
-    String arrowBackColor = "#ffffff";
-    String actionBarColor = "#000000";
+    private String arrowBackColor = "#ffffff";
+    private String actionBarColor = "#000000";
 
     public static MsAdsSdk getInstance() {
         if(mainService == null){
@@ -48,12 +49,16 @@ public abstract class MsAdsSdk{
 
     public void init(Context context, String appId, String token) {
         this.context = context;
+        this.appId = appId;
+        this.token = token;
         setupMainSetting();
         mainService.downloadData(appId, token, null);
     }
 
     public void init(Context context, String appId, String token, MsAdsDelegate msAdsDelegate) {
         this.context = context;
+        this.appId = appId;
+        this.token = token;
         setupMainSetting();
         mainService.downloadData(appId, token, msAdsDelegate);
     }
@@ -104,6 +109,10 @@ public abstract class MsAdsSdk{
 
     public ArrayList<Position> getPrerollBanners() {
         return prerollBanners;
+    }
+
+    public ArrayList<Position> getInListBanners() {
+        return inListBanners;
     }
 
     public int getScreenWidth() {

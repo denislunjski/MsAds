@@ -23,8 +23,12 @@
 -keep class com.meritumads.settings.MsAdsSdk{
 	public <methods>;
 }
--keep class com.meritumads.settings.MsAdsDelegate
--keep class com.meritumads.settings.MsAdsBanner
+-keep class com.meritumads.settings.MsAdsDelegate{
+	*;
+}
+-keep class com.meritumads.settings.MsAdsBanner{
+	*;
+}
 
 
 
