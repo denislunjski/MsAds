@@ -38,6 +38,17 @@
  # kept. Suspend functions are wrapped in continuations where the type argument 
  # is used. 
  -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation 
+ 
+-keep class com.google.gson.** { *; }
+-keep class com.google.inject.** { *; }
+-keep class org.apache.http.** { *; }
+-keep class org.apache.james.mime4j.** { *; }
+-keep class javax.inject.** { *; }
+-keep class retrofit2.** { *; }
+-dontwarn rx.**
+-keep class com.example.testobfuscation.** { *; }
+-keepattributes Signature
+
 
 
 
