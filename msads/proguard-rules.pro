@@ -39,15 +39,9 @@
  # is used. 
  -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation 
  
--keep class com.google.gson.** { *; }
--keep class com.google.inject.** { *; }
--keep class org.apache.http.** { *; }
--keep class org.apache.james.mime4j.** { *; }
--keep class javax.inject.** { *; }
--keep class retrofit2.** { *; }
--dontwarn rx.**
--keep class com.example.testobfuscation.** { *; }
+-keep class com.meritumads.pojo.** { *; }
 -keepattributes Signature
+
 
 
 
