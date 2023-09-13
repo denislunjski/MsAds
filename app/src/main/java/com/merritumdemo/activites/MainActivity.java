@@ -1,21 +1,15 @@
 package com.merritumdemo.activites;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
-import com.meritumads.pojo.MainXml;
-import com.meritumads.settings.MsAdsDelegate;
+import com.meritumads.elements.MsAdsDelegate;
+import com.meritumads.settings.MsAdsFullScreen;
+import com.meritumads.settings.MsAdsPopups;
 import com.meritumads.settings.MsAdsSdk;
 import com.merritumdemo.databinding.ActivityMainBinding;
 
@@ -64,6 +58,20 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
                 public void onClick(View v) {
                     Intent i = new Intent(getApplicationContext(), OneItemActivity.class);
                     startActivity(i);
+                }
+            });
+
+            binding.popupBanner.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MsAdsPopups.getInstance(MainActivity.this);
+                }
+            });
+
+            binding.fullScreenBanner.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MsAdsFullScreen.getInstance(MainActivity.this);
                 }
             });
 

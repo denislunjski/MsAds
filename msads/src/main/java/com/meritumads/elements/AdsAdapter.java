@@ -45,12 +45,14 @@ public class AdsAdapter extends PagerAdapter {
     private float scrollTime;
     private RecyclerView recyclerView;
     private ScrollView scrollView;
+    private String replayMode = "";
 
-    public AdsAdapter(ArrayList<Banner> banners, ViewPager viewPager, String scrollTime, RecyclerView recyclerView, ScrollView scrollView) {
+    public AdsAdapter(ArrayList<Banner> banners, ViewPager viewPager, String scrollTime, RecyclerView recyclerView, ScrollView scrollView, String replayMode) {
         this.banners = banners;
         this.viewPager = viewPager;
         this.recyclerView = recyclerView;
         this.scrollView = scrollView;
+        this.replayMode = replayMode;
         try {
             this.scrollTime = Float.parseFloat(scrollTime);
             if(this.scrollTime < 0.1){
@@ -137,8 +139,10 @@ public class AdsAdapter extends PagerAdapter {
                                     temp++;
                                     viewPager.setCurrentItem(temp, true);
                                 } else if (viewPager.getCurrentItem() + 1 == viewPager.getAdapter().getCount()) {
-                                    temp = 0;
-                                    viewPager.setCurrentItem(temp, true);
+                                    if(replayMode.equals("1")) {
+                                        temp = 0;
+                                        viewPager.setCurrentItem(temp, true);
+                                    }
                                 }
                             }
                         });

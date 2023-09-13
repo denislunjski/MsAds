@@ -44,7 +44,8 @@ class InListBanner {
             return;
         }
 
-        AdsAdapter adsAdapter = new AdsAdapter(currentBanner.getBanners(), heightWrappingViewPager, currentBanner.getRotationDelay(), recyclerView, scrollView);
+        AdsAdapter adsAdapter = new AdsAdapter(currentBanner.getBanners(), heightWrappingViewPager,
+                currentBanner.getRotationDelay(), recyclerView, scrollView, currentBanner.getReplayMode());
         heightWrappingViewPager.setAdapter(adsAdapter);
 
     }

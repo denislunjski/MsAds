@@ -5,7 +5,6 @@ import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.MediaController;
@@ -65,6 +64,21 @@ public class VideoSponsorView extends VideoView {
                     @Override
                     public void onPrepared(final MediaPlayer mediaPlayer) {
 
+                        VideoSponsorView.this.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (VideoSponsorView.this.isPlaying()) {
+                                    stopPosition = VideoSponsorView.this.getCurrentPosition();
+                                    VideoSponsorView.this.pause();
+                                    String bannerId = banner.getBannerId();
+                                    //TODO dodati skupljanje statistike i sponzora
+                                    //Util.collectSponsorStats(context, bannerId , banner.getBannerPosition(), HIT_TYPE_CLICK);
+                                    Util.openWebView(!banner.getUrlTarget().equals("") ? banner.getUrlTarget(): banner.getMainCampaignUrl(), MsAdsSdk.getInstance().getWebviewDroid());
+
+                                }
+                            }
+                        });
+                        /*
                         VideoSponsorView.this.setOnTouchListener(new OnTouchListener() {
                             @Override
                             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -82,6 +96,8 @@ public class VideoSponsorView extends VideoView {
                                 return false;
                             }
                         });
+
+                         */
                     }
                 });
 

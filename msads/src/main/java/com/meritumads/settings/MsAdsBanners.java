@@ -1,7 +1,5 @@
 package com.meritumads.settings;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
 
@@ -10,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public abstract class MsAdsBanner  {
+public abstract class MsAdsBanners {
 
     private static  ArrayList<View> addedBanners = new ArrayList<>();
 

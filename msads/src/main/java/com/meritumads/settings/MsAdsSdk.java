@@ -1,12 +1,11 @@
 package com.meritumads.settings;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
-import androidx.activity.result.ActivityResultLauncher;
-
-import com.meritumads.pojo.MainXml;
+import com.meritumads.elements.MsAdsDelegate;
 import com.meritumads.pojo.Position;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public abstract class MsAdsSdk{
     String error = "";
     String appId;
     String token;
-    Context context;
+    public Context context;
     private static MainService mainService;
 
     protected ArrayList<Position> inListBanners;

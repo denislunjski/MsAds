@@ -31,14 +31,14 @@ public class Position {
     @Attribute(name = "video_background_ts", required = false)
     private String urlBackgroundTs = "";
 
-    @Attribute(name = "video_position", required = false)
+    @Attribute(name = "media_position", required = false)
     private String videoPosition = "";
 
     @Attribute(name = "replay_mode", required = false)
     private String replayMode = "";
 
     @Attribute(name = "close_delay", required = false)
-    private String closeDelay = "";
+    private int closeDelay = 0;
 
     @Attribute(name = "rotation_delay", required = false)
     private String rotationDelay = "";
@@ -70,6 +70,12 @@ public class Position {
     @Attribute(name = "box_height", required = false)
     private String boxHeight = "";
 
+    @Attribute(name = "webview", required = false)
+    private String webview = "";
+
+    @Attribute(name = "popup_richtext", required = false)
+    private String popupRichText = "";
+
     @Attribute(name = "active_period", required = false)
     private String activePeriod = "";
 
@@ -88,8 +94,27 @@ public class Position {
     @Attribute(name = "box_ratio", required = false)
     private String boxRatio = "";
 
+    @Attribute(name = "url_icon", required = false)
+    private String topIcon = "";
+
     @ElementList(name = "banner", required = false, inline = true)
     private ArrayList<Banner> banners = new ArrayList<Banner>();
+
+    public String getTopIcon() {
+        return topIcon;
+    }
+
+    public String getPopupRichText() {
+        return popupRichText;
+    }
+
+    public String getUrlBackgroundTs() {
+        return urlBackgroundTs;
+    }
+
+    public String getWebview() {
+        return webview;
+    }
 
     public String getStates() {
         return states;
@@ -127,7 +152,7 @@ public class Position {
         return replayMode;
     }
 
-    public String getCloseDelay() {
+    public int getCloseDelay() {
         return closeDelay;
     }
 

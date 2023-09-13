@@ -1,4 +1,4 @@
-package com.meritumads.settings;
+package com.meritumads.elements;
 
 public interface MsAdsDelegate {
 

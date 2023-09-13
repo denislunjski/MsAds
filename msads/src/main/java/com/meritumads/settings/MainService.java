@@ -1,10 +1,6 @@
 package com.meritumads.settings;
 
-import android.app.Activity;
-import android.util.Log;
-
-import androidx.activity.result.ActivityResultLauncher;
-
+import com.meritumads.elements.MsAdsDelegate;
 import com.meritumads.pojo.AdsApplication;
 import com.meritumads.pojo.Campaign;
 import com.meritumads.pojo.MainXml;
@@ -12,11 +8,8 @@ import com.meritumads.pojo.Position;
 import com.meritumads.retrofit.ApiUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;

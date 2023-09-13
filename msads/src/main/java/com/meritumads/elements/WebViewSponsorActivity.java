@@ -1,4 +1,4 @@
-package com.meritumads.settings;
+package com.meritumads.elements;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -17,6 +17,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.meritumads.databinding.WebviewSponsorDialogBinding;
+import com.meritumads.settings.MsAdsSdk;
+import com.meritumads.settings.Util;
 
 public class WebViewSponsorActivity extends Activity {
 

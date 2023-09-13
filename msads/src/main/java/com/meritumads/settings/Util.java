@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.telephony.TelephonyManager;
 
+import com.meritumads.elements.WebViewSponsorActivity;
 import com.meritumads.pojo.Position;
 
 import java.io.UnsupportedEncodingException;

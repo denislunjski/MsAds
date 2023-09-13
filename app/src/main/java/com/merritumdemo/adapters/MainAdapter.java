@@ -3,13 +3,12 @@ package com.merritumdemo.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.meritumads.settings.MsAdsBanner;
+import com.meritumads.settings.MsAdsBanners;
 import com.merritumdemo.R;
 
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public class MainAdapter extends RecyclerView.Adapter<Holder> {
         //method for calling in list banners
         //recyclerview or scrollview is important for better performance of showing video in list view.
         //It could be also without recyclerview or scrollview
-        MsAdsBanner.getInstance(item.getBannerId(), view, recyclerView);
+        MsAdsBanners.getInstance(item.getBannerId(), view, recyclerView);
 
 
     }
