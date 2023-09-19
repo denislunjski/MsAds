@@ -75,6 +75,14 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
                 }
             });
 
+            binding.prerollBanner.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getApplicationContext(), PreRollActivity.class);
+                    startActivity(i);
+                }
+            });
+
         }else{
             //something is wrong, check message
             Log.i("ms_ads_msg", response);

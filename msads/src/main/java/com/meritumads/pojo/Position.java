@@ -73,6 +73,9 @@ public class Position {
     @Attribute(name = "webview", required = false)
     private String webview = "";
 
+    @Attribute(name = "popup_background_color", required = false)
+    private String popupBackgroundColor = "";
+
     @Attribute(name = "popup_richtext", required = false)
     private String popupRichText = "";
 
@@ -94,14 +97,25 @@ public class Position {
     @Attribute(name = "box_ratio", required = false)
     private String boxRatio = "";
 
-    @Attribute(name = "url_icon", required = false)
-    private String topIcon = "";
+    @Attribute(name = "popup_button_icon_url", required = false)
+    private String popupButtonIconUrl = "";
+
+    @Attribute(name = "popup_button_icon_ts", required = false)
+    private String popupButtonIconTs = "";
 
     @ElementList(name = "banner", required = false, inline = true)
     private ArrayList<Banner> banners = new ArrayList<Banner>();
 
-    public String getTopIcon() {
-        return topIcon;
+    public String getPopupBackgroundColor() {
+        return popupBackgroundColor;
+    }
+
+    public String getPopupButtonIconUrl() {
+        return popupButtonIconUrl;
+    }
+
+    public String getPopupButtonIconTs() {
+        return popupButtonIconTs;
     }
 
     public String getPopupRichText() {

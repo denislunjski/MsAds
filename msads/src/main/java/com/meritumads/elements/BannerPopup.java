@@ -76,6 +76,7 @@ public class BannerPopup {
         TextView close = dialog.findViewById(R.id.txt_close);
         TextView sponsorName = dialog.findViewById(R.id.sponsor_name);
         RelativeLayout button = dialog.findViewById(R.id.btn);
+        ImageView btnImage = dialog.findViewById(R.id.icon);
 
         if(position.getPopupButtonColorback().length()>0)
             button.getBackground().setTint(Color.parseColor(position.getPopupButtonColorback()));
@@ -85,12 +86,15 @@ public class BannerPopup {
 
         sponsorName.setText(position.getPopupButtonText());
 
-        //TODO dodati timestamp za ikonicu
         Glide.with(dialog.getContext())
-                .load(position.getTopIcon() + "?=" + "asdasdasd")
-                .signature(new ObjectKey("asdasdasd"))
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .load(position.getBanners().get(0).getUrlSource() + "?=" + position.getBanners().get(0).getUuidTs())
+                .signature(new ObjectKey(position.getBanners().get(0).getUuidTs()))
                 .into(topIcon);
+
+        Glide.with(dialog.getContext())
+                .load(position.getPopupButtonIconUrl() + "?=" + position.getPopupButtonIconTs())
+                .signature(new ObjectKey(position.getPopupButtonIconTs()))
+                .into(btnImage);
 
         new android.os.Handler().postDelayed(new Runnable() {
             @Override

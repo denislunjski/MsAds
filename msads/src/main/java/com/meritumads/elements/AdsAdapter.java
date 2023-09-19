@@ -1,10 +1,12 @@
 package com.meritumads.elements;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -97,8 +99,6 @@ public class AdsAdapter extends PagerAdapter {
                 }
             });
         }
-
-
         container.addView(view);
         return view;
     }
@@ -122,6 +122,7 @@ public class AdsAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
     }
+
 
     private void startAutomaticScroll() {
 

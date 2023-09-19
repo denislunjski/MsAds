@@ -70,7 +70,7 @@ class MainService extends MsAdsSdk{
                                             if (body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getStatus().equals("1")) {
                                                 if (Util.isTimeEnabled(context, body.getAdsApplication().getCampaigns().get(i).getPositions().get(j))) {
                                                     for(int z = 0; z < body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getBanners().size(); z++) {
-                                                        body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getBanners().get(i)
+                                                        body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getBanners().get(z)
                                                                 .setMainCampaignUrl(body.getAdsApplication().getCampaigns().get(i).getUrlTarget());
                                                     }
                                                     if (body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getPositionType().equals("1")) {
@@ -106,6 +106,7 @@ class MainService extends MsAdsSdk{
                     msAdsDelegate.onMsAdsResult("OK");
                 }
             }catch (Exception e){
+                e.printStackTrace();
                 if (msAdsDelegate != null) {
                     msAdsDelegate.onMsAdsResult("Error parsing data");
                 }
