@@ -27,13 +27,13 @@
     <RelativeLayout
         android:id="@+id/middle_holder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:layout_below="@id/top_icon">
 
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
 
         />
 
