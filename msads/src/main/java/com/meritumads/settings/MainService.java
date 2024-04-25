@@ -110,6 +110,7 @@ class MainService extends MsAdsSdk{
                     if (body.getAdsApplication().getAndroidActive() == 1) {
                         if (body.getAdsApplication().getCampaigns() != null && body.getAdsApplication().getCampaigns().size() > 0) {
                             for (int i = 0; i < body.getAdsApplication().getCampaigns().size(); i++) {
+                                prepareCampignEvents(body.getAdsApplication().getCampaigns().get(i));
                                 if (checkIfCampaignIsActive(body.getAdsApplication().getCampaigns().get(i))) {
                                     if (body.getAdsApplication().getCampaigns().get(i).getPositions() != null && body.getAdsApplication().getCampaigns().get(i).getPositions().size() > 0) {
                                         for (int j = 0; j < body.getAdsApplication().getCampaigns().get(i).getPositions().size(); j++) {
@@ -166,6 +167,19 @@ class MainService extends MsAdsSdk{
         }else{
             if(msAdsDelegate!=null){
                 msAdsDelegate.onMsAdsResult("ERROR");
+            }
+        }
+    }
+
+    private void prepareCampignEvents(Campaign campaign) {
+
+        String[] splitedEvents = campaign.getMaxCustomEvents().split(";");
+        if(splitedEvents!=null && splitedEvents.length > 0){
+            for(int i = 0; i < splitedEvents.length; i++){
+                String[] splitEvent = splitedEvents[i].split(",");
+                if(splitEvent.length == 2){
+                    campaign.getListOfEvents().put(splitEvent[0], splitEvent[1]);
+                }
             }
         }
     }

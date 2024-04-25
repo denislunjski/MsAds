@@ -4,6 +4,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class Campaign {
 
@@ -30,6 +31,16 @@ public class Campaign {
 
     @ElementList(name = "position", required = false, inline = true)
     private ArrayList<Position> positions = new ArrayList<>();
+
+    private LinkedHashMap<String, String> listOfEvents = new LinkedHashMap<>();
+
+    public LinkedHashMap<String, String> getListOfEvents() {
+        return listOfEvents;
+    }
+
+    public String getMaxCustomEvents() {
+        return maxCustomEvents;
+    }
 
     public String getCampaignId() {
         return campaignId;
