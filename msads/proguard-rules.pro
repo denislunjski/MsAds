@@ -20,6 +20,8 @@
 # hide the original source file name.
 -renamesourcefileattribute SourceFile
 
+-keepparameternames
+
 -keep class com.meritumads.settings.MsAdsSdk{
 	public <methods>;
 }

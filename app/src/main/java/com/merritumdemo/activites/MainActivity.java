@@ -49,8 +49,6 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
             }
         });
 
-        MsAdsSdk.getInstance().getApiLinkService();
-
 
 
     }
