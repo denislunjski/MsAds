@@ -31,11 +31,15 @@ class InListBanner {
         this.recyclerView = recyclerView;
         this.scrollView = scrollView;
         ArrayList<Position> inListBanners = MsAdsSdk.getInstance().getInListBanners();
-        for(int i = 0; i < inListBanners.size(); i++){
-            if(developerId.equals(inListBanners.get(i).getDeveloperId())){
-                currentBanner = inListBanners.get(i);
-                break;
+        if(inListBanners!=null && inListBanners.size()>0) {
+            for (int i = 0; i < inListBanners.size(); i++) {
+                if (developerId.equals(inListBanners.get(i).getDeveloperId())) {
+                    currentBanner = inListBanners.get(i);
+                    break;
+                }
             }
+        }else{
+            return;
         }
         if(currentBanner!=null){
             setupBanner();

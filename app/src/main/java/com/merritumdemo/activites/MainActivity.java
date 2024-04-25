@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
 
         //initialization of MsAdsSdk
         MsAdsSdk.getInstance().init(getApplicationContext(), "128",
-                "ms_ads_74f5834cd46ba2.28278241_64f5834cd46be5.24455451", this);
+               "ms_ads_74f5834cd46ba2.28278241_64f5834cd46be5.24455451", this);
 
         MsAdsSdk.getInstance().setArrowBackColor("#fff000");
         MsAdsSdk.getInstance().setActionBarColor("#FF0000");
