@@ -86,8 +86,7 @@ public class AdsAdapter extends PagerAdapter {
                         String response = MsAdsSdk.getInstance().getApiLinkService().openApiLink(banners.get(position).getAndroidSubLink());
                         Util.openWebView(response);
                     }else {
-                        Util.openWebView(banners.get(position).getAndroidSubLink());
-                    }
+                        Util.openWebView(banners.get(position).getAndroidSubLink());                    }
                 }
             });
         }
