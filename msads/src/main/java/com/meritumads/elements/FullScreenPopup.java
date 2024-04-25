@@ -68,10 +68,13 @@ public class FullScreenPopup {
         HeightWrappingViewPager heightWrappingViewPager  = dialog.findViewById(R.id.main_banner_holder);
         setupPositionOnScreen(heightWrappingViewPager);
 
+        /*
         Glide.with(activity!=null ? activity.getApplicationContext() : fragment.getContext())
                 .load(position.getUrlBackground() + "?=" + position.getUrlBackgroundTs())
                 .signature(new ObjectKey(position.getUrlBackgroundTs()))
                 .into(backgroundImg);
+
+         */
 
         new android.os.Handler().postDelayed(new Runnable() {
             @Override

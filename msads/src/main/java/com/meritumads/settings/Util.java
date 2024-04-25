@@ -6,6 +6,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.telephony.TelephonyManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 
 import com.meritumads.elements.WebViewSponsorActivity;
 import com.meritumads.pojo.Position;
@@ -158,7 +160,7 @@ public class Util {
         return isNetworkAvailable;
     }
 
-    public static void openWebView(String url, int webview){
+    public static void openWebView(String url){
 
         String result = "";
         try {
@@ -166,7 +168,8 @@ public class Util {
         } catch (UnsupportedEncodingException e) {
             result = url;
         }
-        if(webview == 1){
+        int webView = MsAdsSdk.getInstance().getWebviewDroid();
+        if(webView == 1){
             Intent i = new Intent(MsAdsSdk.getInstance().context, WebViewSponsorActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.putExtra("main_link", result);
@@ -178,5 +181,9 @@ public class Util {
         }
 
 
+    }
+
+    public static Animation animateBtn() {
+        return new AlphaAnimation(1.0f, 0.2f);
     }
 }

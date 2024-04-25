@@ -3,9 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.meritumads.elements.HeightWrappingViewPager
-        android:id="@+id/main_banner_holder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+
 
 </RelativeLayout>

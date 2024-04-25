@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
 
 import com.meritumads.elements.AdsAdapter;
+import com.meritumads.elements.PreRollAdapter;
 import com.meritumads.elements.PreRollHolder;
 import com.meritumads.pojo.Position;
 
@@ -31,31 +32,8 @@ class PreRollBanner {
             return;
         }
         if(view instanceof PreRollHolder){
-            AdsAdapter adsAdapter = new AdsAdapter(position.getBanners(), view,
-                    position.getRotationDelay(), null, null, "0");
+            PreRollAdapter adsAdapter = new PreRollAdapter(position.getBanners());
             view.setAdapter(adsAdapter);
-            if(position.getBanners().size()>1)
-
-
-            view.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    if(position == adsAdapter.getCount()-1) {
-                        Log.i("item_visibility", "visible");
-                    }
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-            });
         }
-
     }
 }

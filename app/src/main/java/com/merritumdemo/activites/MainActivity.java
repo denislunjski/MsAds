@@ -11,6 +11,7 @@ import com.meritumads.elements.MsAdsDelegate;
 import com.meritumads.settings.MsAdsFullScreen;
 import com.meritumads.settings.MsAdsPopups;
 import com.meritumads.settings.MsAdsSdk;
+import com.meritumads.settings.OpenApiLinkService;
 import com.merritumdemo.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
@@ -25,11 +26,31 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
 
 
         //initialization of MsAdsSdk
-        MsAdsSdk.getInstance().init(getApplicationContext(), "1",
+        MsAdsSdk.getInstance().init(getApplicationContext(), "128",
                 "ms_ads_74f5834cd46ba2.28278241_64f5834cd46be5.24455451", this);
 
         MsAdsSdk.getInstance().setArrowBackColor("#fff000");
         MsAdsSdk.getInstance().setActionBarColor("#FF0000");
+
+        /**
+         * setup of apiLink service
+         * If your are using api services for opening sponsor, and have to pass some parameters trough link
+         * you can make that here
+         * After user clicks on image or video sponsor and in admin setting api link is 1
+         * it will return sponsor link on openApiLink and here you can add parameters.
+         * After that just return new link trough return
+         * After that sdk will handle all the rest opening the sponsor
+         */
+        MsAdsSdk.getInstance().setApiLinkService(new OpenApiLinkService() {
+            @Override
+            public String openApiLink(String link) {
+                link = link + "?test=123";
+                return link;
+            }
+        });
+
+        MsAdsSdk.getInstance().getApiLinkService();
+
 
 
     }

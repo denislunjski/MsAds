@@ -3,10 +3,10 @@ package com.merritumdemo.adapters;
 public class InListBannerItem extends Item{
 
 
-    String bannerId = "";
+    String developerId = "";
 
-    public InListBannerItem(String bannerId) {
-        this.bannerId = bannerId;
+    public InListBannerItem(String developerId) {
+        this.developerId = developerId;
     }
 
     @Override
@@ -14,7 +14,7 @@ public class InListBannerItem extends Item{
         return Item.IN_LIST_BANNER;
     }
 
-    public String getBannerId() {
-        return bannerId;
+    public String getDeveloperId() {
+        return developerId;
     }
 }

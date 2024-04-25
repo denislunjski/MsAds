@@ -9,4 +9,8 @@ public class ApiUtil {
         return RetrofitClient.getXmlClient().create(MainXmlService.class);
     }
 
+    public static DeviceInfoService getDeviceInfo(){
+        return RetrofitClient.getJsonClient().create(DeviceInfoService.class);
+    }
+
 }

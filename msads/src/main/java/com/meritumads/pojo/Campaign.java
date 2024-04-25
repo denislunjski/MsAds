@@ -7,26 +7,14 @@ import java.util.ArrayList;
 
 public class Campaign {
 
-    @Attribute(name = "countries", required = false)
-    private String  countries = "";
+    @Attribute(name = "max_custom_events", required = false)
+    private String maxCustomEvents = "";
 
     @Attribute(name = "campaign_id", required = false)
     private String campaignId = "";
 
     @Attribute(name = "campaign_name", required = false)
     private String campaignName = "";
-
-    @Attribute(name = "url_target", required = false)
-    private String urlTarget = "";
-
-    @Attribute(name = "app_id", required = false)
-    private String appId = "";
-
-    @Attribute(name = "status", required = false)
-    private String status = "";
-
-    @Attribute(name = "preroll_between_count", required = false)
-    private String  prerollBetweenCount= "";
 
     @Attribute(name = "max_impressions", required = false)
     private String maxImpressions = "";
@@ -43,32 +31,12 @@ public class Campaign {
     @ElementList(name = "position", required = false, inline = true)
     private ArrayList<Position> positions = new ArrayList<>();
 
-    public String getCountries() {
-        return countries;
-    }
-
     public String getCampaignId() {
         return campaignId;
     }
 
     public String getCampaignName() {
         return campaignName;
-    }
-
-    public String getUrlTarget() {
-        return urlTarget;
-    }
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public String getPrerollBetweenCount() {
-        return prerollBetweenCount;
     }
 
     public String getMaxImpressions() {

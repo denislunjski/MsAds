@@ -1,6 +1,5 @@
 package com.meritumads.settings;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
@@ -21,13 +20,16 @@ public abstract class MsAdsSdk{
     private static MainService mainService;
 
     protected ArrayList<Position> inListBanners;
-    protected LinkedHashMap<String, String> inListBannersIds;
+
+    protected LinkedHashMap<String, Integer> inListBannerIds;
     protected ArrayList<Position> popupBanners;
     protected ArrayList<Position> fullScreenBanners;
     protected ArrayList<Position> prerollBanners;
 
+    protected String deviceState = "";
+    protected String deviceCountry = "";
+
     int activeDroid = -1;
-    String appName = "";
     int regisStatusDroid = -1;
     int guestStatusDroid = -1;
     int webviewDroid = -1;
@@ -39,12 +41,16 @@ public abstract class MsAdsSdk{
     private String arrowBackColor = "#ffffff";
     private String actionBarColor = "#000000";
 
+    boolean inListBannersAlreadyUsed = false;
+
+    OpenApiLinkService openApiLinkService;
+
     /**
      * Begin a load of ms ads
      *
      * This is the main class for executing MsAds banners
      * Trough that method you can call two init methods
-     * @return
+     * @return main instance
      */
     public static MsAdsSdk getInstance() {
         if(mainService == null){
@@ -67,8 +73,10 @@ public abstract class MsAdsSdk{
         this.appId = appId;
         this.token = token;
         setupMainSetting();
-        mainService.downloadData(appId, token, null);
+        mainService.callDeviceInfo(appId, token, null);
+
     }
+
 
     /**
      * Begin of loading ms ads. It works as async task. It can be called in any position in application
@@ -86,7 +94,11 @@ public abstract class MsAdsSdk{
         this.appId = appId;
         this.token = token;
         setupMainSetting();
-        mainService.downloadData(appId, token, msAdsDelegate);
+        mainService.callDeviceInfo(appId, token, msAdsDelegate);
+    }
+
+    public String getDeviceState() {
+        return deviceState;
     }
 
     private String getError() {
@@ -95,10 +107,6 @@ public abstract class MsAdsSdk{
 
     private int getActiveDroid() {
         return activeDroid;
-    }
-
-    public String getAppName() {
-        return appName;
     }
 
     private int getRegisStatusDroid() {
@@ -125,16 +133,6 @@ public abstract class MsAdsSdk{
 
     private int getGuestAfterRunDroid() {
         return guestAfterRunDroid;
-    }
-
-    /**
-     * returns list of in list banner ids. It is used to setup banners
-     * in recyclerview or scrollview. You can pass specific id of banner that you want to show
-     * or you can just iterate all ids to be shown in recyclerView
-     * @return
-     */
-    public LinkedHashMap<String, String> getInListBannersIds() {
-        return inListBannersIds;
     }
 
     /**
@@ -170,6 +168,14 @@ public abstract class MsAdsSdk{
     }
 
     /**
+     * retrun list of in list banner ids for developers
+     * @return
+     */
+    public LinkedHashMap<String, Integer> getInListBannersIds() {
+        return inListBannerIds;
+    }
+
+    /**
      * internal use, required for nice presentation of views and videos
      * @return screenWidth
      */
@@ -179,7 +185,7 @@ public abstract class MsAdsSdk{
 
     void setupMainSetting(){
         inListBanners = new ArrayList<>();
-        inListBannersIds = new LinkedHashMap<>();
+        inListBannerIds = new LinkedHashMap<>();
         popupBanners = new ArrayList<>();
         fullScreenBanners = new ArrayList<>();
         prerollBanners = new ArrayList<>();
@@ -187,7 +193,9 @@ public abstract class MsAdsSdk{
         WindowManager windowManager = (WindowManager) MsAdsSdk.getInstance().context.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(displaymetrics);
         screenWidth = displaymetrics.widthPixels;
+
     }
+
 
     /**
      * returns hashColor of arrow back color used in sdk
@@ -228,4 +236,39 @@ public abstract class MsAdsSdk{
             this.actionBarColor = actionBarColor;
         }
     }
+
+    public LinkedHashMap<String, String> getBannerFilters(String developerId, String bannerName){
+        return mainService.bannerFilters(developerId, bannerName);
+    }
+
+    /**
+     * remove some banner on some position by filter
+     */
+    public String removeBannerByFilter(String developerId, String bannerName){
+        String temp = "";
+        if(!inListBannersAlreadyUsed) {
+            temp = mainService.removeBanner(developerId, bannerName);
+        }{
+            temp = "in list postitions are already called. Cannot delete items after showing banners. Please use filters before showing content to user";
+        }
+        return temp;
+    }
+
+
+    /**
+     * set service for api links
+     * @param openApiLinkService
+     */
+    public void setApiLinkService(OpenApiLinkService openApiLinkService) {
+        this.openApiLinkService = openApiLinkService;
+    }
+
+
+    /**
+     * internal use for sdk
+     * @return
+     */
+    public OpenApiLinkService getApiLinkService(){
+        return mainService.getApiLinkService();
+    };
 }

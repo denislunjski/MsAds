@@ -3,6 +3,7 @@ package com.merritumdemo.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -59,7 +60,9 @@ public class MainAdapter extends RecyclerView.Adapter<Holder> {
         //method for calling in list banners
         //recyclerview or scrollview is important for better performance of showing video in list view.
         //It could be also without recyclerview or scrollview
-        MsAdsBanners.getInstance(item.getBannerId(), view, recyclerView);
+        //Also please define what instance is view in what you are attaching content
+        //In this case it it RelativeLayout, it can be something else(LinearLayout)
+        MsAdsBanners.getInstance(item.getDeveloperId(), (RelativeLayout)view, recyclerView);
 
 
     }

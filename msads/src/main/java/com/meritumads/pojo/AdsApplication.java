@@ -10,11 +10,11 @@ public class AdsApplication {
     @ElementList(name = "campaign", required = false, inline = true)
     private ArrayList<Campaign> campaigns = new ArrayList<Campaign>();
 
+    @Attribute(name = "app_id", required = false)
+    private String appId = "";
+
     @Attribute(name = "status_droid", required = false)
     private int  androidActive = -1;
-
-    @Attribute(name = "app_name", required = false)
-    private String appName = "";
 
     @Attribute(name = "regis_status_droid", required = false)
     private int regisStatusDroid = -1;
@@ -33,10 +33,6 @@ public class AdsApplication {
 
     public int getAndroidActive() {
         return androidActive;
-    }
-
-    public String getAppName() {
-        return appName;
     }
 
     public int getRegisStatusDroid() {
@@ -63,4 +59,7 @@ public class AdsApplication {
         return campaigns;
     }
 
+    public String getAppId() {
+        return appId;
+    }
 }

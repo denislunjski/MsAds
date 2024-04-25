@@ -18,9 +18,6 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.signature.ObjectKey;
 import com.meritumads.R;
 import com.meritumads.pojo.Position;
 import com.meritumads.settings.MsAdsSdk;
@@ -78,6 +75,7 @@ public class BannerPopup {
         RelativeLayout button = dialog.findViewById(R.id.btn);
         ImageView btnImage = dialog.findViewById(R.id.icon);
 
+        /*
         if(position.getPopupButtonColorback().length()>0)
             button.getBackground().setTint(Color.parseColor(position.getPopupButtonColorback()));
 
@@ -96,6 +94,8 @@ public class BannerPopup {
                 .signature(new ObjectKey(position.getPopupButtonIconTs()))
                 .into(btnImage);
 
+
+         */
         new android.os.Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -115,7 +115,7 @@ public class BannerPopup {
             @Override
             public void onClick(View v) {
                 //TODO dodaj statistiku
-                Util.openWebView(handleUrl(position), MsAdsSdk.getInstance().getWebviewDroid());
+                Util.openWebView(handleUrl(position));
                 removeDialog();
             }
         });
@@ -157,9 +157,9 @@ public class BannerPopup {
     private String handleUrl(Position position) {
         String url = "";
         if(position.getBanners()!=null && position.getBanners().size()>0){
-            url = !position.getBanners().get(0).getUrlTarget().equals("") ?
-                    position.getBanners().get(0).getUrlTarget() :
-                    position.getBanners().get(0).getMainCampaignUrl();
+            url = !position.getBanners().get(0).getAndroidSubLink().equals("") ?
+                    position.getBanners().get(0).getAndroidSubLink() :
+                    position.getBanners().get(0).getAndroidSubLink();
         }
         return url;
     }

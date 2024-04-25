@@ -73,7 +73,7 @@ public class VideoSponsorView extends VideoView {
                                     String bannerId = banner.getBannerId();
                                     //TODO dodati skupljanje statistike i sponzora
                                     //Util.collectSponsorStats(context, bannerId , banner.getBannerPosition(), HIT_TYPE_CLICK);
-                                    Util.openWebView(!banner.getUrlTarget().equals("") ? banner.getUrlTarget(): banner.getMainCampaignUrl(), MsAdsSdk.getInstance().getWebviewDroid());
+                                    Util.openWebView(banner.getAndroidSubLink());
 
                                 }
                             }

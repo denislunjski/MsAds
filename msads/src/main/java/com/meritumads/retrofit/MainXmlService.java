@@ -6,12 +6,13 @@ import com.meritumads.settings.Constants;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Url;
 
 public interface MainXmlService {
 
-    @POST(Constants.mainXml)
-    @FormUrlEncoded
-    Call<MainXml> getMainXml(@Field("client_app_id") String appId, @Field("token") String token);
+    @GET
+    Call<MainXml> getMainXml(@Url String mainUrl);
 
 }

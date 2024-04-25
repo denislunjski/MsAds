@@ -1,35 +1,25 @@
 package com.meritumads.elements;
 
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.signature.ObjectKey;
 import com.meritumads.R;
-import com.meritumads.elements.HeightWrappingViewPager;
-import com.meritumads.elements.VideoSponsorView;
 import com.meritumads.pojo.Banner;
 import com.meritumads.settings.MsAdsSdk;
+import com.meritumads.settings.SafeClickListener;
 import com.meritumads.settings.Util;
 
 import java.util.ArrayList;
@@ -73,7 +63,7 @@ public class AdsAdapter extends PagerAdapter {
         View view = null;
 
 
-        if(banners.get(position).getMediaType().equals("2")){
+        if(banners.get(position).getBannerType().equals("video")){
             view = LayoutInflater.from(container.getContext()).inflate(R.layout.sponsor_home_video_layout, container, false);
             VideoSponsorView videoSponsorView = view.findViewById(R.id.pvSponsor);
             videoSponsorView.loadVideo(container.getContext(), banners.get(position), recyclerView, scrollView);
@@ -87,15 +77,17 @@ public class AdsAdapter extends PagerAdapter {
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(sponsorImage);
 
-            sponsorImage.setOnClickListener(new View.OnClickListener() {
+
+            sponsorImage.setOnClickListener(new SafeClickListener() {
                 @Override
-                public void onClick(View view) {
-                    view.startAnimation(new AlphaAnimation(1.0f, 0.4f));
+                public void onSingleClick(View v) {
                     //Util.sendSponsorClick(container.getContext(), sponsoTypeId, sponsorBannerArrayList.get(position).getSponsorId(), campaignId);
-                    Util.openWebView(!banners.get(position).getUrlTarget().equals("") ?
-                                    banners.get(position).getUrlTarget() :
-                                    banners.get(position).getMainCampaignUrl(),
-                            MsAdsSdk.getInstance().getWebviewDroid());
+                    if(banners.get(position).getApiActiveNonActive().equals("1")){
+                        String response = MsAdsSdk.getInstance().getApiLinkService().openApiLink(banners.get(position).getAndroidSubLink());
+                        Util.openWebView(response);
+                    }else {
+                        Util.openWebView(banners.get(position).getAndroidSubLink());
+                    }
                 }
             });
         }

@@ -4,32 +4,21 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class Position {
-
-    @Attribute(name = "states", required = false)
-    private String states = "";
 
     @Attribute(name = "position_id", required = false)
     private String positionId = "";
 
+    @Attribute(name = "developer_id", required = false)
+    private String developerId = "";
+
     @Attribute(name = "position_type", required = false)
     private String positionType = "";
 
-    @Attribute(name = "app_page_index", required = false)
-    private String appPageIndex = "";
-
     @Attribute(name = "in_list_position", required = false)
     private int inListPosition = 0;
-
-    @Attribute(name = "video_background_id", required = false)
-    private String backgroundId = "";
-
-    @Attribute(name = "video_background_url", required = false)
-    private String urlBackground = "";
-
-    @Attribute(name = "video_background_ts", required = false)
-    private String urlBackgroundTs = "";
 
     @Attribute(name = "media_position", required = false)
     private String videoPosition = "";
@@ -49,20 +38,14 @@ public class Position {
     @Attribute(name = "popup_message", required = false)
     private String popupMessage = "";
 
-    @Attribute(name = "popup_button_text", required = false)
-    private String popupButtonText = "";
-
-    @Attribute(name = "popup_button_colortext", required = false)
-    private String popupButtonColortext = "";
-
-    @Attribute(name = "popup_button_colorback", required = false)
-    private String popupButtonColorback = "";
+    @Attribute(name = "popup_background_color", required = false)
+    private String popupBackgroundColor = "";
 
     @Attribute(name = "popup_delay", required = false)
     private String popupDelay = "";
 
-    @Attribute(name = "status", required = false)
-    private String status = "";
+    @Attribute(name = "popup_richtext", required = false)
+    private String popupRichText = "";
 
     @Attribute(name = "box_width", required = false)
     private String boxWidth = "";
@@ -73,11 +56,8 @@ public class Position {
     @Attribute(name = "webview", required = false)
     private String webview = "";
 
-    @Attribute(name = "popup_background_color", required = false)
-    private String popupBackgroundColor = "";
-
-    @Attribute(name = "popup_richtext", required = false)
-    private String popupRichText = "";
+    @Attribute(name = "after_preroll_url", required = false)
+    private String afterPrerollUrl = "";
 
     @Attribute(name = "active_period", required = false)
     private String activePeriod = "";
@@ -95,44 +75,50 @@ public class Position {
     private String activeHours = "";
 
     @Attribute(name = "box_ratio", required = false)
-    private String boxRatio = "";
+    private float boxRatio = 0f;
 
-    @Attribute(name = "popup_button_icon_url", required = false)
-    private String popupButtonIconUrl = "";
-
-    @Attribute(name = "popup_button_icon_ts", required = false)
-    private String popupButtonIconTs = "";
+    @Attribute(name = "states", required = false)
+    private String states = "";
 
     @ElementList(name = "banner", required = false, inline = true)
     private ArrayList<Banner> banners = new ArrayList<Banner>();
 
+    public String getBoxWidth() {
+        return boxWidth;
+    }
+
+    public String getBoxHeight() {
+        return boxHeight;
+    }
+
+    public String getAfterPrerollUrl() {
+        return afterPrerollUrl;
+    }
+
+    public String getStates() {
+        return states;
+    }
+
+    public String getDeveloperId() {
+        return developerId;
+    }
+
+    public int getCloseDelay() {
+        return closeDelay;
+    }
+
     public String getPopupBackgroundColor() {
         return popupBackgroundColor;
-    }
-
-    public String getPopupButtonIconUrl() {
-        return popupButtonIconUrl;
-    }
-
-    public String getPopupButtonIconTs() {
-        return popupButtonIconTs;
     }
 
     public String getPopupRichText() {
         return popupRichText;
     }
 
-    public String getUrlBackgroundTs() {
-        return urlBackgroundTs;
-    }
-
     public String getWebview() {
         return webview;
     }
 
-    public String getStates() {
-        return states;
-    }
 
     public String getPositionId() {
         return positionId;
@@ -142,21 +128,10 @@ public class Position {
         return positionType;
     }
 
-    public String getAppPageIndex() {
-        return appPageIndex;
-    }
-
     public int getInListPosition() {
         return inListPosition;
     }
 
-    public String getBackgroundId() {
-        return backgroundId;
-    }
-
-    public String getUrlBackground() {
-        return urlBackground;
-    }
 
     public String getVideoPosition() {
         return videoPosition;
@@ -164,10 +139,6 @@ public class Position {
 
     public String getReplayMode() {
         return replayMode;
-    }
-
-    public int getCloseDelay() {
-        return closeDelay;
     }
 
     public String getRotationDelay() {
@@ -182,24 +153,8 @@ public class Position {
         return popupMessage;
     }
 
-    public String getPopupButtonText() {
-        return popupButtonText;
-    }
-
-    public String getPopupButtonColortext() {
-        return popupButtonColortext;
-    }
-
-    public String getPopupButtonColorback() {
-        return popupButtonColorback;
-    }
-
     public String getPopupDelay() {
         return popupDelay;
-    }
-
-    public String getStatus() {
-        return status;
     }
 
     public String getActivePeriod() {
@@ -222,7 +177,7 @@ public class Position {
         return activeHours;
     }
 
-    public String getBoxRatio() {
+    public float getBoxRatio() {
         return boxRatio;
     }
 
