@@ -23,7 +23,23 @@
 -keepparameternames
 
 -keep class com.meritumads.settings.MsAdsSdk{
-	public <methods>;
+	public getInstance();
+	public init(android.content.Context, java.lang.String, java.lang.String);
+	public init(android.content.Context, java.lang.String, java.lang.String, com.meritumads.elements.MsAdsDelegate);
+
+	public getWebviewDroid();
+	public getPopupBanners();
+	public getFullScreenBanners();
+	public getPrerollBanners();
+	public getInListBanners();
+	public getInListBannersIds();
+	public getArrowBackColor();
+	public setArrowBackColor(java.lang.String);
+	public setActionBarColor(java.lang.String);
+	public getBannerFilters(java.lang.String, java.lang.String);
+	public removeBannerByFilter(java.lang.String, java.lang.String);
+	public setApiLinkService(com.meritumads.settings.OpenApiLinkService);
+
 }
 -keep class com.meritumads.elements.MsAdsDelegate{
 	*;
@@ -38,9 +54,11 @@
 
 -keep class com.meritumads.settings.MsAdsPopups{
 	public <methods>;
+
 }
 
 -keep class com.meritumads.settings.InListPosition{
+    public <methods>;
 }
 
 -keep class com.meritumads.elements.PreRollHolder{

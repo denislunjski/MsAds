@@ -1,5 +1,6 @@
 package com.meritumads.settings;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
@@ -9,6 +10,8 @@ import com.meritumads.pojo.Position;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+
+import kotlin.internal.HidesMembers;
 
 public abstract class MsAdsSdk{
 
@@ -259,6 +262,7 @@ public abstract class MsAdsSdk{
      * set service for api links
      * @param openApiLinkService
      */
+
     public void setApiLinkService(OpenApiLinkService openApiLinkService) {
         this.openApiLinkService = openApiLinkService;
     }
