@@ -55,6 +55,7 @@ public abstract class MsAdsSdk{
      * Trough that method you can call two init methods
      * @return main instance
      */
+    //ovo je comment za test
     public static MsAdsSdk getInstance() {
         if(mainService == null){
             mainService = new MainService();
@@ -208,19 +209,20 @@ public abstract class MsAdsSdk{
         return arrowBackColor;
     }
 
-    /**
+    /*
      * Setup of arrow back color used in sdk, example is local webView that contains
      * back arrow in actionbar
      * Color has to be in hash format("#ffffff")
      * @param arrowBackColor -arrow back color
      */
+
     public void setArrowBackColor(String arrowBackColor) {
         if(arrowBackColor.contains("#")) {
             this.arrowBackColor = arrowBackColor;
         }
     }
 
-    /**
+    /*
      * returns hashColor of actionBar color used in sdk
      * @return String
      */
@@ -228,7 +230,7 @@ public abstract class MsAdsSdk{
         return actionBarColor;
     }
 
-    /**
+    /*
      * Setup of action bar color for screens used in sdk, example is local webView
      * that goes to sponsor
      * Color has to be in hash format("#ffffff")
@@ -244,7 +246,7 @@ public abstract class MsAdsSdk{
         return mainService.bannerFilters(developerId, bannerName);
     }
 
-    /**
+    /*
      * remove some banner on some position by filter
      */
     public String removeBannerByFilter(String developerId, String bannerName){
@@ -258,7 +260,7 @@ public abstract class MsAdsSdk{
     }
 
 
-    /**
+    /*
      * set service for api links
      * @param openApiLinkService
      */

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
         MsAdsSdk.getInstance().setArrowBackColor("#fff000");
         MsAdsSdk.getInstance().setActionBarColor("#FF0000");
 
-        /**
+        /*
          * setup of apiLink service
          * If your are using api services for opening sponsor, and have to pass some parameters trough link
          * you can make that here
