@@ -45,6 +45,7 @@ public class RetrofitClient {
 
     public static Retrofit getXmlClient() {
 
+
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.connectTimeout(Constants.timeout, TimeUnit.SECONDS);
         builder.readTimeout(Constants.timeout, TimeUnit.SECONDS);
