@@ -14,6 +14,8 @@ import com.meritumads.settings.MsAdsSdk;
 import com.meritumads.settings.OpenApiLinkService;
 import com.merritumdemo.databinding.ActivityMainBinding;
 
+import org.xmlpull.v1.XmlPullParser;
+
 public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
 
     ActivityMainBinding binding;
@@ -48,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
                 return link;
             }
         });
+
+
 
 
 
