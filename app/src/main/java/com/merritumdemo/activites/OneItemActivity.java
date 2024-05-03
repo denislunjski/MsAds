@@ -25,17 +25,6 @@ public class OneItemActivity extends AppCompatActivity {
         binding = ActivityOneItemBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
-        /**
-         * Example how you can use filters to remove some banners that you want to ignore by some filter
-         * It is important to call removeBannerByFilter before showing any of banners
-         */
-        LinkedHashMap<String, String> bannerFIlters = MsAdsSdk.getInstance().getBannerFilters("home_banners", "Banner for Florida");
-        if(bannerFIlters.get("User status").equals("Ignore")){
-            String response =  MsAdsSdk.getInstance().removeBannerByFilter("home_banners", "Banner for Florida");
-            Log.i("response", response);
-        }
-
         /**
          * Example showing how can be in list banner also shown anywhere else in application
          * use developer_id and send view in what you want to add content

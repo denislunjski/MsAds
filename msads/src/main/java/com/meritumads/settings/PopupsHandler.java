@@ -10,38 +10,23 @@ import com.meritumads.pojo.Position;
 
 import java.util.ArrayList;
 
-class PopupsHandler implements PopupDelegate {
+class PopupsHandler {
 
-    ArrayList<BannerPopup> listOfPopups;
 
     public PopupsHandler() {
     }
 
-    public void init(Activity activity, Fragment fragment){
-        listOfPopups = new ArrayList<>();
+    public void init(String developerId, Activity activity, Fragment fragment, PopupDelegate popupDelegate){
         ArrayList<Position> popupBanners = MsAdsSdk.getInstance().popupBanners;
-        for(int i = 0; i < popupBanners.size(); i++){
-            BannerPopup bannerPopup = new BannerPopup(popupBanners.get(i), this, activity, fragment);
-            listOfPopups.add(bannerPopup);
-        }
-        showPopups();
-    }
-
-    void showPopups() {
-
-        if(listOfPopups.size()>0){
-            if(listOfPopups.get(0) instanceof BannerPopup){
-                ((BannerPopup)listOfPopups.get(0)).showDialog();
+        if(popupBanners!=null && popupBanners.size() > 0){
+            for(int i = 0; i < popupBanners.size(); i++) {
+                if(popupBanners.get(i).getDeveloperId().equals(developerId)) {
+                    BannerPopup bannerPopup = new BannerPopup(popupBanners.get(i), popupDelegate, activity, fragment);
+                    bannerPopup.showDialog();
+                }
             }
+        }else{
+            return;
         }
-
-    }
-
-    @Override
-    public void popupDelegate(String popupId) {
-        if(listOfPopups.size()>0){
-            listOfPopups.remove(0);
-        }
-        showPopups();
     }
 }

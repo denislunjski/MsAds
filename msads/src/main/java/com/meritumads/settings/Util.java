@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.TimeZone;
 
 public class Util {
@@ -186,4 +187,16 @@ public class Util {
     public static Animation animateBtn() {
         return new AlphaAnimation(1.0f, 0.2f);
     }
+
+    public static String randomString(){
+        Random r = new Random();
+        String[] allowedChar = new String[]{"a","b","c","d","e","f","g","h","i","j","k","l","m","n",
+                "o","p","r","q","s","t","u","v","x","y","w","z"};
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < 4; i++){
+            sb.append(allowedChar[r.nextInt(allowedChar.length)]);
+        }
+        return sb.toString();
+    }
+
 }

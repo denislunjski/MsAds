@@ -4,8 +4,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.meritumads.elements.BannerTypes;
 import com.meritumads.elements.MsAdsDelegate;
 import com.meritumads.pojo.AdsApplication;
+import com.meritumads.pojo.Banner;
 import com.meritumads.pojo.Campaign;
 import com.meritumads.pojo.DeviceInfo;
 import com.meritumads.pojo.MainXml;
@@ -117,22 +119,23 @@ class MainService extends MsAdsSdk{
                                             if (Util.isTimeEnabled(context, body.getAdsApplication().getCampaigns().get(i).getPositions().get(j))) {
                                                 if (body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getPositionType().equals("1")) {
                                                     if(checkIfCountryStateIsActive(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j))) {
-                                                        prepareFilters(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
+                                                        filterStates(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
                                                         inListBanners.add(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
                                                     }
                                                 } else if (body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getPositionType().equals("2")) {
                                                     if(checkIfCountryStateIsActive(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j))) {
-                                                        prepareFilters(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
+                                                        filterStates(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
                                                         prerollBanners.add(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
                                                     }
                                                 } else if (body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getPositionType().equals("3")) {
                                                     if(checkIfCountryStateIsActive(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j))) {
-                                                        prepareFilters(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
+                                                        filterStates(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
+                                                        handlePopupButtons(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
                                                         popupBanners.add(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
                                                     }
                                                 } else if (body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getPositionType().equals("4")) {
                                                     if(checkIfCountryStateIsActive(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j))) {
-                                                        prepareFilters(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
+                                                        filterStates(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
                                                         fullScreenBanners.add(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));
                                                     }
                                                 }
@@ -171,6 +174,60 @@ class MainService extends MsAdsSdk{
         }
     }
 
+    private void handlePopupButtons(Position position) {
+
+        if(position.getBanners()!=null && position.getBanners().size()>0){
+            Collections.sort(position.getBanners(), new Comparator<Banner>() {
+                @Override
+                public int compare(Banner banner, Banner t1) {
+                    return banner.getBannerType().compareTo(t1.getBannerType());
+                }
+            });
+
+            Collections.sort(position.getBanners(), new Comparator<Banner>() {
+                @Override
+                public int compare(Banner banner, Banner t1) {
+                    return banner.getButtonNumber().compareTo(t1.getButtonNumber());
+                }
+            });
+            if(position.getPopupBackgroundColor().equals("")){
+                position.setPopupBackgroundColor("#ffffff");
+            }
+            if(position.getPopupTitleColor().equals("")){
+                position.setPopupTitleColor("#ffffff");
+            }
+            if(position.getPopupMessageColor().equals("")){
+                position.setPopupMessageColor("#ffffff");
+            }
+            for(int i = 0; i < position.getBanners().size(); i++){
+                if(position.getBanners().get(i).getBannerType().equals(BannerTypes.popupButton)){
+                    if(position.getBanners().get(i).getPopupButtonColortext().equals("")){
+                        position.getBanners().get(i).setPopupButtonColortext("#ffffff");
+                    }
+                    if(position.getBanners().get(i).getPopupButtonColorback().equals("")){
+                        position.getBanners().get(i).setPopupButtonColorback("#7F7F7F");
+                    }
+                    for(int j = 0; j < position.getBanners().size(); j++){
+                        if(position.getBanners().get(i).getButtonNumber().equals(position.getBanners().get(j).getButtonNumber())
+                                && (position.getBanners().get(j).getBannerType().equals(BannerTypes.popupBtnImage)
+                                || position.getBanners().get(j).getBannerType().equals(BannerTypes.popupBtnIconImage))){
+                            if(position.getBanners().get(j).getBannerType().equals(BannerTypes.popupBtnImage)){
+                                position.getBanners().get(i).setInternalBannerType(1);
+                            }else if(position.getBanners().get(j).getBannerType().equals(BannerTypes.popupBtnIconImage)){
+                                position.getBanners().get(i).setInternalBannerType(2);
+                            }
+                            position.getBanners().get(i).setMediaUrl(position.getBanners().get(j).getMediaUrl());
+                            position.getBanners().get(i).setMediaTs(position.getBanners().get(j).getMediaTs());
+                            position.getBanners().remove(j);
+                            j--;
+                            i--;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void prepareCampignEvents(Campaign campaign) {
 
         String[] splitedEvents = campaign.getMaxCustomEvents().split(";");
@@ -183,26 +240,6 @@ class MainService extends MsAdsSdk{
             }
         }
     }
-
-    private void prepareFilters(Position position) {
-
-        if(position.getBanners()!=null && position.getBanners().size()>0){
-            for(int i = 0; i < position.getBanners().size(); i++) {
-                if(position.getBanners().get(i).getFilters().length() > 0){
-                    String[] splitedFilters = position.getBanners().get(i).getFilters().split(";");
-                    if(splitedFilters!=null && splitedFilters.length>0){
-                        for(int j = 0; j < splitedFilters.length; j++) {
-                            String[] splitFilter = splitedFilters[j].split(",");
-                            if(splitFilter.length == 2){
-                                position.getBanners().get(i).getListOfFilters().put(splitFilter[0], splitFilter[1]);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
 
     private void setupApplicationParameters(AdsApplication adsApplication) {
 
@@ -225,145 +262,30 @@ class MainService extends MsAdsSdk{
 
     private boolean checkIfCountryStateIsActive(Position position) {
         boolean temp = false;
-        if(position.getStates().contains(deviceState)){
+        if(position.getStates().equals("")){
             temp = true;
-        }
-        return temp;
-    }
-
-    public LinkedHashMap<String, String> bannerFilters(String developerId, String bannerName){
-        LinkedHashMap<String, String> temp = new LinkedHashMap<>();
-        if(inListBanners.size()>0) {
-            for (int i = 0; i < inListBanners.size(); i++) {
-                if(inListBanners.get(i).getDeveloperId().equals(developerId)){
-                    if(inListBanners.get(i).getBanners()!=null && inListBanners.get(i).getBanners().size()>0){
-                        for(int j = 0; j < inListBanners.get(i).getBanners().size(); j++){
-                            if(inListBanners.get(i).getBanners().get(j).getBannerName().equals(bannerName)){
-                                temp = inListBanners.get(j).getBanners().get(j).getListOfFilters();
-                                if(temp == null)
-                                    temp = new LinkedHashMap<>();
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if(prerollBanners.size()>0) {
-            for (int i = 0; i < prerollBanners.size(); i++) {
-                if(prerollBanners.get(i).getDeveloperId().equals(developerId)){
-                    if(prerollBanners.get(i).getBanners()!=null && prerollBanners.get(i).getBanners().size()>0){
-                        for(int j = 0; j < prerollBanners.get(i).getBanners().size(); j++){
-                            if(prerollBanners.get(i).getBanners().get(j).getBannerName().equals(bannerName)){
-                                temp = prerollBanners.get(j).getBanners().get(j).getListOfFilters();
-                                if(temp == null)
-                                    temp = new LinkedHashMap<>();
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if(popupBanners.size()>0) {
-            for (int i = 0; i < popupBanners.size(); i++) {
-                if(popupBanners.get(i).getDeveloperId().equals(developerId)){
-                    if(popupBanners.get(i).getBanners()!=null && popupBanners.get(i).getBanners().size()>0){
-                        for(int j = 0; j < popupBanners.get(i).getBanners().size(); j++){
-                            if(popupBanners.get(i).getBanners().get(j).getBannerName().equals(bannerName)){
-                                temp = popupBanners.get(j).getBanners().get(j).getListOfFilters();
-                                if(temp == null)
-                                    temp = new LinkedHashMap<>();
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if(fullScreenBanners.size()>0) {
-            for (int i = 0; i < fullScreenBanners.size(); i++) {
-                if(fullScreenBanners.get(i).getDeveloperId().equals(developerId)){
-                    if(fullScreenBanners.get(i).getBanners()!=null && fullScreenBanners.get(i).getBanners().size()>0){
-                        for(int j = 0; j < fullScreenBanners.get(i).getBanners().size(); j++){
-                            if(fullScreenBanners.get(i).getBanners().get(j).getBannerName().equals(bannerName)){
-                                temp = fullScreenBanners.get(j).getBanners().get(j).getListOfFilters();
-                                if(temp == null)
-                                    temp = new LinkedHashMap<>();
-                                break;
-                            }
-                        }
-                    }
-                }
+        }else {
+            if (position.getStates().contains(deviceState)) {
+                temp = true;
             }
         }
         return temp;
     }
 
-    public String removeBanner(String developerId, String bannerName) {
-        String temp = "";
-        if(inListBanners.size()>0) {
-            for (int i = 0; i < inListBanners.size(); i++) {
-                if(inListBanners.get(i).getDeveloperId().equals(developerId)){
-                    if(inListBanners.get(i).getBanners()!=null && inListBanners.get(i).getBanners().size()>0){
-                        for(int j = 0; j < inListBanners.get(i).getBanners().size(); j++){
-                            if(inListBanners.get(i).getBanners().get(j).getBannerName().equals(bannerName)){
-                                inListBanners.get(i).getBanners().remove(j);
-                                temp = "banner removed";
-                                break;
-                            }
-                        }
+    private void filterStates(Position position) {
+
+        if (position.getBanners().size() > 0) {
+            for (int i = 0; i < position.getBanners().size(); i++) {
+                if(position.getBanners().get(i).getStates().length()>0) {
+                    if (!position.getBanners().get(i).getStates().contains(MsAdsSdk.getInstance().getDeviceState())) {
+                        position.getBanners().remove(i);
+                        i--;
                     }
                 }
             }
         }
-        if(prerollBanners.size()>0) {
-            for (int i = 0; i < prerollBanners.size(); i++) {
-                if(prerollBanners.get(i).getDeveloperId().equals(developerId)){
-                    if(prerollBanners.get(i).getBanners()!=null && prerollBanners.get(i).getBanners().size()>0){
-                        for(int j = 0; j < prerollBanners.get(i).getBanners().size(); j++){
-                            if(prerollBanners.get(i).getBanners().get(j).getBannerName().equals(bannerName)){
-                                prerollBanners.get(i).getBanners().remove(j);
-                                temp = "banner removed";
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if(popupBanners.size()>0) {
-            for (int i = 0; i < popupBanners.size(); i++) {
-                if(popupBanners.get(i).getDeveloperId().equals(developerId)){
-                    if(popupBanners.get(i).getBanners()!=null && popupBanners.get(i).getBanners().size()>0){
-                        for(int j = 0; j < popupBanners.get(i).getBanners().size(); j++){
-                            if(popupBanners.get(i).getBanners().get(j).getBannerName().equals(bannerName)){
-                                popupBanners.get(i).getBanners().remove(j);
-                                temp = "banner removed";
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if(fullScreenBanners.size()>0) {
-            for (int i = 0; i < fullScreenBanners.size(); i++) {
-                if(fullScreenBanners.get(i).getDeveloperId().equals(developerId)){
-                    if(fullScreenBanners.get(i).getBanners()!=null && fullScreenBanners.get(i).getBanners().size()>0){
-                        for(int j = 0; j < fullScreenBanners.get(i).getBanners().size(); j++){
-                            if(fullScreenBanners.get(i).getBanners().get(j).getBannerName().equals(bannerName)){
-                                fullScreenBanners.get(i).getBanners().remove(j);
-                                temp = "banner removed";
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return temp;
     }
+
 
     public OpenApiLinkService getApiLinkService(){
         if(openApiLinkService!=null) {
@@ -379,4 +301,11 @@ class MainService extends MsAdsSdk{
         }
     }
 
+    public LinkedHashMap<String, String> getListOfFilters() {
+        if(activeFilters!=null){
+            return activeFilters;
+        }else{
+            return new LinkedHashMap<>();
+        }
+    }
 }

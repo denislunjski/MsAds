@@ -51,40 +51,33 @@ class InListBanner {
         if(mainView == null){
             return;
         }
-        RelativeLayout relativeLayout = new RelativeLayout(mainView.getContext());
-        ViewGroup.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        relativeLayout.setLayoutParams(params);
-        relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
-        mainView.addView(relativeLayout);
-        HeightWrappingViewPager heightWrappingViewPager = new HeightWrappingViewPager(mainView.getContext());
-        if(heightWrappingViewPager == null){
-            return;
-        }
-        relativeLayout.addView(heightWrappingViewPager);
-        params.height = (int)((int)MsAdsSdk.getInstance().getScreenWidth() * currentBanner.getBoxRatio());
-        heightWrappingViewPager.setLayoutParams(params);
+        if(currentBanner.getBanners().size()>0) {
 
+            RelativeLayout relativeLayout = new RelativeLayout(mainView.getContext());
+            ViewGroup.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.setLayoutParams(params);
+            relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
+            mainView.addView(relativeLayout);
+            HeightWrappingViewPager heightWrappingViewPager = new HeightWrappingViewPager(mainView.getContext());
+            if (heightWrappingViewPager == null) {
+                return;
+            }
+            relativeLayout.addView(heightWrappingViewPager);
+            params.height = (int) ((int) MsAdsSdk.getInstance().getScreenWidth() * currentBanner.getBoxRatio());
+            heightWrappingViewPager.setLayoutParams(params);
 
-        if(currentBanner.getBanners().size()>0){
-            for(int i = 0; i < currentBanner.getBanners().size(); i++){
-                if(!currentBanner.getBanners().get(i).getStates().contains(MsAdsSdk.getInstance().getDeviceState())){
-                    currentBanner.getBanners().remove(i);
-                    i--;
+            Collections.sort(currentBanner.getBanners(), new Comparator<Banner>() {
+                @Override
+                public int compare(Banner banner1, Banner banner2) {
+                    return banner1.getOrdnum() - banner2.getOrdnum();
                 }
-            }
+            });
+
+            AdsAdapter adsAdapter = new AdsAdapter(currentBanner.getBanners(), heightWrappingViewPager,
+                    currentBanner.getRotationDelay(), recyclerView, scrollView, currentBanner.getReplayMode());
+            heightWrappingViewPager.setAdapter(adsAdapter);
         }
-
-        Collections.sort(currentBanner.getBanners(), new Comparator<Banner>() {
-            @Override
-            public int compare(Banner banner1, Banner banner2) {
-                return banner1.getOrdnum() - banner2.getOrdnum();
-            }
-        });
-
-        AdsAdapter adsAdapter = new AdsAdapter(currentBanner.getBanners(), heightWrappingViewPager,
-                currentBanner.getRotationDelay(), recyclerView, scrollView, currentBanner.getReplayMode());
-        heightWrappingViewPager.setAdapter(adsAdapter);
 
     }
 

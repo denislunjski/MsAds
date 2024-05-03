@@ -43,13 +43,13 @@ public class VideoSponsorView extends VideoView {
 
     public void loadVideo(Context context, Banner banner, RecyclerView recyclerView, ScrollView scrollView) {
 
-        if (!banner.getUrlSource().contains("http")) {
-            banner.setUrlSource("http://" + banner.getUrlSource());
+        if (!banner.getMediaUrl().contains("http")) {
+            banner.setMediaUrl("http://" + banner.getMediaUrl());
         }
         if (Util.isNetworkConnected(context)) {
             try {
                 final MediaController mediaController = new MediaController(context);
-                final Uri video = Uri.parse(banner.getUrlSource());
+                final Uri video = Uri.parse(banner.getMediaUrl());
                 this.setVideoURI(video);
                 mediaController.setVisibility(View.GONE);
                 int screenWidth = MsAdsSdk.getInstance().getScreenWidth();

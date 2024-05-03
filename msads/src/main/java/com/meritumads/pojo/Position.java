@@ -32,8 +32,20 @@ public class Position {
     @Attribute(name = "rotation_delay", required = false)
     private String rotationDelay = "";
 
+    @Attribute(name = "popup_width_perc", required = false)
+    private int popupWidthPerc = 99;
+
+    @Attribute(name = "popup_height_perc", required = false)
+    private int popupHeightPerc = 99;
+
     @Attribute(name = "popup_title", required = false)
     private String popupTitle = "";
+
+    @Attribute(name = "popup_title_color", required = false)
+    private String popupTitleColor = "";
+
+    @Attribute(name = "popup_message_color", required = false)
+    private String popupMessageColor = "";
 
     @Attribute(name = "popup_message", required = false)
     private String popupMessage = "";
@@ -83,6 +95,22 @@ public class Position {
     @ElementList(name = "banner", required = false, inline = true)
     private ArrayList<Banner> banners = new ArrayList<Banner>();
 
+    public String getPopupTitleColor() {
+        return popupTitleColor;
+    }
+
+    public String getPopupMessageColor() {
+        return popupMessageColor;
+    }
+
+    public int getPopupWidthPerc() {
+        return popupWidthPerc;
+    }
+
+    public int getPopupHeightPerc() {
+        return popupHeightPerc;
+    }
+
     public String getBoxWidth() {
         return boxWidth;
     }
@@ -109,6 +137,10 @@ public class Position {
 
     public String getPopupBackgroundColor() {
         return popupBackgroundColor;
+    }
+
+    public void setPopupBackgroundColor(String popupBackgroundColor) {
+        this.popupBackgroundColor = popupBackgroundColor;
     }
 
     public String getPopupRichText() {
@@ -147,6 +179,14 @@ public class Position {
 
     public String getPopupTitle() {
         return popupTitle;
+    }
+
+    public void setPopupTitleColor(String popupTitleColor) {
+        this.popupTitleColor = popupTitleColor;
+    }
+
+    public void setPopupMessageColor(String popupMessageColor) {
+        this.popupMessageColor = popupMessageColor;
     }
 
     public String getPopupMessage() {

@@ -5,13 +5,14 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+
 import com.meritumads.elements.MsAdsDelegate;
 import com.meritumads.pojo.Position;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-
-import kotlin.internal.HidesMembers;
+import java.util.Map;
 
 public abstract class MsAdsSdk{
 
@@ -29,6 +30,8 @@ public abstract class MsAdsSdk{
     protected ArrayList<Position> fullScreenBanners;
     protected ArrayList<Position> prerollBanners;
 
+    LinkedHashMap<String, String> activeFilters;
+
     protected String deviceState = "";
     protected String deviceCountry = "";
 
@@ -40,6 +43,7 @@ public abstract class MsAdsSdk{
     int guestAfterRunDroid = -1;
 
     private int screenWidth = 0;
+    private int screenHeight = 0;
 
     private String arrowBackColor = "#ffffff";
     private String actionBarColor = "#000000";
@@ -47,6 +51,8 @@ public abstract class MsAdsSdk{
     boolean inListBannersAlreadyUsed = false;
 
     OpenApiLinkService openApiLinkService;
+
+
 
     /**
      * Begin a load of ms ads
@@ -187,16 +193,22 @@ public abstract class MsAdsSdk{
         return screenWidth;
     }
 
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
     void setupMainSetting(){
         inListBanners = new ArrayList<>();
         inListBannerIds = new LinkedHashMap<>();
         popupBanners = new ArrayList<>();
         fullScreenBanners = new ArrayList<>();
         prerollBanners = new ArrayList<>();
+        activeFilters = new LinkedHashMap<>();
         DisplayMetrics displaymetrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) MsAdsSdk.getInstance().context.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(displaymetrics);
         screenWidth = displaymetrics.widthPixels;
+        screenHeight = displaymetrics.heightPixels;
 
     }
 
@@ -242,13 +254,14 @@ public abstract class MsAdsSdk{
         }
     }
 
+    /*
     public LinkedHashMap<String, String> getBannerFilters(String developerId, String bannerName){
         return mainService.bannerFilters(developerId, bannerName);
     }
 
     /*
      * remove some banner on some position by filter
-     */
+
     public String removeBannerByFilter(String developerId, String bannerName){
         String temp = "";
         if(!inListBannersAlreadyUsed) {
@@ -258,6 +271,7 @@ public abstract class MsAdsSdk{
         }
         return temp;
     }
+    */
 
 
     /*
@@ -277,4 +291,24 @@ public abstract class MsAdsSdk{
     public OpenApiLinkService getApiLinkService(){
         return mainService.getApiLinkService();
     };
+
+    public void setActiveFilter(String key, String value){
+        if(activeFilters!=null){
+            activeFilters.put(key + "-" + Util.randomString(), value);
+        }
+    }
+
+    public void setListOfActiveFilters(@NonNull LinkedHashMap<String, String> listOfFilters){
+        if(activeFilters!=null){
+            if(listOfFilters!=null){
+                for(Map.Entry<String, String> entry: listOfFilters.entrySet()){
+                    activeFilters.put(entry.getKey() + "-" + Util.randomString(), entry.getValue());
+                }
+            }
+        }
+    }
+
+    public LinkedHashMap<String, String> getListOfActiveFilters(){
+        return mainService.getListOfFilters();
+    }
 }

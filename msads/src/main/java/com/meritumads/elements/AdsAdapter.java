@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
@@ -72,8 +71,8 @@ public class AdsAdapter extends PagerAdapter {
             ImageView sponsorImage = view.findViewById(R.id.sponsor_image);
 
             Glide.with(container.getContext())
-                    .load(banners.get(position).getUrlSource() + "?=" + banners.get(position).getUuidTs())
-                    .signature(new ObjectKey(banners.get(position).getUuidTs()))
+                    .load(banners.get(position).getMediaUrl() + "?=" + banners.get(position).getMediaTs())
+                    .signature(new ObjectKey(banners.get(position).getMediaTs()))
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(sponsorImage);
 

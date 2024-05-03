@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
         MsAdsSdk.getInstance().setArrowBackColor("#fff000");
         MsAdsSdk.getInstance().setActionBarColor("#FF0000");
 
+
         /*
          * setup of apiLink service
          * If your are using api services for opening sponsor, and have to pass some parameters trough link
@@ -87,14 +88,14 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
             binding.popupBanner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MsAdsPopups.getInstance(MainActivity.this);
+                    MsAdsPopups.getInstance("popup_deni", MainActivity.this);
                 }
             });
 
             binding.fullScreenBanner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MsAdsFullScreen.getInstance(MainActivity.this);
+                    MsAdsFullScreen.getInstance("main_fullscreen", MainActivity.this);
                 }
             });
 

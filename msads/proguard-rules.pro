@@ -36,9 +36,9 @@
 	public getArrowBackColor();
 	public setArrowBackColor(java.lang.String);
 	public setActionBarColor(java.lang.String);
-	public getBannerFilters(java.lang.String, java.lang.String);
-	public removeBannerByFilter(java.lang.String, java.lang.String);
 	public setApiLinkService(com.meritumads.settings.OpenApiLinkService);
+	public setActiveFilter(java.lang.String, java.lang.String);
+	public setListOfActiveFilters(java.util.LinkedHashMap);
 
 }
 -keep class com.meritumads.elements.MsAdsDelegate{
