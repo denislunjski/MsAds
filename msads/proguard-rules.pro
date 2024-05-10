@@ -61,8 +61,16 @@
     public <methods>;
 }
 
+-keep class com.meritumads.settings.PreRollService{
+    public <methods>;
+}
+
 -keep class com.meritumads.elements.PreRollHolder{
 
+}
+
+-keep class com.meritumads.settings.PreRollStatus{
+	*;
 }
 
 -dontwarn org.xmlpull.v1.**

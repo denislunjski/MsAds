@@ -54,11 +54,12 @@ public class ListActivity extends AppCompatActivity {
         }
 
 
-        //mainAdapter.addItem(inListBanners.get("das_banne"), new InListBannerItem("das_banne"));
+        mainAdapter.addItem(inListBanners.get("home_banners_1"), new InListBannerItem("home_banners_1"));
 
         mainAdapter.addItem(inListBanners.get("home_banners"), new InListBannerItem("home_banners"));
 
-        //mainAdapter.addItem(inListBanners.get("home_banners_1"), new InListBannerItem("home_banners_1"));
+        mainAdapter.addItem(inListBanners.get("das_banne"), new InListBannerItem("das_banne"));
+
 
     }
 }

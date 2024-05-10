@@ -6,9 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".activites.PreRollActivity">
 
+
     <com.meritumads.elements.PreRollHolder
         android:id="@+id/preroll_holder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="200dp"
+        android:background="#F40404"/>
+
 
 </RelativeLayout>
