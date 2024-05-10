@@ -67,6 +67,9 @@ class InListBanner {
             params.height = (int) ((int) MsAdsSdk.getInstance().getScreenWidth() * currentBanner.getBoxRatio());
             heightWrappingViewPager.setLayoutParams(params);
 
+
+
+
             Collections.sort(currentBanner.getBanners(), new Comparator<Banner>() {
                 @Override
                 public int compare(Banner banner1, Banner banner2) {
