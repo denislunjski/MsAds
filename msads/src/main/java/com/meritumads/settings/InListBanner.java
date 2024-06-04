@@ -6,16 +6,15 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.meritumads.elements.AdsAdapter;
-import com.meritumads.R;
 import com.meritumads.elements.HeightWrappingViewPager;
 import com.meritumads.pojo.Banner;
 import com.meritumads.pojo.Position;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -26,6 +25,8 @@ class InListBanner {
     ViewGroup mainView;
     RecyclerView recyclerView;
     ScrollView scrollView;
+
+    AdsAdapter adsAdapter;
     public void init(String developerId, ViewGroup mainView, RecyclerView recyclerView, ScrollView scrollView) {
         this.mainView = mainView;
         this.recyclerView = recyclerView;
@@ -59,16 +60,13 @@ class InListBanner {
             relativeLayout.setLayoutParams(params);
             relativeLayout.setBackgroundColor(Color.parseColor("#000000"));
             mainView.addView(relativeLayout);
-            HeightWrappingViewPager heightWrappingViewPager = new HeightWrappingViewPager(mainView.getContext());
-            if (heightWrappingViewPager == null) {
+            final HeightWrappingViewPager[] heightWrappingViewPager = {new HeightWrappingViewPager(mainView.getContext())};
+            if (heightWrappingViewPager[0] == null) {
                 return;
             }
-            relativeLayout.addView(heightWrappingViewPager);
+            relativeLayout.addView(heightWrappingViewPager[0]);
             params.height = (int) ((int) MsAdsSdk.getInstance().getScreenWidth() * currentBanner.getBoxRatio());
-            heightWrappingViewPager.setLayoutParams(params);
-
-
-
+            heightWrappingViewPager[0].setLayoutParams(params);
 
             Collections.sort(currentBanner.getBanners(), new Comparator<Banner>() {
                 @Override
@@ -77,9 +75,23 @@ class InListBanner {
                 }
             });
 
-            AdsAdapter adsAdapter = new AdsAdapter(currentBanner.getBanners(), heightWrappingViewPager,
+            adsAdapter = new AdsAdapter(currentBanner.getBanners(), heightWrappingViewPager[0],
                     currentBanner.getRotationDelay(), recyclerView, scrollView, currentBanner.getReplayMode());
-            heightWrappingViewPager.setAdapter(adsAdapter);
+            heightWrappingViewPager[0].setAdapter(adsAdapter);
+
+            heightWrappingViewPager[0].addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+                @Override
+                public void onViewAttachedToWindow(@NonNull View v) {
+
+                }
+
+                @Override
+                public void onViewDetachedFromWindow(@NonNull View v) {
+                    if(adsAdapter!=null)
+                        adsAdapter = null;
+
+                }
+            });
         }
 
     }

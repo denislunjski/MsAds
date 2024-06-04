@@ -117,6 +117,7 @@ public class PopupAdapter extends RecyclerView.Adapter<Holder> {
         btn.setOnClickListener(new SafeClickListener() {
             @Override
             public void onSingleClick(View v) {
+                Util.collectUserStats(generaltem.getBanner().getBannerId(), "click", MsAdsSdk.getInstance().getUserId());
                 if (generaltem.getBanner().getApiActiveNonActive().equals("1")) {
                     String response = MsAdsSdk.getInstance().getApiLinkService()
                             .openApiLink(generaltem.getBanner().getAndroidSubLink());
@@ -184,6 +185,7 @@ public class PopupAdapter extends RecyclerView.Adapter<Holder> {
         btn.setOnClickListener(new SafeClickListener() {
             @Override
             public void onSingleClick(View v) {
+                Util.collectUserStats(generaltem.getBanner().getBannerId(), "click", MsAdsSdk.getInstance().getUserId());
                 if (generaltem.getBanner().getApiActiveNonActive().equals("1")) {
                     String response = MsAdsSdk.getInstance().getApiLinkService().openApiLink(generaltem.getBanner().getAndroidSubLink());
                     Util.openWebView(response);

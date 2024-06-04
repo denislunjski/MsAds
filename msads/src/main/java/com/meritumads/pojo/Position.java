@@ -27,16 +27,16 @@ public class Position {
     private String replayMode = "";
 
     @Attribute(name = "close_delay", required = false)
-    private int closeDelay = 0;
+    private float closeDelay = 0f;
 
     @Attribute(name = "rotation_delay", required = false)
-    private String rotationDelay = "";
+    private float rotationDelay = 0f;
 
     @Attribute(name = "popup_width_perc", required = false)
-    private int popupWidthPerc = 99;
+    private float popupWidthPerc = 99f;
 
     @Attribute(name = "popup_height_perc", required = false)
-    private int popupHeightPerc = 99;
+    private float popupHeightPerc = 99f;
 
     @Attribute(name = "popup_title", required = false)
     private String popupTitle = "";
@@ -54,7 +54,7 @@ public class Position {
     private String popupBackgroundColor = "";
 
     @Attribute(name = "popup_delay", required = false)
-    private String popupDelay = "";
+    private float popupDelay = 0f;
 
     @Attribute(name = "popup_richtext", required = false)
     private String popupRichText = "";
@@ -103,11 +103,11 @@ public class Position {
         return popupMessageColor;
     }
 
-    public int getPopupWidthPerc() {
+    public float getPopupWidthPerc() {
         return popupWidthPerc;
     }
 
-    public int getPopupHeightPerc() {
+    public float getPopupHeightPerc() {
         return popupHeightPerc;
     }
 
@@ -131,7 +131,7 @@ public class Position {
         return developerId;
     }
 
-    public int getCloseDelay() {
+    public float getCloseDelay() {
         return closeDelay;
     }
 
@@ -173,7 +173,7 @@ public class Position {
         return replayMode;
     }
 
-    public String getRotationDelay() {
+    public float getRotationDelay() {
         return rotationDelay;
     }
 
@@ -193,7 +193,7 @@ public class Position {
         return popupMessage;
     }
 
-    public String getPopupDelay() {
+    public float getPopupDelay() {
         return popupDelay;
     }
 

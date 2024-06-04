@@ -68,6 +68,7 @@ public abstract class MsAdsBanners {
             addedBanners.add(view);
             MsAdsSdk.getInstance().inListBannersAlreadyUsed = true;
         }
+
         if(recyclerView!=null){
             recyclerView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
                 @Override

@@ -10,13 +10,11 @@ import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,7 +27,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.signature.ObjectKey;
 import com.meritumads.R;
 import com.meritumads.elements.adapter.Generaltem;
@@ -37,7 +34,6 @@ import com.meritumads.elements.adapter.Item;
 import com.meritumads.pojo.Banner;
 import com.meritumads.pojo.Position;
 import com.meritumads.settings.MsAdsSdk;
-import com.meritumads.settings.SafeClickListener;
 import com.meritumads.settings.Util;
 
 import java.util.Collections;
@@ -142,6 +138,9 @@ public class BannerPopup {
             });
             LinkedHashMap<String, Banner> tempBanners = new LinkedHashMap<>();
             for (int i = 0; i < position.getBanners().size(); i++) {
+                if(i == 0){
+                    Util.collectUserStats(position.getBanners().get(i).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+                }
                 tempBanners.put(position.getBanners().get(i).getBannerType(), position.getBanners().get(i));
             }
 
@@ -160,6 +159,7 @@ public class BannerPopup {
                                 + tempBanners.get(BannerTypes.popupRoundedHeaderImage).getMediaTs())
                         .signature(new ObjectKey(tempBanners.get(BannerTypes.popupRoundedHeaderImage).getMediaTs()))
                         .into(topIcon);
+
 
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) recyclerHolder.getLayoutParams();
                 params.topMargin = (int) (90 * (activity != null ? activity.getApplicationContext() : fragment.getContext()).getResources().getDisplayMetrics().density);
@@ -219,7 +219,7 @@ public class BannerPopup {
                     public void run() {
                         close.setVisibility(View.VISIBLE);
                     }
-                }, position.getCloseDelay() * 1000);
+                }, (long)position.getCloseDelay() * 1000);
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -253,7 +253,7 @@ public class BannerPopup {
                     public void run() {
                         close.setVisibility(View.VISIBLE);
                     }
-                }, position.getCloseDelay() * 1000);
+                }, (long)position.getCloseDelay() * 1000);
 
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override

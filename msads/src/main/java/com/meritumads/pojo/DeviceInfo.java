@@ -7,6 +7,12 @@ public class DeviceInfo {
     private String term;
     private Data data;
 
+    private String device_id;
+
+    public String getDevice_id() {
+        return device_id;
+    }
+
     public String getCode() {
         return code;
     }

@@ -9,13 +9,18 @@ import android.telephony.TelephonyManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import com.meritumads.elements.WebViewSponsorActivity;
 import com.meritumads.pojo.Position;
+import com.meritumads.pojo.UserData;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -197,6 +202,93 @@ public class Util {
             sb.append(allowedChar[r.nextInt(allowedChar.length)]);
         }
         return sb.toString();
+    }
+
+    public static void collectUserStats(String mediaId, String action, String userId){
+
+        String temp = MsAdsSdk.getInstance().getUserData();
+        Gson gson = new Gson();
+        try {
+            ArrayList<UserData> jsonArray = gson.fromJson(MsAdsSdk.getInstance().getUserData(), new TypeToken<ArrayList<UserData>>() {
+            }.getType());
+
+            if (jsonArray!=null){
+                if(jsonArray.size() == 0){
+                    createNewArrayAndAddItem(mediaId, action, userId);
+                }else{
+                    addDataToExistingArray(mediaId, action, userId, jsonArray);
+                }
+            }else{
+                createNewArrayAndAddItem(mediaId, action, userId);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private static void addDataToExistingArray(String mediaId, String action, String userId, ArrayList<UserData> arrayList) {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = new Date();
+        String time = simpleDateFormat.format(date);
+        boolean addNewData = false;
+        if(arrayList!=null && arrayList.size()>0){
+            for(UserData userData: arrayList){
+                if(userData.getMedia_id().equals(mediaId) && userData.getAction().equals(action) && userData.getDatetime().equals(time)){
+                    userData.setQuantity(userData.getQuantity() + 1);
+                    addNewData = false;
+                    break;
+                }else{
+                    addNewData = true;
+                }
+            }
+            if(addNewData){
+                UserData userDataNew = new UserData();
+                userDataNew.setMedia_id(mediaId);
+                userDataNew.setState(MsAdsSdk.getInstance().getDeviceState());
+                userDataNew.setAction(action);
+                userDataNew.setUser_id(userId);
+                userDataNew.setQuantity(userDataNew.getQuantity() + 1);
+                userDataNew.setDatetime(time);
+
+                arrayList.add(userDataNew);
+            }
+            Gson gson = new Gson();
+            String temp = gson.toJson(arrayList);
+            MsAdsSdk.getInstance().setUserData(temp);
+        }
+
+
+    }
+
+    private static void createNewArrayAndAddItem(String mediaId, String action, String userId) {
+
+        String hitTime = "";
+
+        UserData userData = new UserData();
+        userData.setMedia_id(mediaId);
+        userData.setState(MsAdsSdk.getInstance().getDeviceState());
+        userData.setAction(action);
+        userData.setUser_id(userId);
+        userData.setQuantity(userData.getQuantity() + 1);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        Date date = new Date();
+        hitTime = simpleDateFormat.format(date);
+        userData.setDatetime(hitTime);
+
+        ArrayList<UserData> arrayList = new ArrayList<>();
+        arrayList.add(userData);
+
+        Gson gson = new Gson();
+        String temp = gson.toJson(arrayList);
+
+        MsAdsSdk.getInstance().setUserData(temp);
+
     }
 
 }

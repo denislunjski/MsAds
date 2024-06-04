@@ -1,5 +1,6 @@
 package com.meritumads.settings;
 
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -17,8 +18,12 @@ import com.meritumads.retrofit.ApiUtil;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,13 +32,25 @@ class MainService extends MsAdsSdk{
 
     public void callDeviceInfo(String appId, String token, MsAdsDelegate msAdsDelegate){
 
-        ApiUtil.getDeviceInfo().getData().enqueue(new Callback<DeviceInfo>() {
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("device_id", MsAdsPrefs.getDeviceId(context))
+                .addFormDataPart("device_name", Build.MANUFACTURER)
+                .addFormDataPart("model_name", Build.MODEL)
+                .addFormDataPart("software_version", String.valueOf(Build.VERSION.SDK_INT))
+                .addFormDataPart("os_version", Build.VERSION.RELEASE)
+                .addFormDataPart("device_type", "1")
+                .build();
+
+        ApiUtil.getDeviceInfo().getData(requestBody).enqueue(new Callback<DeviceInfo>() {
             @Override
             public void onResponse(Call<DeviceInfo> call, Response<DeviceInfo> response) {
                 if(response.isSuccessful()){
                     if(response.body().getCode().equals("0")){
                         deviceCountry = response.body().getData().getCountry();
                         deviceState = response.body().getData().getState();
+                        if(!response.body().getDevice_id().equals("0")){
+                            MsAdsPrefs.setDeviceId(context, response.body().getDevice_id());
+                        }
                         downloadData(appId, token, msAdsDelegate);
                     }else{
                         error = response.body().getCode();

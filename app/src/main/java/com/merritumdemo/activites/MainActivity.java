@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
             binding.popupBanner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MsAdsPopups.getInstance("popup_deni", MainActivity.this);
+                    MsAdsPopups.getInstance("normal_popup_home", MainActivity.this);
                 }
             });
 

@@ -111,6 +111,7 @@ class PreRollBanner implements VideoDelegate {
 
                                     }
                                 });
+                        Util.collectUserStats(banner.getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
                     }
                 }
                 if(tempBanners!=null && tempBanners.size()>0){
@@ -158,7 +159,7 @@ class PreRollBanner implements VideoDelegate {
                     public void run() {
                         skip.setVisibility(View.VISIBLE);
                     }
-                }, position.getCloseDelay() * 1000);
+                }, (long)position.getCloseDelay() * 1000);
                 skip.setOnClickListener(new SafeClickListener() {
                     @Override
                     public void onSingleClick(View v) {
@@ -167,10 +168,11 @@ class PreRollBanner implements VideoDelegate {
                 });
                 holderNative.addView(videoView, 0);
                 holderNative.addView(skip, 1);
+                Util.collectUserStats(tempBanners.get(itherator).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
 
             }else{
                 ImageSponsorView sponsorImage = new ImageSponsorView(holderNative.getContext(),
-                        tempBanners.get(itherator), this::videoDelegate, skip, position.getCloseDelay());
+                        tempBanners.get(itherator), this::videoDelegate, skip, (long)position.getCloseDelay());
                 RelativeLayout.LayoutParams paramsForVideoAndImage = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
                 paramsForVideoAndImage.width = MsAdsSdk.getInstance().getScreenWidth();
                 paramsForVideoAndImage.height = WRAP_CONTENT;
@@ -180,6 +182,7 @@ class PreRollBanner implements VideoDelegate {
 
                 holderNative.addView(sponsorImage, 0);
                 holderNative.addView(skip, 1);
+                Util.collectUserStats(tempBanners.get(itherator).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
             }
         }
 

@@ -10,7 +10,11 @@ public class ApiUtil {
     }
 
     public static DeviceInfoService getDeviceInfo(){
-        return RetrofitClient.getJsonClient().create(DeviceInfoService.class);
+        return RetrofitClient.getTextPlainClient().create(DeviceInfoService.class);
+    }
+
+    public static StatsService sendStats(){
+        return RetrofitClient.getTextPlainClient().create(StatsService.class);
     }
 
 }

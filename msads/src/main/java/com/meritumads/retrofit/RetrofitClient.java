@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.Headers;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -18,6 +19,9 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 public class RetrofitClient {
 
     private static Retrofit retrofit = null;
+    private static Retrofit retrofitJson = null;
+
+    private static Retrofit retrofitPlain = null;
 
     public static Retrofit getGzipXmlClient() {
 
@@ -79,14 +83,41 @@ public class RetrofitClient {
             Response res = chain.proceed(req.newBuilder().headers(headersBuilder.build()).build());
             return res.newBuilder().build();
         });
-        if (retrofit==null) {
-            retrofit = new Retrofit.Builder()
+        if (retrofitJson==null) {
+            retrofitJson = new Retrofit.Builder()
                     .baseUrl(Constants.mainLink)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(builder.build())
                     .build();
         }
-        return retrofit;
+        return retrofitJson;
     }
+
+    public static Retrofit getTextPlainClient(){
+        Gson gson = new GsonBuilder()
+                .disableHtmlEscaping()
+                .setLenient()
+                .create();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(Constants.timeout, TimeUnit.SECONDS);
+        builder.readTimeout(Constants.timeout, TimeUnit.SECONDS);
+        builder.addNetworkInterceptor((Interceptor.Chain chain) -> {
+            Request req = chain.request();
+            Headers.Builder headersBuilder = req.headers().newBuilder();
+            Response res = chain.proceed(req.newBuilder().headers(headersBuilder.build()).build());
+            return res.newBuilder()
+                    .header("Content-Type", "text/plain")
+                    .build();
+        });
+        if (retrofitPlain==null) {
+            retrofitPlain = new Retrofit.Builder()
+                    .baseUrl(Constants.mainLink)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(builder.build())
+                    .build();
+        }
+        return retrofitPlain;
+    }
+
 
 }

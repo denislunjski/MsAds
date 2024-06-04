@@ -25,13 +25,13 @@ public class ImageSponsorView extends androidx.appcompat.widget.AppCompatImageVi
     private Runnable runnable, runnableSkip;
     private TextView skip;
 
-    private int closeDelay = 0;
+    private long closeDelay = 0;
 
     public ImageSponsorView(@NonNull Context context) {
         super(context);
     }
 
-    public ImageSponsorView(@NonNull Context context, Banner banner, VideoDelegate videoDelegate, TextView skip, int closeDelay) {
+    public ImageSponsorView(@NonNull Context context, Banner banner, VideoDelegate videoDelegate, TextView skip, long closeDelay) {
         super(context);
         this.banner = banner;
         this.videoDelegate1 = videoDelegate;
@@ -49,7 +49,7 @@ public class ImageSponsorView extends androidx.appcompat.widget.AppCompatImageVi
         ImageSponsorView.this.setOnClickListener(new SafeClickListener() {
             @Override
             public void onSingleClick(View v) {
-                //Util.sendSponsorClick(container.getContext(), sponsoTypeId, sponsorBannerArrayList.get(position).getSponsorId(), campaignId);
+                Util.collectUserStats(banner.getBannerId(), "click", MsAdsSdk.getInstance().getUserId());
                 if(banner.getApiActiveNonActive().equals("1")){
                     String response = MsAdsSdk.getInstance().getApiLinkService().openApiLink(banner.getAndroidSubLink());
                     Util.openWebView(response);
@@ -67,8 +67,7 @@ public class ImageSponsorView extends androidx.appcompat.widget.AppCompatImageVi
     protected void onWindowVisibilityChanged(int visibility) {
         super.onWindowVisibilityChanged(visibility);
         if(visibility == 0){
-            if(!banner.getDuration().equals("")){
-                if(Integer.parseInt(banner.getDuration())>0){
+            if(banner.getDuration() > 0){
                     handler = new android.os.Handler();
                     runnable = new Runnable() {
                         @Override
@@ -78,9 +77,8 @@ public class ImageSponsorView extends androidx.appcompat.widget.AppCompatImageVi
                             }
                         }
                     };
-                    handler.postDelayed(runnable, Integer.parseInt(banner.getDuration())*1000);
+                    handler.postDelayed(runnable, (long)banner.getDuration()*1000);
                 }
-            }
             handlerSkip = new android.os.Handler();
             runnableSkip = new Runnable() {
                 @Override

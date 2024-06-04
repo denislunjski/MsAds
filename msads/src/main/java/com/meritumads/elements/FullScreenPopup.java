@@ -23,6 +23,7 @@ import com.meritumads.R;
 import com.meritumads.pojo.Banner;
 import com.meritumads.pojo.Position;
 import com.meritumads.settings.MsAdsSdk;
+import com.meritumads.settings.Util;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -93,6 +94,7 @@ public class FullScreenPopup {
                                         + position.getBanners().get(i).getMediaTs())
                                 .signature(new ObjectKey(position.getBanners().get(i).getMediaTs()))
                                 .into(backgroundImg);
+                    Util.collectUserStats(position.getBanners().get(i).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
                 }
                 if(position.getBanners().get(i).getBannerType().equals(BannerTypes.buttonClose)){
                     closeBtnAdded = true;
@@ -133,7 +135,7 @@ public class FullScreenPopup {
                 public void run() {
                     close.setVisibility(View.VISIBLE);
                 }
-            }, position.getCloseDelay() * 1000);
+            }, (long)position.getCloseDelay() * 1000);
 
 
 

@@ -76,8 +76,7 @@ public class VideoSponsorView extends VideoView {
                                     stopPosition = VideoSponsorView.this.getCurrentPosition();
                                     VideoSponsorView.this.pause();
                                     String bannerId = banner.getBannerId();
-                                    //TODO dodati skupljanje statistike i sponzora
-                                    //Util.collectSponsorStats(context, bannerId , banner.getBannerPosition(), HIT_TYPE_CLICK);
+                                    Util.collectUserStats(banner.getBannerId(), "click", MsAdsSdk.getInstance().getUserId());
                                     Util.openWebView(banner.getAndroidSubLink());
 
                                 }
@@ -206,8 +205,7 @@ public class VideoSponsorView extends VideoView {
                                     stopPosition = VideoSponsorView.this.getCurrentPosition();
                                     VideoSponsorView.this.pause();
                                     String bannerId = banner.getBannerId();
-                                    //TODO dodati skupljanje statistike i sponzora
-                                    //Util.collectSponsorStats(context, bannerId , banner.getBannerPosition(), HIT_TYPE_CLICK);
+                                    Util.collectUserStats(banner.getBannerId(), "click", MsAdsSdk.getInstance().getUserId());
                                     Util.openWebView(banner.getAndroidSubLink());
 
                                 }

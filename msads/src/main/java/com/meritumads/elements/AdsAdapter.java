@@ -1,5 +1,7 @@
 package com.meritumads.elements;
 
+import android.graphics.Rect;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,14 +40,16 @@ public class AdsAdapter extends PagerAdapter {
     private ScrollView scrollView;
     private String replayMode = "";
 
-    public AdsAdapter(ArrayList<Banner> banners, ViewPager viewPager, String scrollTime, RecyclerView recyclerView, ScrollView scrollView, String replayMode) {
+    private Rect mCurrentViewRect = new Rect();
+
+    public AdsAdapter(ArrayList<Banner> banners, ViewPager viewPager, float scrollTime, RecyclerView recyclerView, ScrollView scrollView, String replayMode) {
         this.banners = banners;
         this.viewPager = viewPager;
         this.recyclerView = recyclerView;
         this.scrollView = scrollView;
         this.replayMode = replayMode;
         try {
-            this.scrollTime = Float.parseFloat(scrollTime);
+            this.scrollTime = scrollTime;
             if(this.scrollTime < 0.1){
                 this.scrollTime = 3;
             }
@@ -76,11 +80,10 @@ public class AdsAdapter extends PagerAdapter {
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(sponsorImage);
 
-
             sponsorImage.setOnClickListener(new SafeClickListener() {
                 @Override
                 public void onSingleClick(View v) {
-                    //Util.sendSponsorClick(container.getContext(), sponsoTypeId, sponsorBannerArrayList.get(position).getSponsorId(), campaignId);
+                    Util.collectUserStats(banners.get(position).getBannerId(), "click", MsAdsSdk.getInstance().getUserId());
                     if(banners.get(position).getApiActiveNonActive().equals("1")){
                         String response = MsAdsSdk.getInstance().getApiLinkService().openApiLink(banners.get(position).getAndroidSubLink());
                         Util.openWebView(response);
@@ -160,7 +163,69 @@ public class AdsAdapter extends PagerAdapter {
                     return false;
                 }
             });
-
         }
+
+        if(banners.size()>0) {
+            if (getVisibilitPercentHeight(viewPager)) {
+                Util.collectUserStats(banners.get(0).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+            }
+
+            ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    if (position < banners.size()) {
+                        if (getVisibilitPercentHeight(viewPager)) {
+                            Util.collectUserStats(banners.get(position).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+                        }
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            };
+
+            viewPager.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+                @Override
+                public void onViewAttachedToWindow(@NonNull View v) {
+                    if (viewPager != null) {
+                        viewPager.addOnPageChangeListener(onPageChangeListener);
+                    }
+                }
+
+                @Override
+                public void onViewDetachedFromWindow(@NonNull View v) {
+                    if (viewPager != null) {
+                        viewPager.removeOnPageChangeListener(onPageChangeListener);
+                    }
+
+                }
+            });
+        }
+
+
     }
+
+    public boolean getVisibilitPercentHeight(View view) {
+        boolean visible = false;
+
+        Rect globalVisibilityRectangle = new Rect();
+        view.getGlobalVisibleRect(globalVisibilityRectangle);
+
+        int visibleHeight = globalVisibilityRectangle.bottom - globalVisibilityRectangle.top;
+        int actualHeight = view.getMeasuredHeight();
+
+        if(visibleHeight <= actualHeight && globalVisibilityRectangle.top > 0){
+            visible = true;
+        }
+
+        return visible;
+    }
+
 }

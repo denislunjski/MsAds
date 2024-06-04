@@ -2,6 +2,8 @@ package com.meritumads.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -35,6 +37,8 @@ public abstract class MsAdsSdk{
     protected String deviceState = "";
     protected String deviceCountry = "";
 
+    protected String userData = "";
+
     int activeDroid = -1;
     int regisStatusDroid = -1;
     int guestStatusDroid = -1;
@@ -52,7 +56,7 @@ public abstract class MsAdsSdk{
 
     OpenApiLinkService openApiLinkService;
 
-
+    private String userId = "0";
 
     /**
      * Begin a load of ms ads
@@ -84,6 +88,11 @@ public abstract class MsAdsSdk{
         this.token = token;
         setupMainSetting();
         mainService.callDeviceInfo(appId, token, null);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(new Intent(context, UserDataService.class));
+        } else {
+            context.startService(new Intent(context, UserDataService.class));
+        }
 
     }
 
@@ -105,6 +114,11 @@ public abstract class MsAdsSdk{
         this.token = token;
         setupMainSetting();
         mainService.callDeviceInfo(appId, token, msAdsDelegate);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(new Intent(context, UserDataService.class));
+        } else {
+            context.startService(new Intent(context, UserDataService.class));
+        }
     }
 
     public String getDeviceState() {
@@ -310,5 +324,21 @@ public abstract class MsAdsSdk{
 
     public LinkedHashMap<String, String> getListOfActiveFilters(){
         return mainService.getListOfFilters();
+    }
+
+    public String getUserData() {
+        return userData;
+    }
+
+    public void setUserData(String userData) {
+        this.userData = userData;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

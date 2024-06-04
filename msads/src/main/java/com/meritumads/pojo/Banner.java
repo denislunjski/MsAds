@@ -40,7 +40,7 @@ public class Banner {
     private int height = 0;
 
     @Attribute(name = "duration", required = false)
-    private String duration = "";
+    private float duration = 0f;
 
     @Attribute(name = "android_sublink", required = false)
     private String androidSubLink = "";
@@ -164,7 +164,7 @@ public class Banner {
         return height;
     }
 
-    public String getDuration() {
+    public float getDuration() {
         return duration;
     }
 
