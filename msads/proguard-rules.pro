@@ -39,6 +39,8 @@
 	public setApiLinkService(com.meritumads.settings.OpenApiLinkService);
 	public setActiveFilter(java.lang.String, java.lang.String);
 	public setListOfActiveFilters(java.util.LinkedHashMap);
+	public setUserId(java.lang.String);
+	public getUserId();
 
 }
 -keep class com.meritumads.elements.MsAdsDelegate{

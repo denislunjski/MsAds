@@ -1,11 +1,11 @@
 package com.meritumads.settings;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
+import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 import com.meritumads.retrofit.ApiUtil;
 
@@ -18,17 +18,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SendDataService extends Service {
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+public class BackupWorker extends Worker {
+
+    public BackupWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
     }
 
+    @NonNull
     @Override
-    public void onCreate() {
-        super.onCreate();
+    public Result doWork() {
+
         sendData();
+
+        return null;
     }
 
     private void sendData() {

@@ -10,6 +10,8 @@ import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ProcessLifecycleOwner;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.google.gson.JsonObject;
 import com.meritumads.retrofit.ApiUtil;
@@ -42,13 +44,20 @@ public class UserDataService extends Application implements DefaultLifecycleObse
     @Override
     public void onStop(@NonNull LifecycleOwner owner) {
         DefaultLifecycleObserver.super.onStop(owner);
-        Intent intent = new Intent(getApplicationContext(), SendDataService.class);
+        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(BackupWorker.class).build();
+        WorkManager.getInstance (getApplicationContext()).enqueue(request);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //getApplicationContext().startForegroundService(intent);
+        /*
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(BackupWorker.class).build();
+            WorkManager.getInstance (getApplicationContext()).enqueue(request);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getApplicationContext().startForegroundService(intent);
         } else {
             getApplicationContext().startService(intent);
         }
+
+         */
     }
 
 }
