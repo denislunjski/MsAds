@@ -37,6 +37,7 @@ public class BackupWorker extends Worker {
 
         if (MsAdsSdk.getInstance().getUserData().length() > 0) {
 
+            Log.i("string_response", MsAdsSdk.getInstance().getUserData());
             MediaType mediaType = MediaType.parse("text/plain");
             RequestBody requestBody = RequestBody.create(mediaType, MsAdsSdk.getInstance().getUserData());
             ApiUtil.sendStats().sendStats(requestBody).enqueue(new Callback<ResponseBody>() {

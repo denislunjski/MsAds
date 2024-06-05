@@ -88,11 +88,8 @@ public abstract class MsAdsSdk{
         this.token = token;
         setupMainSetting();
         mainService.callDeviceInfo(appId, token, null);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(new Intent(context, UserDataService.class));
-        } else {
-            context.startService(new Intent(context, UserDataService.class));
-        }
+        UserDataService userDataService = new UserDataService(context);
+        userDataService.addObserver();
 
     }
 
@@ -114,11 +111,8 @@ public abstract class MsAdsSdk{
         this.token = token;
         setupMainSetting();
         mainService.callDeviceInfo(appId, token, msAdsDelegate);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(new Intent(context, UserDataService.class));
-        } else {
-            context.startService(new Intent(context, UserDataService.class));
-        }
+        UserDataService userDataService = new UserDataService(context);
+        userDataService.addObserver();
     }
 
     public String getDeviceState() {

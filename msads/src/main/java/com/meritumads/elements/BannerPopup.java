@@ -137,8 +137,10 @@ public class BannerPopup {
                 }
             });
             LinkedHashMap<String, Banner> tempBanners = new LinkedHashMap<>();
+            boolean stastCollected = false;
             for (int i = 0; i < position.getBanners().size(); i++) {
-                if(i == 0){
+                if(!position.getBanners().get(i).getBannerId().equals("") && stastCollected == false){
+                    stastCollected = true;
                     Util.collectUserStats(position.getBanners().get(i).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
                 }
                 tempBanners.put(position.getBanners().get(i).getBannerType(), position.getBanners().get(i));

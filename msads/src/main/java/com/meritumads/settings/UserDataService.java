@@ -1,6 +1,7 @@
 package com.meritumads.settings;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
@@ -28,11 +29,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserDataService extends Application implements DefaultLifecycleObserver {
+public class UserDataService  implements DefaultLifecycleObserver {
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    private Context context;
+    public UserDataService(Context context) {
+        this.context = context;
+    }
+
+    public void addObserver(){
         ProcessLifecycleOwner.get().getLifecycle().addObserver((LifecycleObserver) this);
     }
 
@@ -45,7 +49,7 @@ public class UserDataService extends Application implements DefaultLifecycleObse
     public void onStop(@NonNull LifecycleOwner owner) {
         DefaultLifecycleObserver.super.onStop(owner);
         OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(BackupWorker.class).build();
-        WorkManager.getInstance (getApplicationContext()).enqueue(request);
+        WorkManager.getInstance (context).enqueue(request);
 
         /*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
