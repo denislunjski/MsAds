@@ -59,6 +59,11 @@
 
 }
 
+-keep class com.meritumads.settings.MsAdsPreRolls{
+	public <methods>;
+
+}
+
 -keep class com.meritumads.settings.MsAdsInListPosition{
     public <methods>;
 }

@@ -10,8 +10,7 @@
     <com.meritumads.elements.MsAdsPreRollHolder
         android:id="@+id/preroll_holder"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="#F40404"/>
+        android:layout_height="200dp" />
 
 
 </RelativeLayout>
