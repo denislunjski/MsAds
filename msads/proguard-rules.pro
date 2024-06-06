@@ -73,7 +73,7 @@
 }
 
 -keep class com.meritumads.elements.MsAdsPreRollHolder{
-
+    *;
 }
 
 -keep class com.meritumads.settings.MsAdsPreRollStatus{
