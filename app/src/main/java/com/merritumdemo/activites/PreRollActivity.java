@@ -7,12 +7,11 @@ import android.util.Log;
 import android.view.View;
 
 import com.meritumads.settings.MsAdsPreRolls;
-import com.meritumads.settings.PreRollService;
-import com.meritumads.settings.PreRollStatus;
-import com.merritumdemo.R;
+import com.meritumads.settings.MsAdsPreRollService;
+import com.meritumads.settings.MsAdsPreRollStatus;
 import com.merritumdemo.databinding.ActivityPreRollBinding;
 
-public class PreRollActivity extends AppCompatActivity implements PreRollService {
+public class PreRollActivity extends AppCompatActivity implements MsAdsPreRollService {
 
     ActivityPreRollBinding binding;
 
@@ -30,13 +29,13 @@ public class PreRollActivity extends AppCompatActivity implements PreRollService
     public void preRollVideoImageDelegate(String developerId, String response, String imgVideoId) {
 
         Log.i("preroll_response - " +response, imgVideoId);
-        if(response.equals(PreRollStatus.ALL_CONTENT_FINISHED)){
+        if(response.equals(MsAdsPreRollStatus.ALL_CONTENT_FINISHED)){
             binding.prerollHolder.setVisibility(View.GONE);
-        }else if(response.equals(PreRollStatus.IMAGE_FINISHED)){
+        }else if(response.equals(MsAdsPreRollStatus.IMAGE_FINISHED)){
             if(imgVideoId.equals("124")){
                 //do something
             }
-        }else if(response.equals(PreRollStatus.VIDEO_FINISHED)){
+        }else if(response.equals(MsAdsPreRollStatus.VIDEO_FINISHED)){
 
         }
 

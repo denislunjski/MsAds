@@ -32,7 +32,7 @@ public class MainAdapter extends RecyclerView.Adapter<Holder> {
         if(viewType == Item.SIMPLE_ITEM){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_item_layout, parent, false);
         }else if(viewType == Item.IN_LIST_BANNER){
-            view = LayoutInflater.from(parent.getContext()).inflate(com.meritumads.R.layout.in_list_layout, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(com.meritumads.R.layout.msads_in_list_layout, parent, false);
         }
         return new Holder(view);
     }

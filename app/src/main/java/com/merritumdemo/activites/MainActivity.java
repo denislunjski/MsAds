@@ -11,10 +11,8 @@ import com.meritumads.elements.MsAdsDelegate;
 import com.meritumads.settings.MsAdsFullScreen;
 import com.meritumads.settings.MsAdsPopups;
 import com.meritumads.settings.MsAdsSdk;
-import com.meritumads.settings.OpenApiLinkService;
+import com.meritumads.settings.MsAdsOpenApiLinkService;
 import com.merritumdemo.databinding.ActivityMainBinding;
-
-import org.xmlpull.v1.XmlPullParser;
 
 public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
 
@@ -44,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
          * After that just return new link trough return
          * After that sdk will handle all the rest opening the sponsor
          */
-        MsAdsSdk.getInstance().setApiLinkService(new OpenApiLinkService() {
+        MsAdsSdk.getInstance().setApiLinkService(new MsAdsOpenApiLinkService() {
             @Override
             public String openApiLink(String link) {
                 link = link + "?test=123";

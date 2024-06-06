@@ -36,7 +36,7 @@
 	public getArrowBackColor();
 	public setArrowBackColor(java.lang.String);
 	public setActionBarColor(java.lang.String);
-	public setApiLinkService(com.meritumads.settings.OpenApiLinkService);
+	public setApiLinkService(com.meritumads.settings.MsAdsOpenApiLinkService);
 	public setActiveFilter(java.lang.String, java.lang.String);
 	public setListOfActiveFilters(java.util.LinkedHashMap);
 	public setUserId(java.lang.String);
@@ -59,19 +59,19 @@
 
 }
 
--keep class com.meritumads.settings.InListPosition{
+-keep class com.meritumads.settings.MsAdsInListPosition{
     public <methods>;
 }
 
--keep class com.meritumads.settings.PreRollService{
+-keep class com.meritumads.settings.MsAdsPreRollService{
     public <methods>;
 }
 
--keep class com.meritumads.elements.PreRollHolder{
+-keep class com.meritumads.elements.MsAdsPreRollHolder{
 
 }
 
--keep class com.meritumads.settings.PreRollStatus{
+-keep class com.meritumads.settings.MsAdsPreRollStatus{
 	*;
 }
 

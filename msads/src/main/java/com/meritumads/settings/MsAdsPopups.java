@@ -4,11 +4,11 @@ import android.app.Activity;
 
 import androidx.fragment.app.Fragment;
 
-import com.meritumads.elements.PopupDelegate;
+import com.meritumads.elements.MsAdsPopupDelegate;
 
 public abstract class MsAdsPopups {
 
-    private static PopupsHandler popupsHandler;
+    private static MsAdsPopupsHandler popupsHandler;
 
     public static void getInstance(String developerId, Activity activity){
         runPopups(developerId, activity, null, null);
@@ -18,18 +18,18 @@ public abstract class MsAdsPopups {
         runPopups(developerId,null, fragment, null);
     }
 
-    public static void getInstance(String developerId, Activity activity, PopupDelegate popupDelegate){
+    public static void getInstance(String developerId, Activity activity, MsAdsPopupDelegate popupDelegate){
         runPopups(developerId, activity, null, popupDelegate);
     }
 
-    public static void getInstance(String developerId, Fragment fragment, PopupDelegate popupDelegate){
+    public static void getInstance(String developerId, Fragment fragment, MsAdsPopupDelegate popupDelegate){
         runPopups(developerId, null, fragment, popupDelegate);
     }
 
-    private static void runPopups(String developerId, Activity activity, Fragment fragment, PopupDelegate popupDelegate){
+    private static void runPopups(String developerId, Activity activity, Fragment fragment, MsAdsPopupDelegate popupDelegate){
 
         if(popupsHandler == null){
-            popupsHandler = new PopupsHandler();
+            popupsHandler = new MsAdsPopupsHandler();
             popupsHandler.init(developerId, activity, fragment, popupDelegate);
         }else{
             popupsHandler.init(developerId, activity, fragment, popupDelegate);

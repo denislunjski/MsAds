@@ -6,18 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.meritumads.pojo.Position;
-import com.meritumads.settings.InListPosition;
-import com.meritumads.settings.MsAdsBanners;
 import com.meritumads.settings.MsAdsSdk;
 import com.merritumdemo.adapters.InListBannerItem;
 import com.merritumdemo.adapters.MainAdapter;
 import com.merritumdemo.adapters.SimpleItem;
 import com.merritumdemo.databinding.ActivityListBinding;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class ListActivity extends AppCompatActivity {
 

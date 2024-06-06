@@ -7,7 +7,7 @@ import android.widget.ScrollView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.meritumads.pojo.Position;
+import com.meritumads.pojo.MsAdsPosition;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public abstract class MsAdsBanners {
 
     private static  ArrayList<View> addedBanners = new ArrayList<>();
 
-    private static InListBanner inListBanner;
+    private static MsAdsInListBanner inListBanner;
 
 
     public static void getInstance(String developerId, ViewGroup layoutHolder){
@@ -37,10 +37,10 @@ public abstract class MsAdsBanners {
      * @param developerId
      * @return specific position for developer id
      */
-    public static InListPosition getInListBanner(String developerId){
-        InListPosition inListBanner = new InListPosition();
+    public static MsAdsInListPosition getInListBanner(String developerId){
+        MsAdsInListPosition inListBanner = new MsAdsInListPosition();
 
-        ArrayList<Position> inListBanners = MsAdsSdk.getInstance().inListBanners;
+        ArrayList<MsAdsPosition> inListBanners = MsAdsSdk.getInstance().inListBanners;
         if(inListBanners !=null && inListBanners.size()>0) {
             for (int i = 0; i < inListBanners.size(); i++) {
                 if (developerId.equals(inListBanners.get(i).getDeveloperId())) {
@@ -60,7 +60,7 @@ public abstract class MsAdsBanners {
 
     private static void runBanners(String developerId, ViewGroup view, RecyclerView recyclerView, ScrollView scrollView){
         if(inListBanner == null){
-            inListBanner = new InListBanner();
+            inListBanner = new MsAdsInListBanner();
         }
 
         if(!addedBanners.contains(view)) {

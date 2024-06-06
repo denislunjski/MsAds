@@ -1,16 +1,13 @@
 package com.meritumads.settings;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
 import com.meritumads.elements.MsAdsDelegate;
-import com.meritumads.pojo.Position;
+import com.meritumads.pojo.MsAdsPosition;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -23,14 +20,14 @@ public abstract class MsAdsSdk{
     String appId;
     String token;
     public Context context;
-    private static MainService mainService;
+    private static MsAdsMainService mainService;
 
-    protected ArrayList<Position> inListBanners;
+    protected ArrayList<MsAdsPosition> inListBanners;
 
     protected LinkedHashMap<String, Integer> inListBannerIds;
-    protected ArrayList<Position> popupBanners;
-    protected ArrayList<Position> fullScreenBanners;
-    protected ArrayList<Position> prerollBanners;
+    protected ArrayList<MsAdsPosition> popupBanners;
+    protected ArrayList<MsAdsPosition> fullScreenBanners;
+    protected ArrayList<MsAdsPosition> prerollBanners;
 
     LinkedHashMap<String, String> activeFilters;
 
@@ -54,7 +51,7 @@ public abstract class MsAdsSdk{
 
     boolean inListBannersAlreadyUsed = false;
 
-    OpenApiLinkService openApiLinkService;
+    MsAdsOpenApiLinkService openApiLinkService;
 
     private String userId = "0";
 
@@ -68,7 +65,7 @@ public abstract class MsAdsSdk{
     //ovo je comment za test
     public static MsAdsSdk getInstance() {
         if(mainService == null){
-            mainService = new MainService();
+            mainService = new MsAdsMainService();
         }
         return mainService;
     }
@@ -88,7 +85,7 @@ public abstract class MsAdsSdk{
         this.token = token;
         setupMainSetting();
         mainService.callDeviceInfo(appId, token, null);
-        UserDataService userDataService = new UserDataService(context);
+        MsAdsUserDataService userDataService = new MsAdsUserDataService(context);
         userDataService.addObserver();
 
     }
@@ -111,7 +108,7 @@ public abstract class MsAdsSdk{
         this.token = token;
         setupMainSetting();
         mainService.callDeviceInfo(appId, token, msAdsDelegate);
-        UserDataService userDataService = new UserDataService(context);
+        MsAdsUserDataService userDataService = new MsAdsUserDataService(context);
         userDataService.addObserver();
     }
 
@@ -157,7 +154,7 @@ public abstract class MsAdsSdk{
      * returns list of popup banners setup in admin
      * @return
      */
-    public ArrayList<Position> getPopupBanners() {
+    public ArrayList<MsAdsPosition> getPopupBanners() {
         return popupBanners;
     }
 
@@ -165,7 +162,7 @@ public abstract class MsAdsSdk{
      * returns list of fullScreen banners setup in admin
      * @return
      */
-    public ArrayList<Position> getFullScreenBanners() {
+    public ArrayList<MsAdsPosition> getFullScreenBanners() {
         return fullScreenBanners;
     }
 
@@ -173,7 +170,7 @@ public abstract class MsAdsSdk{
      * returns list of preRoll banners setup in admin
      * @return
      */
-    public ArrayList<Position> getPrerollBanners() {
+    public ArrayList<MsAdsPosition> getPrerollBanners() {
         return prerollBanners;
     }
 
@@ -181,7 +178,7 @@ public abstract class MsAdsSdk{
      * return list of in list banners setup in admin
      * @return inListBanners
      */
-    public ArrayList<Position> getInListBanners() {
+    public ArrayList<MsAdsPosition> getInListBanners() {
         return inListBanners;
     }
 
@@ -287,7 +284,7 @@ public abstract class MsAdsSdk{
      * @param openApiLinkService
      */
 
-    public void setApiLinkService(OpenApiLinkService openApiLinkService) {
+    public void setApiLinkService(MsAdsOpenApiLinkService openApiLinkService) {
         this.openApiLinkService = openApiLinkService;
     }
 
@@ -296,13 +293,13 @@ public abstract class MsAdsSdk{
      * internal use for sdk
      * @return
      */
-    public OpenApiLinkService getApiLinkService(){
+    public MsAdsOpenApiLinkService getApiLinkService(){
         return mainService.getApiLinkService();
     };
 
     public void setActiveFilter(String key, String value){
         if(activeFilters!=null){
-            activeFilters.put(key + "-" + Util.randomString(), value);
+            activeFilters.put(key + "-" + MsAdsUtil.randomString(), value);
         }
     }
 
@@ -310,7 +307,7 @@ public abstract class MsAdsSdk{
         if(activeFilters!=null){
             if(listOfFilters!=null){
                 for(Map.Entry<String, String> entry: listOfFilters.entrySet()){
-                    activeFilters.put(entry.getKey() + "-" + Util.randomString(), entry.getValue());
+                    activeFilters.put(entry.getKey() + "-" + MsAdsUtil.randomString(), entry.getValue());
                 }
             }
         }
