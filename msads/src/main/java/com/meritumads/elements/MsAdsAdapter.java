@@ -1,10 +1,12 @@
 package com.meritumads.elements;
 
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
@@ -165,14 +167,21 @@ public class MsAdsAdapter extends PagerAdapter {
         }
 
         if(banners.size()>0) {
-            if (getVisibilitPercentHeight(viewPager)) {
-                MsAdsUtil.collectUserStats(banners.get(0).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
-            }
+            viewPager.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    if (getVisibilitPercentHeight(viewPager)) {
+                        MsAdsUtil.collectUserStats(banners.get(0).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+                        viewPager.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        Log.i("ms_ads_counter", banners.get(0).getBannerId());
+                    }
+                }
+            });
+
 
             ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
                 }
 
                 @Override
@@ -180,6 +189,7 @@ public class MsAdsAdapter extends PagerAdapter {
                     if (position < banners.size()) {
                         if (getVisibilitPercentHeight(viewPager)) {
                             MsAdsUtil.collectUserStats(banners.get(position).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+                            Log.i("ms_ads_counter", banners.get(position).getBannerId());
                         }
                     }
                 }
@@ -195,6 +205,7 @@ public class MsAdsAdapter extends PagerAdapter {
                 public void onViewAttachedToWindow(@NonNull View v) {
                     if (viewPager != null) {
                         viewPager.addOnPageChangeListener(onPageChangeListener);
+                        Log.i("ms_ads_viewpager", "attached");
                     }
                 }
 
@@ -202,6 +213,7 @@ public class MsAdsAdapter extends PagerAdapter {
                 public void onViewDetachedFromWindow(@NonNull View v) {
                     if (viewPager != null) {
                         viewPager.removeOnPageChangeListener(onPageChangeListener);
+                        Log.i("ms_ads_viewpager", "dettached");
                     }
 
                 }
