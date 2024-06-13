@@ -89,11 +89,11 @@ public class MsAdsFullScreenPopup {
         if(position.getBanners()!=null && position.getBanners().size()>0) {
             for (int i = 0; i < position.getBanners().size(); i++) {
                 if(position.getBanners().get(i).getBannerType().equals(MsAdsBannerTypes.backgroundImage)) {
-                        Glide.with(activity != null ? activity.getApplicationContext() : fragment.getContext())
-                                .load(position.getBanners().get(i).getMediaUrl() + "?="
-                                        + position.getBanners().get(i).getMediaTs())
-                                .signature(new ObjectKey(position.getBanners().get(i).getMediaTs()))
-                                .into(backgroundImg);
+                    Glide.with(activity != null ? activity.getApplicationContext() : fragment.getContext())
+                            .load(position.getBanners().get(i).getMediaUrl() + "?="
+                                    + position.getBanners().get(i).getMediaTs())
+                            .signature(new ObjectKey(position.getBanners().get(i).getMediaTs()))
+                            .into(backgroundImg);
                     MsAdsUtil.collectUserStats(position.getBanners().get(i).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
                 }
                 if(position.getBanners().get(i).getBannerType().equals(MsAdsBannerTypes.buttonClose)){
@@ -105,7 +105,7 @@ public class MsAdsFullScreenPopup {
                                 .load(position.getBanners().get(i).getMediaUrl() + "?="
                                         + position.getBanners().get(i).getMediaTs())
                                 .signature(new ObjectKey(position.getBanners().get(i).getMediaTs()))
-                                .into(backgroundImg);
+                                .into(closeImg);
                     }else{
                         if(position.getBanners().get(i).getPopupButtonText().length()>0){
                             closeTxt.setText(position.getBanners().get(i).getPopupButtonText());
@@ -142,15 +142,21 @@ public class MsAdsFullScreenPopup {
             ArrayList<MsAdsBanner> filteredBanners = new ArrayList<>();
             for(int i = 0; i < position.getBanners().size(); i++){
                 if(position.getBanners().get(i).getBannerType().equals(MsAdsBannerTypes.image) ||
-                position.getBanners().get(i).getBannerType().equals(MsAdsBannerTypes.video)){
+                        position.getBanners().get(i).getBannerType().equals(MsAdsBannerTypes.video)){
                     filteredBanners.add(position.getBanners().get(i));
                 }
             }
             if(filteredBanners.size()>0) {
-                MsAdsAdapter adsAdapter = new MsAdsAdapter(filteredBanners, heightWrappingViewPager, position.getRotationDelay(), null, null, position.getReplayMode());
+                MsAdsAdapter adsAdapter = new MsAdsAdapter(filteredBanners, heightWrappingViewPager, position.getRotationDelay(), null, null, position.getReplayMode(), this );
                 heightWrappingViewPager.setAdapter(adsAdapter);
 
-                close.setOnClickListener(new View.OnClickListener() {
+                closeTxt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        removeDialog();
+                    }
+                });
+                closeImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         removeDialog();
@@ -186,13 +192,13 @@ public class MsAdsFullScreenPopup {
             layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             heightWrappingViewPager.setLayoutParams(layoutParams);
         }else if(position.getVideoPosition().equals("1")){
-            layoutParams.addRule(RelativeLayout.ALIGN_TOP);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             heightWrappingViewPager.setLayoutParams(layoutParams);
         }else if(position.getVideoPosition().equals("2")){
             layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             heightWrappingViewPager.setLayoutParams(layoutParams);
         }else if(position.getVideoPosition().equals("3")){
-            layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             heightWrappingViewPager.setLayoutParams(layoutParams);
         }else{
             //stavi ga na centar

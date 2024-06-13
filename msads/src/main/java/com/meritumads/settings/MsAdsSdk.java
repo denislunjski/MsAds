@@ -55,6 +55,8 @@ public abstract class MsAdsSdk{
 
     private String userId = "0";
 
+    protected boolean appInBackground = false;
+
     /**
      * Begin a load of ms ads
      *
@@ -331,5 +333,13 @@ public abstract class MsAdsSdk{
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public boolean isAppInBackground() {
+        return appInBackground;
+    }
+
+    public void setAppInBackground(boolean appInBackground) {
+        this.appInBackground = appInBackground;
     }
 }

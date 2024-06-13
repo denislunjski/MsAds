@@ -222,7 +222,13 @@ public class MsAdsBannerPopup {
                         close.setVisibility(View.VISIBLE);
                     }
                 }, (long)position.getCloseDelay() * 1000);
-                close.setOnClickListener(new View.OnClickListener() {
+                closeTxt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        removeDialog();
+                    }
+                });
+                closeImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         removeDialog();
@@ -286,9 +292,13 @@ public class MsAdsBannerPopup {
             }
 
             if (position.getWebview().equals("0")) {
-                popupAdapter.addItem(pos, new MsAdsGeneraltem(position, MsAdsItem.TYPE_TEXTS));
+                if(position.getPopupTitle().length()>0 || position.getPopupMessage().length()>0) {
+                    popupAdapter.addItem(pos, new MsAdsGeneraltem(position, MsAdsItem.TYPE_TEXTS));
+                }
             } else {
-                popupAdapter.addItem(pos, new MsAdsGeneraltem(position, MsAdsItem.TYPE_WEBVIEW));
+                if(position.getPopupRichText().length()>0) {
+                    popupAdapter.addItem(pos, new MsAdsGeneraltem(position, MsAdsItem.TYPE_WEBVIEW));
+                }
             }
 
             float percentageWidth = ((float) position.getPopupWidthPerc() / 100);
@@ -299,6 +309,8 @@ public class MsAdsBannerPopup {
 
             dialog.show();
             dialog.getWindow().setAttributes(lp);
+
+
         }
     }
 

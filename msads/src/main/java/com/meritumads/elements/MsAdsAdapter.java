@@ -20,8 +20,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.signature.ObjectKey;
 import com.meritumads.R;
 import com.meritumads.pojo.MsAdsBanner;
-import com.meritumads.settings.MsAdsSdk;
 import com.meritumads.settings.MsAdsSafeClickListener;
+import com.meritumads.settings.MsAdsSdk;
 import com.meritumads.settings.MsAdsUtil;
 
 import java.util.ArrayList;
@@ -41,14 +41,15 @@ public class MsAdsAdapter extends PagerAdapter {
     private ScrollView scrollView;
     private String replayMode = "";
 
-    private Rect mCurrentViewRect = new Rect();
+    private MsAdsFullScreenPopup msAdsFullScreenPopup;
 
-    public MsAdsAdapter(ArrayList<MsAdsBanner> banners, ViewPager viewPager, float scrollTime, RecyclerView recyclerView, ScrollView scrollView, String replayMode) {
+    public MsAdsAdapter(ArrayList<MsAdsBanner> banners, ViewPager viewPager, float scrollTime, RecyclerView recyclerView, ScrollView scrollView, String replayMode, MsAdsFullScreenPopup msAdsFullScreenPopup) {
         this.banners = banners;
         this.viewPager = viewPager;
         this.recyclerView = recyclerView;
         this.scrollView = scrollView;
         this.replayMode = replayMode;
+        this.msAdsFullScreenPopup = msAdsFullScreenPopup;
         try {
             this.scrollTime = scrollTime;
             if(this.scrollTime < 0.1){
@@ -70,7 +71,7 @@ public class MsAdsAdapter extends PagerAdapter {
         if(banners.get(position).getBannerType().equals("video")){
             view = LayoutInflater.from(container.getContext()).inflate(R.layout.msads_sponsor_home_video_layout, container, false);
             MsAdsVideoSponsorView videoSponsorView = view.findViewById(R.id.pvSponsor);
-            videoSponsorView.loadVideo(container.getContext(), banners.get(position), recyclerView, scrollView);
+            videoSponsorView.loadVideo(container.getContext(), banners.get(position), recyclerView, scrollView, null, replayMode, msAdsFullScreenPopup);
         }else {
             view = LayoutInflater.from(container.getContext()).inflate(R.layout.msads_sponsor_home_layout, container, false);
             ImageView sponsorImage = view.findViewById(R.id.sponsor_image);
@@ -89,7 +90,11 @@ public class MsAdsAdapter extends PagerAdapter {
                         String response = MsAdsSdk.getInstance().getApiLinkService().openApiLink(banners.get(position).getAndroidSubLink());
                         MsAdsUtil.openWebView(response);
                     }else {
-                        MsAdsUtil.openWebView(banners.get(position).getAndroidSubLink());                    }
+                        MsAdsUtil.openWebView(banners.get(position).getAndroidSubLink());
+                    }
+                    if(msAdsFullScreenPopup!=null){
+                        msAdsFullScreenPopup.removeDialog();
+                    }
                 }
             });
         }
@@ -134,10 +139,8 @@ public class MsAdsAdapter extends PagerAdapter {
                                     temp++;
                                     viewPager.setCurrentItem(temp, true);
                                 } else if (viewPager.getCurrentItem() + 1 == viewPager.getAdapter().getCount()) {
-                                    if(replayMode.equals("1")) {
-                                        temp = 0;
-                                        viewPager.setCurrentItem(temp, true);
-                                    }
+                                    temp = 0;
+                                    viewPager.setCurrentItem(temp, true);
                                 }
                             }
                         });
@@ -232,7 +235,7 @@ public class MsAdsAdapter extends PagerAdapter {
         int visibleHeight = globalVisibilityRectangle.bottom - globalVisibilityRectangle.top;
         int actualHeight = view.getMeasuredHeight();
 
-        if(visibleHeight <= actualHeight && globalVisibilityRectangle.top > 0){
+        if(visibleHeight <= actualHeight && globalVisibilityRectangle.top > 0 && !MsAdsSdk.getInstance().isAppInBackground()){
             visible = true;
         }
 

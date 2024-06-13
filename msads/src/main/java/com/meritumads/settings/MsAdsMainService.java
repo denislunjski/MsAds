@@ -128,7 +128,7 @@ class MsAdsMainService extends MsAdsSdk{
                                 if (checkIfCampaignIsActive(body.getAdsApplication().getCampaigns().get(i))) {
                                     if (body.getAdsApplication().getCampaigns().get(i).getPositions() != null && body.getAdsApplication().getCampaigns().get(i).getPositions().size() > 0) {
                                         for (int j = 0; j < body.getAdsApplication().getCampaigns().get(i).getPositions().size(); j++) {
-                                            if (MsAdsUtil.isTimeEnabled(context, body.getAdsApplication().getCampaigns().get(i).getPositions().get(j))) {
+                                            if (MsAdsUtil.isTimeEnabled(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j))) {
                                                 if (body.getAdsApplication().getCampaigns().get(i).getPositions().get(j).getPositionType().equals("1")) {
                                                     if(checkIfCountryStateIsActive(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j))) {
                                                         filterStates(body.getAdsApplication().getCampaigns().get(i).getPositions().get(j));

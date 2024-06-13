@@ -54,6 +54,12 @@ class MsAdsInListBanner {
         }
         if(currentBanner.getBanners().size()>0) {
 
+            float boxRatio = 0f;
+            for(int i = 0; i < currentBanner.getBanners().size(); i++){
+                if((float)currentBanner.getBanners().get(i).getHeight()/(float) currentBanner.getBanners().get(i).getWidth()> boxRatio){
+                    boxRatio = (float)currentBanner.getBanners().get(i).getHeight()/(float) currentBanner.getBanners().get(i).getWidth();
+                }
+            }
             RelativeLayout relativeLayout = new RelativeLayout(mainView.getContext());
             ViewGroup.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -65,7 +71,7 @@ class MsAdsInListBanner {
                 return;
             }
             relativeLayout.addView(heightWrappingViewPager[0]);
-            params.height = (int) ((int) MsAdsSdk.getInstance().getScreenWidth() * currentBanner.getBoxRatio());
+            params.height = (int) ((int) MsAdsSdk.getInstance().getScreenWidth() * boxRatio);
             heightWrappingViewPager[0].setLayoutParams(params);
 
             Collections.sort(currentBanner.getBanners(), new Comparator<MsAdsBanner>() {
@@ -76,7 +82,7 @@ class MsAdsInListBanner {
             });
 
             adsAdapter = new MsAdsAdapter(currentBanner.getBanners(), heightWrappingViewPager[0],
-                    currentBanner.getRotationDelay(), recyclerView, scrollView, currentBanner.getReplayMode());
+                    currentBanner.getRotationDelay(), recyclerView, scrollView, currentBanner.getReplayMode(), null);
             heightWrappingViewPager[0].setAdapter(adsAdapter);
 
             heightWrappingViewPager[0].addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {

@@ -123,6 +123,9 @@ public class MsAdsPopupAdapter extends RecyclerView.Adapter<MsAdsHolder> {
                 } else {
                     MsAdsUtil.openWebView(generaltem.getBanner().getAndroidSubLink());
                 }
+                if(bannerPopup!=null){
+                    bannerPopup.removeDialog();
+                }
             }
         });
     }
@@ -179,6 +182,11 @@ public class MsAdsPopupAdapter extends RecyclerView.Adapter<MsAdsHolder> {
             text.setTextColor(Color.parseColor(generaltem.getBanner().getPopupButtonColortext()));
             Drawable drawable = btn.getBackground();
             DrawableCompat.setTint(drawable, Color.parseColor(generaltem.getBanner().getPopupButtonColorback()));
+        }else{
+            text.setText(generaltem.getBanner().getPopupButtonText());
+            text.setTextColor(Color.parseColor(generaltem.getBanner().getPopupButtonColortext()));
+            Drawable drawable = btn.getBackground();
+            DrawableCompat.setTint(drawable, Color.parseColor(generaltem.getBanner().getPopupButtonColorback()));
         }
         btn.setOnClickListener(new MsAdsSafeClickListener() {
             @Override
@@ -189,6 +197,9 @@ public class MsAdsPopupAdapter extends RecyclerView.Adapter<MsAdsHolder> {
                     MsAdsUtil.openWebView(response);
                 } else {
                     MsAdsUtil.openWebView(generaltem.getBanner().getAndroidSubLink());
+                }
+                if(bannerPopup!=null){
+                    bannerPopup.removeDialog();
                 }
             }
         });

@@ -81,9 +81,16 @@ class MsAdsPreRollBanner implements MsAdsVideoDelegate {
         holderNative = view;
         holderNative.setVisibility(View.VISIBLE);
         if(view instanceof MsAdsPreRollHolder){
+
+            float boxRatio = 0f;
+            for(int i = 0; i < position.getBanners().size(); i++){
+                if((float)position.getBanners().get(i).getHeight()/(float) position.getBanners().get(i).getWidth()> boxRatio){
+                    boxRatio = (float)position.getBanners().get(i).getHeight()/(float) position.getBanners().get(i).getWidth();
+                }
+            }
             params = (RelativeLayout.LayoutParams) view.getLayoutParams();
             params.width = MsAdsSdk.getInstance().getScreenWidth();
-            params.height = (int) ((int) MsAdsSdk.getInstance().getScreenWidth() * position.getBoxRatio());
+            params.height = (int) ((int) MsAdsSdk.getInstance().getScreenWidth() * boxRatio);
             params.addRule(RelativeLayout.CENTER_HORIZONTAL);
             holderNative.setLayoutParams(params);
 
@@ -111,9 +118,9 @@ class MsAdsPreRollBanner implements MsAdsVideoDelegate {
                         MsAdsUtil.collectUserStats(banner.getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
                     }
                 }
-                if(tempBanners!=null && tempBanners.size()>0){
+
                     showBanners();
-                }
+
 
             }
 
@@ -122,65 +129,110 @@ class MsAdsPreRollBanner implements MsAdsVideoDelegate {
 
     private void showBanners() {
 
-        if(handler!=null && runnable!=null){
-            handler.removeCallbacks(runnable);
-            handler = null;
-            runnable = null;
-        }
         holderNative.removeAllViews();
-        TextView skip = new TextView(holderNative.getContext());
-        skip.setText("SKIP");
-        skip.setTextColor(Color.parseColor("#ffffff"));
-        skip.setBackground(ContextCompat.getDrawable(holderNative.getContext(), R.drawable.rounded_skip_layout));
-        skip.setVisibility(View.GONE);
-        RelativeLayout.LayoutParams paramsForSkip = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-        paramsForSkip.addRule(RelativeLayout.ALIGN_PARENT_END);
-        paramsForSkip.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        paramsForSkip.setMargins(0,0,15,15);
-        skip.setLayoutParams(paramsForSkip);
-        if(itherator <= tempBanners.size()-1){
-            if(tempBanners.get(itherator).getBannerType().equals(MsAdsBannerTypes.video)){
-                if(videoView!=null) {
-                    videoView = null;
-                }
-                videoView = new MsAdsVideoSponsorView(holderNative.getContext());
-                RelativeLayout.LayoutParams paramsForVideoAndImage = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-                paramsForVideoAndImage.width = MsAdsSdk.getInstance().getScreenWidth();
-                paramsForVideoAndImage.height = WRAP_CONTENT;
-                paramsForVideoAndImage.addRule(RelativeLayout.CENTER_IN_PARENT);
-                videoView.setLayoutParams(paramsForVideoAndImage);
-                //TODO dodati recyclerview i scroolview
-                videoView.loadVideo(holderNative.getContext(), tempBanners.get(itherator), recyclerView, scrollView, this::videoDelegate);
-                new android.os.Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        skip.setVisibility(View.VISIBLE);
-                    }
-                }, (long)position.getCloseDelay() * 1000);
-                skip.setOnClickListener(new MsAdsSafeClickListener() {
-                    @Override
-                    public void onSingleClick(View v) {
-                        videoDelegate(MsAdsPreRollStatus.VIDEO_FINISHED, tempBanners.get(itherator).getBannerId());
-                    }
-                });
-                holderNative.addView(videoView, 0);
-                holderNative.addView(skip, 1);
-                MsAdsUtil.collectUserStats(tempBanners.get(itherator).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
 
-            }else{
-                MsAdsImageSponsorView sponsorImage = new MsAdsImageSponsorView(holderNative.getContext(),
-                        tempBanners.get(itherator), this::videoDelegate, skip, (long)position.getCloseDelay());
-                RelativeLayout.LayoutParams paramsForVideoAndImage = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
-                paramsForVideoAndImage.width = MsAdsSdk.getInstance().getScreenWidth();
-                paramsForVideoAndImage.height = WRAP_CONTENT;
-                paramsForVideoAndImage.addRule(RelativeLayout.CENTER_IN_PARENT);
-                sponsorImage.setLayoutParams(paramsForVideoAndImage);
-                sponsorImage.loadImage();
-
-                holderNative.addView(sponsorImage, 0);
-                holderNative.addView(skip, 1);
-                MsAdsUtil.collectUserStats(tempBanners.get(itherator).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+        boolean skipAdded = false;
+        if(tempBanners!=null && tempBanners.size()>0) {
+            if (handler != null && runnable != null) {
+                handler.removeCallbacks(runnable);
+                handler = null;
+                runnable = null;
             }
+            TextView skip = new TextView(holderNative.getContext());
+            skip.setText("SKIP");
+            skip.setTextColor(Color.parseColor("#ffffff"));
+            skip.setBackground(ContextCompat.getDrawable(holderNative.getContext(), R.drawable.rounded_skip_layout));
+            skip.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams paramsForSkip = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+            paramsForSkip.addRule(RelativeLayout.ALIGN_PARENT_END);
+            paramsForSkip.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            paramsForSkip.setMargins(0, 0, 15, 15);
+            skip.setLayoutParams(paramsForSkip);
+            if (itherator <= tempBanners.size() - 1) {
+                if (tempBanners.get(itherator).getBannerType().equals(MsAdsBannerTypes.video)) {
+                    if (videoView != null) {
+                        videoView = null;
+                    }
+                    videoView = new MsAdsVideoSponsorView(holderNative.getContext());
+                    RelativeLayout.LayoutParams paramsForVideoAndImage = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+                    paramsForVideoAndImage.width = MsAdsSdk.getInstance().getScreenWidth();
+                    paramsForVideoAndImage.height = WRAP_CONTENT;
+                    paramsForVideoAndImage.addRule(RelativeLayout.CENTER_IN_PARENT);
+                    videoView.setLayoutParams(paramsForVideoAndImage);
+                    videoView.loadVideo(holderNative.getContext(), tempBanners.get(itherator), recyclerView, scrollView, this::videoDelegate, position.getReplayMode(), null);
+                    new android.os.Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            skip.setVisibility(View.VISIBLE);
+                        }
+                    }, (long) position.getCloseDelay() * 1000);
+                    skip.setOnClickListener(new MsAdsSafeClickListener() {
+                        @Override
+                        public void onSingleClick(View v) {
+                            videoDelegate(MsAdsPreRollStatus.VIDEO_FINISHED, tempBanners.get(itherator).getBannerId());
+                        }
+                    });
+                    holderNative.addView(videoView, 0);
+                    holderNative.addView(skip, 1);
+                    skipAdded = true;
+                    MsAdsUtil.collectUserStats(tempBanners.get(itherator).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+
+                } else {
+                    MsAdsImageSponsorView sponsorImage = new MsAdsImageSponsorView(holderNative.getContext(),
+                            tempBanners.get(itherator), this::videoDelegate, skip, (long) position.getCloseDelay());
+                    RelativeLayout.LayoutParams paramsForVideoAndImage = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+                    paramsForVideoAndImage.width = MsAdsSdk.getInstance().getScreenWidth();
+                    paramsForVideoAndImage.height = WRAP_CONTENT;
+                    paramsForVideoAndImage.addRule(RelativeLayout.CENTER_IN_PARENT);
+                    sponsorImage.setLayoutParams(paramsForVideoAndImage);
+                    sponsorImage.loadImage();
+
+                    new android.os.Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            skip.setVisibility(View.VISIBLE);
+                        }
+                    }, (long) position.getCloseDelay() * 1000);
+                    skip.setOnClickListener(new MsAdsSafeClickListener() {
+                        @Override
+                        public void onSingleClick(View v) {
+                            videoDelegate(MsAdsPreRollStatus.IMAGE_FINISHED, tempBanners.get(itherator).getBannerId());
+                        }
+                    });
+
+                    holderNative.addView(sponsorImage, 0);
+                    holderNative.addView(skip, 1);
+                    skipAdded = true;
+                    MsAdsUtil.collectUserStats(tempBanners.get(itherator).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+                }
+            }
+        }
+        if(!skipAdded){
+            TextView skip = new TextView(holderNative.getContext());
+            skip.setText("SKIP");
+            skip.setTextColor(Color.parseColor("#ffffff"));
+            skip.setBackground(ContextCompat.getDrawable(holderNative.getContext(), R.drawable.rounded_skip_layout));
+            skip.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams paramsForSkip = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+            paramsForSkip.addRule(RelativeLayout.ALIGN_PARENT_END);
+            paramsForSkip.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            paramsForSkip.setMargins(0, 0, 15, 15);
+            skip.setLayoutParams(paramsForSkip);
+
+            new android.os.Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    skip.setVisibility(View.VISIBLE);
+                }
+            }, (long) position.getCloseDelay() * 1000);
+            skip.setOnClickListener(new MsAdsSafeClickListener() {
+                @Override
+                public void onSingleClick(View v) {
+                    videoDelegate(MsAdsPreRollStatus.NO_CONTENT_DEFINED_ONLY_BACKGROUND_FINISHED, "");
+                }
+            });
+
+            holderNative.addView(skip);
         }
 
     }
@@ -210,6 +262,10 @@ class MsAdsPreRollBanner implements MsAdsVideoDelegate {
                 if(preRollService!=null){
                     preRollService.preRollVideoImageDelegate(developerId, MsAdsPreRollStatus.ALL_CONTENT_FINISHED, id);
                 }
+            }
+        }else if(response.equals(MsAdsPreRollStatus.NO_CONTENT_DEFINED_ONLY_BACKGROUND_FINISHED)){
+            if(preRollService!=null){
+                preRollService.preRollVideoImageDelegate(developerId, MsAdsPreRollStatus.ALL_CONTENT_FINISHED, id);
             }
         }
     }

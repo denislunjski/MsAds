@@ -22,7 +22,13 @@ class MsAdsPopupsHandler {
             for(int i = 0; i < popupBanners.size(); i++) {
                 if(popupBanners.get(i).getDeveloperId().equals(developerId)) {
                     MsAdsBannerPopup bannerPopup = new MsAdsBannerPopup(popupBanners.get(i), popupDelegate, activity, fragment);
-                    bannerPopup.showDialog();
+                    new android.os.Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            bannerPopup.showDialog();
+                        }
+                    }, (int)popupBanners.get(i).getPopupDelay()*1000);
+
                 }
             }
         }else{

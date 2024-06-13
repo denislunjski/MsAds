@@ -54,7 +54,7 @@ public class MsAdsUtil {
         return temp;
     }
 
-    public static boolean isTimeEnabled(Context context, MsAdsPosition campaignPosition) {
+    public static boolean isTimeEnabled(MsAdsPosition campaignPosition) {
         boolean temp = false;
         Date startDate, endDate, nowDate = null;
         Calendar calendar = Calendar.getInstance();

@@ -45,7 +45,7 @@ public class MsAdsVideoSponsorView extends VideoView {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public void loadVideo(Context context, MsAdsBanner banner, RecyclerView recyclerView, ScrollView scrollView, MsAdsVideoDelegate videoDelegate) {
+    public void loadVideo(Context context, MsAdsBanner banner, RecyclerView recyclerView, ScrollView scrollView, MsAdsVideoDelegate videoDelegate, String replayMode, MsAdsFullScreenPopup msAdsFullScreenPopup) {
 
         if (!banner.getMediaUrl().contains("http")) {
             banner.setMediaUrl("http://" + banner.getMediaUrl());
@@ -66,6 +66,9 @@ public class MsAdsVideoSponsorView extends VideoView {
                 this.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(final MediaPlayer mediaPlayer) {
+                        if (replayMode.equals("1")) {
+                            mediaPlayer.setLooping(true);
+                        }
 
                         MsAdsVideoSponsorView.this.setOnClickListener(new OnClickListener() {
                             @Override
@@ -73,10 +76,11 @@ public class MsAdsVideoSponsorView extends VideoView {
                                 if (MsAdsVideoSponsorView.this.isPlaying()) {
                                     stopPosition = MsAdsVideoSponsorView.this.getCurrentPosition();
                                     MsAdsVideoSponsorView.this.pause();
-                                    String bannerId = banner.getBannerId();
-                                    MsAdsUtil.collectUserStats(banner.getBannerId(), "click", MsAdsSdk.getInstance().getUserId());
-                                    MsAdsUtil.openWebView(banner.getAndroidSubLink());
-
+                                }
+                                MsAdsUtil.collectUserStats(banner.getBannerId(), "click", MsAdsSdk.getInstance().getUserId());
+                                MsAdsUtil.openWebView(banner.getAndroidSubLink());
+                                if(msAdsFullScreenPopup!=null){
+                                    msAdsFullScreenPopup.removeDialog();
                                 }
                             }
                         });
@@ -173,131 +177,6 @@ public class MsAdsVideoSponsorView extends VideoView {
 
 
     }
-
-    public void loadVideo(Context context, MsAdsBanner banner, RecyclerView recyclerView, ScrollView scrollView) {
-
-        if (!banner.getMediaUrl().contains("http")) {
-            banner.setMediaUrl("http://" + banner.getMediaUrl());
-        }
-        if (MsAdsUtil.isNetworkConnected(context)) {
-            try {
-                final MediaController mediaController = new MediaController(context);
-                final Uri video = Uri.parse(banner.getMediaUrl());
-                this.setVideoURI(video);
-                mediaController.setVisibility(View.GONE);
-                int screenWidth = MsAdsSdk.getInstance().getScreenWidth();
-                float ratio = Math.min((float) screenWidth / banner.getWidth(), (float) screenWidth / banner.getHeight());
-                int height = Math.round((float) ratio * banner.getHeight());
-                this.getLayoutParams().height = height;
-
-                MsAdsVideoSponsorView.this.start();
-
-                this.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(final MediaPlayer mediaPlayer) {
-
-                        MsAdsVideoSponsorView.this.setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (MsAdsVideoSponsorView.this.isPlaying()) {
-                                    stopPosition = MsAdsVideoSponsorView.this.getCurrentPosition();
-                                    MsAdsVideoSponsorView.this.pause();
-                                    String bannerId = banner.getBannerId();
-                                    MsAdsUtil.collectUserStats(banner.getBannerId(), "click", MsAdsSdk.getInstance().getUserId());
-                                    MsAdsUtil.openWebView(banner.getAndroidSubLink());
-
-                                }
-                            }
-                        });
-                        /*
-                        VideoSponsorView.this.setOnTouchListener(new OnTouchListener() {
-                            @Override
-                            public boolean onTouch(View view, MotionEvent motionEvent) {
-                                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                                    if (VideoSponsorView.this.isPlaying()) {
-                                        stopPosition = VideoSponsorView.this.getCurrentPosition();
-                                        VideoSponsorView.this.pause();
-                                        String bannerId = banner.getBannerId();
-                                        //TODO dodati skupljanje statistike i sponzora
-                                        //Util.collectSponsorStats(context, bannerId , banner.getBannerPosition(), HIT_TYPE_CLICK);
-                                        Util.openWebView(!banner.getUrlTarget().equals("") ? banner.getUrlTarget(): banner.getMainCampaignUrl(), MsAdsSdk.getInstance().getWebviewDroid());
-
-                                    }
-                                }
-                                return false;
-                            }
-                        });
-
-                         */
-                    }
-                });
-
-                MsAdsVideoSponsorView.this.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-
-                    @Override
-                    public boolean onError(MediaPlayer mp, int what, int extra) {
-                        return true;
-                    }
-                });
-
-                if(recyclerView!=null) {
-                    recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                        @Override
-                        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                            super.onScrolled(recyclerView, dx, dy);
-                            if (MsAdsVideoSponsorView.this.isPlaying()) {
-                                if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) < 50) {
-                                    stopPosition = MsAdsVideoSponsorView.this.getCurrentPosition();
-                                    MsAdsVideoSponsorView.this.pause();
-
-                                }
-                            } else if (!MsAdsVideoSponsorView.this.isPlaying()) {
-                                if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) >= 50) {
-                                    MsAdsVideoSponsorView.this.requestFocus();
-                                    MsAdsVideoSponsorView.this.seekTo(stopPosition);
-                                    MsAdsVideoSponsorView.this.start();
-                                }
-                            }
-                        }
-                    });
-                }
-
-                if(scrollView!=null){
-                    scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-                        @Override
-                        public void onScrollChanged() {
-                            if (MsAdsVideoSponsorView.this.isPlaying()) {
-                                if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) < 50) {
-                                    stopPosition = MsAdsVideoSponsorView.this.getCurrentPosition();
-                                    MsAdsVideoSponsorView.this.pause();
-
-                                }
-                            } else if (!MsAdsVideoSponsorView.this.isPlaying()) {
-                                if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) >= 50) {
-                                    MsAdsVideoSponsorView.this.requestFocus();
-                                    MsAdsVideoSponsorView.this.seekTo(stopPosition);
-                                    MsAdsVideoSponsorView.this.start();
-                                }
-                            }
-                        }
-                    });
-                }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            MsAdsVideoSponsorView.this.getLayoutParams().height = 0;
-        }
-
-
-    }
-
-
-
-
-
 
     public int getVisibilitPercentHeight(View currentView) {
         int percent = 100;
