@@ -263,7 +263,13 @@ public class MsAdsBannerPopup {
                     }
                 }, (long)position.getCloseDelay() * 1000);
 
-                close.setOnClickListener(new View.OnClickListener() {
+                closeTxt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        removeDialog();
+                    }
+                });
+                closeImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         removeDialog();

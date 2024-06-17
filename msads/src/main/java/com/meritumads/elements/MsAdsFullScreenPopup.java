@@ -137,7 +137,18 @@ public class MsAdsFullScreenPopup {
                 }
             }, (long)position.getCloseDelay() * 1000);
 
-
+            closeTxt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeDialog();
+                }
+            });
+            closeImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeDialog();
+                }
+            });
 
             ArrayList<MsAdsBanner> filteredBanners = new ArrayList<>();
             for(int i = 0; i < position.getBanners().size(); i++){
@@ -150,32 +161,18 @@ public class MsAdsFullScreenPopup {
                 MsAdsAdapter adsAdapter = new MsAdsAdapter(filteredBanners, heightWrappingViewPager, position.getRotationDelay(), null, null, position.getReplayMode(), this );
                 heightWrappingViewPager.setAdapter(adsAdapter);
 
-                closeTxt.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        removeDialog();
-                    }
-                });
-                closeImg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        removeDialog();
-                    }
-                });
-
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                lp.copyFrom(dialog.getWindow().getAttributes());
-                lp.gravity = Gravity.CENTER_VERTICAL;
-
-
-                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-
-                dialog.show();
-                dialog.getWindow().setAttributes(lp);
-            }else{
-                return;
             }
+
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            lp.copyFrom(dialog.getWindow().getAttributes());
+            lp.gravity = Gravity.CENTER_VERTICAL;
+
+
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+
+            dialog.show();
+            dialog.getWindow().setAttributes(lp);
         }else{
             return;
         }

@@ -81,7 +81,16 @@ public class MsAdsUtil {
                 endDate = calendar.getTime();
                 nowDate = new Date();
                 if(nowDate.after(startDate) && nowDate.before(endDate)){
-                    temp = true;
+                    if(campaignPosition.getActiveMonths().equals("*")){
+                        temp = checkDaysInMonth(calendar, campaignPosition);
+                    }else{
+                        List<String> activeMonths = Arrays.asList(campaignPosition.getActiveMonths().split(","));
+                        if(activeMonths.contains(String.valueOf(calendar.get(Calendar.MONTH)))){
+                            temp = checkDaysInMonth(calendar, campaignPosition);
+                        }else{
+                            temp = false;
+                        }
+                    }
                 }else{
                     temp = false;
                 }
@@ -205,23 +214,25 @@ public class MsAdsUtil {
 
     public static void collectUserStats(String mediaId, String action, String userId){
 
-        String temp = MsAdsSdk.getInstance().getUserData();
-        Gson gson = new Gson();
-        try {
-            ArrayList<MsAdsUserData> jsonArray = gson.fromJson(MsAdsSdk.getInstance().getUserData(), new TypeToken<ArrayList<MsAdsUserData>>() {
-            }.getType());
+        if(!mediaId.equals("")) {
+            String temp = MsAdsSdk.getInstance().getUserData();
+            Gson gson = new Gson();
+            try {
+                ArrayList<MsAdsUserData> jsonArray = gson.fromJson(MsAdsSdk.getInstance().getUserData(), new TypeToken<ArrayList<MsAdsUserData>>() {
+                }.getType());
 
-            if (jsonArray!=null){
-                if(jsonArray.size() == 0){
+                if (jsonArray != null) {
+                    if (jsonArray.size() == 0) {
+                        createNewArrayAndAddItem(mediaId, action, userId);
+                    } else {
+                        addDataToExistingArray(mediaId, action, userId, jsonArray);
+                    }
+                } else {
                     createNewArrayAndAddItem(mediaId, action, userId);
-                }else{
-                    addDataToExistingArray(mediaId, action, userId, jsonArray);
                 }
-            }else{
-                createNewArrayAndAddItem(mediaId, action, userId);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
 
     }
