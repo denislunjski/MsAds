@@ -1,6 +1,7 @@
 package com.meritumads.settings;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import com.meritumads.retrofit.MsAdsApiUtil;
 import java.io.IOException;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -36,10 +38,10 @@ public class MsAdsBackupWorker extends Worker {
     private void sendData() {
 
         if (MsAdsSdk.getInstance().getUserData().length() > 0) {
-
-            Log.i("string_response", MsAdsSdk.getInstance().getUserData());
             MediaType mediaType = MediaType.parse("text/plain");
+            String ts = String.valueOf(System.currentTimeMillis());
             RequestBody requestBody = RequestBody.create(mediaType, MsAdsSdk.getInstance().getUserData());
+
             MsAdsApiUtil.sendStats().sendStats(requestBody).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

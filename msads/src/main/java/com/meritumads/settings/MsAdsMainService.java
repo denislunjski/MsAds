@@ -27,6 +27,7 @@ class MsAdsMainService extends MsAdsSdk{
 
     public void callDeviceInfo(String appId, String token, MsAdsDelegate msAdsDelegate){
 
+        String ts = String.valueOf(System.currentTimeMillis());
         RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("device_id", MsAdsPrefs.getDeviceId(context))
                 .addFormDataPart("device_name", Build.MANUFACTURER)
@@ -34,6 +35,8 @@ class MsAdsMainService extends MsAdsSdk{
                 .addFormDataPart("software_version", String.valueOf(Build.VERSION.SDK_INT))
                 .addFormDataPart("os_version", Build.VERSION.RELEASE)
                 .addFormDataPart("device_type", "1")
+                .addFormDataPart("app_id", appId)
+                .addFormDataPart("ts", ts)
                 .build();
 
         MsAdsApiUtil.getDeviceInfo().getData(requestBody).enqueue(new Callback<MsAdsDeviceInfo>() {
@@ -80,7 +83,8 @@ class MsAdsMainService extends MsAdsSdk{
 
     public void downloadData(String appId, String token, MsAdsDelegate msAdsDelegate){
 
-        MsAdsApiUtil.getMainXmlService().getMainXml(MsAdsConstants.mainXml + appId + MsAdsConstants.xml+ token).enqueue(new Callback<MsAdsMainXml>() {
+        String ts = String.valueOf(System.currentTimeMillis());
+        MsAdsApiUtil.getMainXmlService().getMainXml(MsAdsConstants.mainXml + appId + MsAdsConstants.xml+ token + "&ts=" + ts).enqueue(new Callback<MsAdsMainXml>() {
             @Override
             public void onResponse(Call<MsAdsMainXml> call, Response<MsAdsMainXml> response) {
                 if(response.isSuccessful()){

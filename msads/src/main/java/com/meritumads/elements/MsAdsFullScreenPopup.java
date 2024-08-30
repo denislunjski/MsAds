@@ -28,6 +28,7 @@ import com.meritumads.settings.MsAdsUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Map;
 
 public class MsAdsFullScreenPopup {
 
@@ -79,6 +80,32 @@ public class MsAdsFullScreenPopup {
         MsAdsHeightWrappingViewPager heightWrappingViewPager  = dialog.findViewById(R.id.main_banner_holder);
         setupPositionOnScreen(heightWrappingViewPager);
 
+        if(position.getBanners().size()>0){
+            if(MsAdsSdk.getInstance().getListOfActiveFilters().size()>0){
+                for(int i = 0; i < position.getBanners().size(); i++){
+                    if(position.getBanners().get(i).getFilters().length()>0){
+                        boolean isFilterActive = false;
+                        ArrayList<String> filteredFilters = new ArrayList<>();
+                        for(Map.Entry<String, String> entry: MsAdsSdk.getInstance().getListOfActiveFilters().entrySet()) {
+                            String[] temp = entry.getKey().split("-");
+                            if(!position.getBanners().get(i).getFilters().equals("")) {
+                                if (position.getBanners().get(i).getFilters().contains(temp[0] + "," + entry.getValue())) {
+                                    filteredFilters.add(temp[0] +"," + entry.getValue());
+                                    isFilterActive = true;
+                                }
+                            }
+                        }
+                        if(!isFilterActive){
+                            position.getBanners().remove(i);
+                            i--;
+                        }else{
+                            position.getBanners().get(i).setFiltersForStats(filteredFilters);
+                        }
+                    }
+                }
+            }
+        }
+
         Collections.sort(position.getBanners(), new Comparator<MsAdsBanner>() {
             @Override
             public int compare(MsAdsBanner banner1, MsAdsBanner banner2) {
@@ -94,7 +121,8 @@ public class MsAdsFullScreenPopup {
                                     + position.getBanners().get(i).getMediaTs())
                             .signature(new ObjectKey(position.getBanners().get(i).getMediaTs()))
                             .into(backgroundImg);
-                    MsAdsUtil.collectUserStats(position.getBanners().get(i).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+                    MsAdsUtil.collectUserStats(position.getBanners().get(i).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId(),
+                            position.getBanners().get(i).getFiltersForStats());
                 }
                 if(position.getBanners().get(i).getBannerType().equals(MsAdsBannerTypes.buttonClose)){
                     closeBtnAdded = true;
@@ -185,7 +213,7 @@ public class MsAdsFullScreenPopup {
 
         if(position.getVideoPosition().equals("0")){
             layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-            layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
             layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             heightWrappingViewPager.setLayoutParams(layoutParams);
         }else if(position.getVideoPosition().equals("1")){

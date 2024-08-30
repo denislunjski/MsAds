@@ -115,7 +115,7 @@ public class MsAdsPopupAdapter extends RecyclerView.Adapter<MsAdsHolder> {
         btn.setOnClickListener(new MsAdsSafeClickListener() {
             @Override
             public void onSingleClick(View v) {
-                MsAdsUtil.collectUserStats(generaltem.getBanner().getBannerId(), "click", MsAdsSdk.getInstance().getUserId());
+                MsAdsUtil.collectUserStats(generaltem.getBanner().getBannerId(), "click", MsAdsSdk.getInstance().getUserId(), generaltem.getBanner().getFiltersForStats());
                 if (generaltem.getBanner().getApiActiveNonActive().equals("1")) {
                     String response = MsAdsSdk.getInstance().getApiLinkService()
                             .openApiLink(generaltem.getBanner().getAndroidSubLink());
@@ -191,7 +191,7 @@ public class MsAdsPopupAdapter extends RecyclerView.Adapter<MsAdsHolder> {
         btn.setOnClickListener(new MsAdsSafeClickListener() {
             @Override
             public void onSingleClick(View v) {
-                MsAdsUtil.collectUserStats(generaltem.getBanner().getBannerId(), "click", MsAdsSdk.getInstance().getUserId());
+                MsAdsUtil.collectUserStats(generaltem.getBanner().getBannerId(), "click", MsAdsSdk.getInstance().getUserId(), generaltem.getBanner().getFiltersForStats());
                 if (generaltem.getBanner().getApiActiveNonActive().equals("1")) {
                     String response = MsAdsSdk.getInstance().getApiLinkService().openApiLink(generaltem.getBanner().getAndroidSubLink());
                     MsAdsUtil.openWebView(response);

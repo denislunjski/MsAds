@@ -15,6 +15,18 @@ public class MsAdsUserData {
 
     String datetime = "";
 
+    String filters = "";
+
+    String ts = "";
+
+    public String getFilters() {
+        return filters;
+    }
+
+    public void setFilters(String filters) {
+        this.filters = filters;
+    }
+
     public String getMedia_id() {
         return media_id;
     }
@@ -69,5 +81,13 @@ public class MsAdsUserData {
 
     public void setDatetime(String datetime) {
         this.datetime = datetime;
+    }
+
+    public String getTs() {
+        return ts;
+    }
+
+    public void setTs(String ts) {
+        this.ts = ts;
     }
 }

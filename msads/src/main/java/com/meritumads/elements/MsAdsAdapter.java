@@ -85,7 +85,7 @@ public class MsAdsAdapter extends PagerAdapter {
             sponsorImage.setOnClickListener(new MsAdsSafeClickListener() {
                 @Override
                 public void onSingleClick(View v) {
-                    MsAdsUtil.collectUserStats(banners.get(position).getBannerId(), "click", MsAdsSdk.getInstance().getUserId());
+                    MsAdsUtil.collectUserStats(banners.get(position).getBannerId(), "click", MsAdsSdk.getInstance().getUserId(),banners.get(position).getFiltersForStats());
                     if(banners.get(position).getApiActiveNonActive().equals("1")){
                         String response = MsAdsSdk.getInstance().getApiLinkService().openApiLink(banners.get(position).getAndroidSubLink());
                         MsAdsUtil.openWebView(response);
@@ -174,7 +174,7 @@ public class MsAdsAdapter extends PagerAdapter {
                 @Override
                 public void onGlobalLayout() {
                     if (getVisibilitPercentHeight(viewPager)) {
-                        MsAdsUtil.collectUserStats(banners.get(0).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+                        MsAdsUtil.collectUserStats(banners.get(0).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId(), banners.get(0).getFiltersForStats());
                         viewPager.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                         Log.i("ms_ads_counter", banners.get(0).getBannerId());
                     }
@@ -191,7 +191,8 @@ public class MsAdsAdapter extends PagerAdapter {
                 public void onPageSelected(int position) {
                     if (position < banners.size()) {
                         if (getVisibilitPercentHeight(viewPager)) {
-                            MsAdsUtil.collectUserStats(banners.get(position).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+                            MsAdsUtil.collectUserStats(banners.get(position).getBannerId(), "impression",
+                                    MsAdsSdk.getInstance().getUserId(), banners.get(position).getFiltersForStats());
                             Log.i("ms_ads_counter", banners.get(position).getBannerId());
                         }
                     }

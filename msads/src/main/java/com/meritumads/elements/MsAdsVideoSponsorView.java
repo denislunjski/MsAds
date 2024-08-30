@@ -77,7 +77,7 @@ public class MsAdsVideoSponsorView extends VideoView {
                                     stopPosition = MsAdsVideoSponsorView.this.getCurrentPosition();
                                     MsAdsVideoSponsorView.this.pause();
                                 }
-                                MsAdsUtil.collectUserStats(banner.getBannerId(), "click", MsAdsSdk.getInstance().getUserId());
+                                MsAdsUtil.collectUserStats(banner.getBannerId(), "click", MsAdsSdk.getInstance().getUserId(), banner.getFiltersForStats());
                                 MsAdsUtil.openWebView(banner.getAndroidSubLink());
                                 if(msAdsFullScreenPopup!=null){
                                     msAdsFullScreenPopup.removeDialog();

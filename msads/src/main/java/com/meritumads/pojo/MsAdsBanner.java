@@ -3,6 +3,8 @@ package com.meritumads.pojo;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 
+import java.util.ArrayList;
+
 @Root(name = "banner", strict = false)
 public class MsAdsBanner {
 
@@ -65,6 +67,16 @@ public class MsAdsBanner {
 
     @Attribute(name = "button_number", required = false)
     private String buttonNumber = "";
+
+    ArrayList<String> filtersForStats = new ArrayList<>();
+
+    public ArrayList<String> getFiltersForStats() {
+        return filtersForStats;
+    }
+
+    public void setFiltersForStats(ArrayList<String> filtersForStats) {
+        this.filtersForStats = filtersForStats;
+    }
 
     private int internalBannerType = 0; //1 is for full image, 2 is for button icon
 

@@ -49,7 +49,7 @@ public class MsAdsImageSponsorView extends androidx.appcompat.widget.AppCompatIm
         MsAdsImageSponsorView.this.setOnClickListener(new MsAdsSafeClickListener() {
             @Override
             public void onSingleClick(View v) {
-                MsAdsUtil.collectUserStats(banner.getBannerId(), "click", MsAdsSdk.getInstance().getUserId());
+                MsAdsUtil.collectUserStats(banner.getBannerId(), "click", MsAdsSdk.getInstance().getUserId(), banner.getFiltersForStats());
                 if(banner.getApiActiveNonActive().equals("1")){
                     String response = MsAdsSdk.getInstance().getApiLinkService().openApiLink(banner.getAndroidSubLink());
                     MsAdsUtil.openWebView(response);

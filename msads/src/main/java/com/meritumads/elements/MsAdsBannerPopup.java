@@ -36,6 +36,7 @@ import com.meritumads.pojo.MsAdsPosition;
 import com.meritumads.settings.MsAdsSdk;
 import com.meritumads.settings.MsAdsUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -108,25 +109,31 @@ public class MsAdsBannerPopup {
 
         popupBackColor.setCardBackgroundColor(Color.parseColor(position.getPopupBackgroundColor()));
 
-            if(position.getBanners().size()>0){
-                if(MsAdsSdk.getInstance().getListOfActiveFilters().size()>0){
-                    for(int i = 0; i < position.getBanners().size(); i++){
-                        if(position.getBanners().get(i).getFilters().length()>0){
-                            boolean isFilterActive = false;
-                            for(Map.Entry<String, String> entry: MsAdsSdk.getInstance().getListOfActiveFilters().entrySet()) {
-                                String[] temp = entry.getKey().split("-");
-                                if(position.getBanners().get(i).getFilters().contains(temp[0] +"," + entry.getValue())){
+        if(position.getBanners().size()>0){
+            if(MsAdsSdk.getInstance().getListOfActiveFilters().size()>0){
+                for(int i = 0; i < position.getBanners().size(); i++){
+                    if(position.getBanners().get(i).getFilters().length()>0){
+                        boolean isFilterActive = false;
+                        ArrayList<String> filteredFilters = new ArrayList<>();
+                        for(Map.Entry<String, String> entry: MsAdsSdk.getInstance().getListOfActiveFilters().entrySet()) {
+                            String[] temp = entry.getKey().split("-");
+                            if(!position.getBanners().get(i).getFilters().equals("")) {
+                                if (position.getBanners().get(i).getFilters().contains(temp[0] + "," + entry.getValue())) {
+                                    filteredFilters.add(temp[0] +"," + entry.getValue());
                                     isFilterActive = true;
                                 }
                             }
-                            if(!isFilterActive){
-                                position.getBanners().remove(i);
-                                i--;
-                            }
+                        }
+                        if(!isFilterActive){
+                            position.getBanners().remove(i);
+                            i--;
+                        }else{
+                            position.getBanners().get(i).setFiltersForStats(filteredFilters);
                         }
                     }
                 }
             }
+        }
 
 
         if(position.getBanners()!=null && position.getBanners().size()>0) {
@@ -141,7 +148,8 @@ public class MsAdsBannerPopup {
             for (int i = 0; i < position.getBanners().size(); i++) {
                 if(!position.getBanners().get(i).getBannerId().equals("") && stastCollected == false){
                     stastCollected = true;
-                    MsAdsUtil.collectUserStats(position.getBanners().get(i).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+                    MsAdsUtil.collectUserStats(position.getBanners().get(i).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId(),
+                            position.getBanners().get(i).getFiltersForStats());
                 }
                 tempBanners.put(position.getBanners().get(i).getBannerType(), position.getBanners().get(i));
             }

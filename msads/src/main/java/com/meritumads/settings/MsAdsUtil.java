@@ -212,7 +212,7 @@ public class MsAdsUtil {
         return sb.toString();
     }
 
-    public static void collectUserStats(String mediaId, String action, String userId){
+    public static void collectUserStats(String mediaId, String action, String userId, ArrayList<String> filters){
 
         if(!mediaId.equals("")) {
             String temp = MsAdsSdk.getInstance().getUserData();
@@ -223,12 +223,12 @@ public class MsAdsUtil {
 
                 if (jsonArray != null) {
                     if (jsonArray.size() == 0) {
-                        createNewArrayAndAddItem(mediaId, action, userId);
+                        createNewArrayAndAddItem(mediaId, action, userId, filters);
                     } else {
-                        addDataToExistingArray(mediaId, action, userId, jsonArray);
+                        addDataToExistingArray(mediaId, action, userId, jsonArray, filters);
                     }
                 } else {
-                    createNewArrayAndAddItem(mediaId, action, userId);
+                    createNewArrayAndAddItem(mediaId, action, userId, filters);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -237,7 +237,7 @@ public class MsAdsUtil {
 
     }
 
-    private static void addDataToExistingArray(String mediaId, String action, String userId, ArrayList<MsAdsUserData> arrayList) {
+    private static void addDataToExistingArray(String mediaId, String action, String userId, ArrayList<MsAdsUserData> arrayList, ArrayList<String> filters) {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -262,6 +262,9 @@ public class MsAdsUtil {
                 userDataNew.setUser_id(userId);
                 userDataNew.setQuantity(userDataNew.getQuantity() + 1);
                 userDataNew.setDatetime(time);
+                userDataNew.setFilters(parseFilters(filters));
+                String ts = String.valueOf(System.currentTimeMillis());
+                userDataNew.setTs(ts);
 
                 arrayList.add(userDataNew);
             }
@@ -273,7 +276,7 @@ public class MsAdsUtil {
 
     }
 
-    private static void createNewArrayAndAddItem(String mediaId, String action, String userId) {
+    private static void createNewArrayAndAddItem(String mediaId, String action, String userId, ArrayList<String> filters) {
 
         String hitTime = "";
 
@@ -283,6 +286,9 @@ public class MsAdsUtil {
         userData.setAction(action);
         userData.setUser_id(userId);
         userData.setQuantity(userData.getQuantity() + 1);
+        userData.setFilters(parseFilters(filters));
+        String ts = String.valueOf(System.currentTimeMillis());
+        userData.setTs(ts);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -299,6 +305,22 @@ public class MsAdsUtil {
 
         MsAdsSdk.getInstance().setUserData(temp);
 
+    }
+
+    private static String parseFilters(ArrayList filters) {
+        String temp = "";
+        if(filters.size()>0){
+            for(int i = 0; i < filters.size(); i++){
+                temp = temp + filters.get(i) +";";
+            }
+        }
+
+        if(temp.length()>0){
+            temp = temp.substring(0, temp.length()-1);
+        }
+
+
+        return temp;
     }
 
 }

@@ -30,6 +30,7 @@ import com.meritumads.pojo.MsAdsBanner;
 import com.meritumads.pojo.MsAdsPosition;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 class MsAdsPreRollBanner implements MsAdsVideoDelegate {
 
@@ -94,6 +95,32 @@ class MsAdsPreRollBanner implements MsAdsVideoDelegate {
             params.addRule(RelativeLayout.CENTER_HORIZONTAL);
             holderNative.setLayoutParams(params);
 
+            if(position.getBanners().size()>0){
+                if(MsAdsSdk.getInstance().getListOfActiveFilters().size()>0){
+                    for(int i = 0; i < position.getBanners().size(); i++){
+                        if(position.getBanners().get(i).getFilters().length()>0){
+                            boolean isFilterActive = false;
+                            ArrayList<String> filteredFilters = new ArrayList<>();
+                            for(Map.Entry<String, String> entry: MsAdsSdk.getInstance().getListOfActiveFilters().entrySet()) {
+                                String[] temp = entry.getKey().split("-");
+                                if(!position.getBanners().get(i).getFilters().equals("")) {
+                                    if (position.getBanners().get(i).getFilters().contains(temp[0] + "," + entry.getValue())) {
+                                        filteredFilters.add(temp[0] +"," + entry.getValue());
+                                        isFilterActive = true;
+                                    }
+                                }
+                            }
+                            if(!isFilterActive){
+                                position.getBanners().remove(i);
+                                i--;
+                            }else{
+                                position.getBanners().get(i).setFiltersForStats(filteredFilters);
+                            }
+                        }
+                    }
+                }
+            }
+
             if(position.getBanners()!=null && position.getBanners().size()>0) {
                 tempBanners = new ArrayList<>();
                 for(MsAdsBanner banner: position.getBanners()){
@@ -115,7 +142,7 @@ class MsAdsPreRollBanner implements MsAdsVideoDelegate {
 
                                     }
                                 });
-                        MsAdsUtil.collectUserStats(banner.getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+                        MsAdsUtil.collectUserStats(banner.getBannerId(), "impression", MsAdsSdk.getInstance().getUserId(), banner.getFiltersForStats());
                     }
                 }
 
@@ -175,7 +202,7 @@ class MsAdsPreRollBanner implements MsAdsVideoDelegate {
                     holderNative.addView(videoView, 0);
                     holderNative.addView(skip, 1);
                     skipAdded = true;
-                    MsAdsUtil.collectUserStats(tempBanners.get(itherator).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+                    MsAdsUtil.collectUserStats(tempBanners.get(itherator).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId(), tempBanners.get(itherator).getFiltersForStats());
 
                 } else {
                     MsAdsImageSponsorView sponsorImage = new MsAdsImageSponsorView(holderNative.getContext(),
@@ -203,7 +230,7 @@ class MsAdsPreRollBanner implements MsAdsVideoDelegate {
                     holderNative.addView(sponsorImage, 0);
                     holderNative.addView(skip, 1);
                     skipAdded = true;
-                    MsAdsUtil.collectUserStats(tempBanners.get(itherator).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId());
+                    MsAdsUtil.collectUserStats(tempBanners.get(itherator).getBannerId(), "impression", MsAdsSdk.getInstance().getUserId(), tempBanners.get(itherator).getFiltersForStats());
                 }
             }
         }

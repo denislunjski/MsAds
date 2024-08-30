@@ -49,7 +49,7 @@ public class ListActivity extends AppCompatActivity {
         }
 
 
-        mainAdapter.addItem(inListBanners.get("Nex_main_in_list"), new InListBannerItem("Nex_main_in_list"));
+        mainAdapter.addItem(inListBanners.get("csh_top_home_banner"), new InListBannerItem("csh_top_home_banner"));
 
         //popraviti bug ako nema id taj u xml-u
         //mainAdapter.addItem(inListBanners.get("home_banners"), new InListBannerItem("home_banners"));

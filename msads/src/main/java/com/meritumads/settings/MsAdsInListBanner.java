@@ -17,6 +17,7 @@ import com.meritumads.pojo.MsAdsPosition;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Map;
 
 class MsAdsInListBanner {
 
@@ -52,6 +53,33 @@ class MsAdsInListBanner {
         if(mainView == null){
             return;
         }
+
+        if(currentBanner.getBanners().size()>0){
+            if(MsAdsSdk.getInstance().getListOfActiveFilters().size()>0){
+                for(int i = 0; i < currentBanner.getBanners().size(); i++){
+                    if(currentBanner.getBanners().get(i).getFilters().length()>0){
+                        boolean isFilterActive = false;
+                        ArrayList<String> filteredFilters = new ArrayList<>();
+                        for(Map.Entry<String, String> entry: MsAdsSdk.getInstance().getListOfActiveFilters().entrySet()) {
+                            String[] temp = entry.getKey().split("-");
+                            if(!currentBanner.getBanners().get(i).getFilters().equals("")) {
+                                if (currentBanner.getBanners().get(i).getFilters().contains(temp[0] + "," + entry.getValue())) {
+                                    filteredFilters.add(temp[0] +"," + entry.getValue());
+                                    isFilterActive = true;
+                                }
+                            }
+                        }
+                        if(!isFilterActive){
+                            currentBanner.getBanners().remove(i);
+                            i--;
+                        }else{
+                            currentBanner.getBanners().get(i).setFiltersForStats(filteredFilters);
+                        }
+                    }
+                }
+            }
+        }
+
         if(currentBanner.getBanners().size()>0) {
 
             float boxRatio = 0f;

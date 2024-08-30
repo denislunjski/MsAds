@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
 
 
         //initialization of MsAdsSdk
-        MsAdsSdk.getInstance().init(getApplicationContext(), "182",
-               "ms_ads_74f5834cd46ba2.28278241_64f5834cd46be5.24455451", this);
+        MsAdsSdk.getInstance().init(getApplicationContext(), "187",
+               "ms_ads_666ff4fdc406c0.93898688_666ff4fdc406f3.01463578", this);
 
         MsAdsSdk.getInstance().setArrowBackColor("#fff000");
         MsAdsSdk.getInstance().setActionBarColor("#FF0000");
@@ -50,9 +50,8 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
             }
         });
 
-
-
-
+        MsAdsSdk.getInstance().setActiveFilter("User_status", "3");
+        MsAdsSdk.getInstance().setActiveFilter("Gender", "0");
 
     }
 
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
             binding.fullScreenBanner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MsAdsFullScreen.getInstance("Nex_main_fullscreen", MainActivity.this);
+                    MsAdsFullScreen.getInstance("csh_home_full", MainActivity.this);
                 }
             });
 
