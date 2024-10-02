@@ -2,6 +2,7 @@ package com.meritumads.elements;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +24,7 @@ public class MsAdsImageSponsorView extends androidx.appcompat.widget.AppCompatIm
     private MsAdsBanner banner;
 
     private Runnable runnable, runnableSkip;
-    private TextView skip;
+    private ImageView skip;
 
     private long closeDelay = 0;
 
@@ -31,7 +32,7 @@ public class MsAdsImageSponsorView extends androidx.appcompat.widget.AppCompatIm
         super(context);
     }
 
-    public MsAdsImageSponsorView(@NonNull Context context, MsAdsBanner banner, MsAdsVideoDelegate videoDelegate, TextView skip, long closeDelay) {
+    public MsAdsImageSponsorView(@NonNull Context context, MsAdsBanner banner, MsAdsVideoDelegate videoDelegate, ImageView skip, long closeDelay) {
         super(context);
         this.banner = banner;
         this.videoDelegate1 = videoDelegate;

@@ -23,6 +23,7 @@ import com.meritumads.pojo.MsAdsBanner;
 import com.meritumads.settings.MsAdsSafeClickListener;
 import com.meritumads.settings.MsAdsSdk;
 import com.meritumads.settings.MsAdsUtil;
+import com.meritumads.settings.MsAdsVideoSponsorView;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -31,6 +32,7 @@ import java.util.TimerTask;
 public class MsAdsAdapter extends PagerAdapter {
 
     private ArrayList<MsAdsBanner> banners;
+    private ArrayList<View> views = new ArrayList<>();
     private Timer timer;
     private TimerTask task;
     private android.os.Handler handler;
@@ -42,8 +44,28 @@ public class MsAdsAdapter extends PagerAdapter {
     private String replayMode = "";
 
     private MsAdsFullScreenPopup msAdsFullScreenPopup;
+    private String developerId = "";
 
     public MsAdsAdapter(ArrayList<MsAdsBanner> banners, ViewPager viewPager, float scrollTime, RecyclerView recyclerView, ScrollView scrollView, String replayMode, MsAdsFullScreenPopup msAdsFullScreenPopup) {
+        this.banners = banners;
+        this.viewPager = viewPager;
+        this.recyclerView = recyclerView;
+        this.scrollView = scrollView;
+        this.replayMode = replayMode;
+        this.msAdsFullScreenPopup = msAdsFullScreenPopup;
+        try {
+            this.scrollTime = scrollTime;
+            if(this.scrollTime < 0.1){
+                this.scrollTime = 3;
+            }
+        }catch (Exception e){
+            this.scrollTime = 3;
+        }
+        startAutomaticScroll();
+    }
+
+    public MsAdsAdapter(String developerId, ArrayList<MsAdsBanner> banners, ViewPager viewPager, float scrollTime, RecyclerView recyclerView, ScrollView scrollView, String replayMode, MsAdsFullScreenPopup msAdsFullScreenPopup) {
+        this.developerId = developerId;
         this.banners = banners;
         this.viewPager = viewPager;
         this.recyclerView = recyclerView;
@@ -67,13 +89,14 @@ public class MsAdsAdapter extends PagerAdapter {
 
         View view = null;
 
-
         if(banners.get(position).getBannerType().equals("video")){
             view = LayoutInflater.from(container.getContext()).inflate(R.layout.msads_sponsor_home_video_layout, container, false);
+            view.setTag("video-" + String.valueOf(position));
             MsAdsVideoSponsorView videoSponsorView = view.findViewById(R.id.pvSponsor);
-            videoSponsorView.loadVideo(container.getContext(), banners.get(position), recyclerView, scrollView, null, replayMode, msAdsFullScreenPopup);
+            videoSponsorView.loadVideo(container.getContext(), banners.get(position), recyclerView, scrollView, null, replayMode, msAdsFullScreenPopup, developerId, "");
         }else {
             view = LayoutInflater.from(container.getContext()).inflate(R.layout.msads_sponsor_home_layout, container, false);
+            view.setTag("other-" + String.valueOf(position));
             ImageView sponsorImage = view.findViewById(R.id.sponsor_image);
 
             Glide.with(container.getContext())
@@ -105,6 +128,11 @@ public class MsAdsAdapter extends PagerAdapter {
     @Override
     public int getCount() {
         return banners.size();
+    }
+
+
+    public View getItem(int position){
+        return views.get(position);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.meritumads.settings;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -8,6 +9,7 @@ import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.meritumads.elements.MsAdsAdapter;
 import com.meritumads.elements.MsAdsHeightWrappingViewPager;
@@ -26,7 +28,7 @@ class MsAdsInListBanner {
     ViewGroup mainView;
     RecyclerView recyclerView;
     ScrollView scrollView;
-
+    int currentPage = 0;
     MsAdsAdapter adsAdapter;
     public void init(String developerId, ViewGroup mainView, RecyclerView recyclerView, ScrollView scrollView) {
         this.mainView = mainView;
@@ -109,9 +111,53 @@ class MsAdsInListBanner {
                 }
             });
 
-            adsAdapter = new MsAdsAdapter(currentBanner.getBanners(), heightWrappingViewPager[0],
+            adsAdapter = new MsAdsAdapter(currentBanner.getDeveloperId(), currentBanner.getBanners(), heightWrappingViewPager[0],
                     currentBanner.getRotationDelay(), recyclerView, scrollView, currentBanner.getReplayMode(), null);
             heightWrappingViewPager[0].setAdapter(adsAdapter);
+
+            heightWrappingViewPager[0].addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    Log.i("page_selected", String.valueOf(heightWrappingViewPager[0].getCurrentItem()));
+                    for(int i = 0; i < heightWrappingViewPager[0].getChildCount(); i++){
+                        if(heightWrappingViewPager[0].getChildAt(i).getTag().toString().contains("video")) {
+                            if (heightWrappingViewPager[0].getChildAt(i).getTag().equals("video-" + String.valueOf(position))) {
+                                if (heightWrappingViewPager[0].getChildAt(i) instanceof RelativeLayout) {
+                                    if (((RelativeLayout) heightWrappingViewPager[0].getChildAt(i)).getChildAt(0) instanceof MsAdsVideoSponsorView) {
+                                        ((MsAdsVideoSponsorView) ((RelativeLayout) heightWrappingViewPager[0].getChildAt(i)).getChildAt(0)).resumeVideo();
+                                    }
+                                }
+                            }else{
+                                if (heightWrappingViewPager[0].getChildAt(i) instanceof RelativeLayout) {
+                                    if (((RelativeLayout) heightWrappingViewPager[0].getChildAt(i)).getChildAt(0) instanceof MsAdsVideoSponsorView) {
+                                        ((MsAdsVideoSponsorView) ((RelativeLayout) heightWrappingViewPager[0].getChildAt(i)).getChildAt(0)).pauseVideo();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    /*
+                    if(heightWrappingViewPager[0].getChildAt(heightWrappingViewPager[0].getChildCount()-1).getTag().equals("video")){
+                        if(heightWrappingViewPager[0].getChildAt(heightWrappingViewPager[0].getChildCount()-1) instanceof RelativeLayout){
+                           if(((RelativeLayout)heightWrappingViewPager[0].getChildAt(heightWrappingViewPager[0].getChildCount()-1)).getChildAt(0) instanceof MsAdsVideoSponsorView){
+                               ((MsAdsVideoSponsorView)((RelativeLayout)heightWrappingViewPager[0].getChildAt(heightWrappingViewPager[0].getChildCount()-1)).getChildAt(0)).resumeVideo();
+                           }
+                        }
+                    }
+
+                     */
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
 
             heightWrappingViewPager[0].addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
                 @Override

@@ -1,4 +1,4 @@
-package com.meritumads.elements;
+package com.meritumads.settings;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.MediaController;
@@ -15,10 +16,9 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.meritumads.elements.MsAdsFullScreenPopup;
+import com.meritumads.elements.MsAdsVideoDelegate;
 import com.meritumads.pojo.MsAdsBanner;
-import com.meritumads.settings.MsAdsSdk;
-import com.meritumads.settings.MsAdsPreRollStatus;
-import com.meritumads.settings.MsAdsUtil;
 
 public class MsAdsVideoSponsorView extends VideoView {
 
@@ -45,7 +45,8 @@ public class MsAdsVideoSponsorView extends VideoView {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public void loadVideo(Context context, MsAdsBanner banner, RecyclerView recyclerView, ScrollView scrollView, MsAdsVideoDelegate videoDelegate, String replayMode, MsAdsFullScreenPopup msAdsFullScreenPopup) {
+    public void loadVideo(Context context, MsAdsBanner banner, RecyclerView recyclerView, ScrollView scrollView, MsAdsVideoDelegate videoDelegate,
+                          String replayMode, MsAdsFullScreenPopup msAdsFullScreenPopup, String developerId) {
 
         if (!banner.getMediaUrl().contains("http")) {
             banner.setMediaUrl("http://" + banner.getMediaUrl());
@@ -62,14 +63,18 @@ public class MsAdsVideoSponsorView extends VideoView {
                 this.getLayoutParams().height = height;
 
                 MsAdsVideoSponsorView.this.start();
+                if(!developerId.equals(""))
+                    MsAdsSdk.getInstance().listOfPlayingVideos.put(developerId, MsAdsVideoSponsorView.this);
+
 
                 this.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(final MediaPlayer mediaPlayer) {
-                        if (replayMode.equals("1")) {
-                            mediaPlayer.setLooping(true);
+                        if(msAdsFullScreenPopup!=null) {
+                            if (replayMode.equals("1")) {
+                                mediaPlayer.setLooping(true);
+                            }
                         }
-
                         MsAdsVideoSponsorView.this.setOnClickListener(new OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -84,34 +89,18 @@ public class MsAdsVideoSponsorView extends VideoView {
                                 }
                             }
                         });
-                        /*
-                        VideoSponsorView.this.setOnTouchListener(new OnTouchListener() {
-                            @Override
-                            public boolean onTouch(View view, MotionEvent motionEvent) {
-                                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                                    if (VideoSponsorView.this.isPlaying()) {
-                                        stopPosition = VideoSponsorView.this.getCurrentPosition();
-                                        VideoSponsorView.this.pause();
-                                        String bannerId = banner.getBannerId();
-                                        //TODO dodati skupljanje statistike i sponzora
-                                        //Util.collectSponsorStats(context, bannerId , banner.getBannerPosition(), HIT_TYPE_CLICK);
-                                        Util.openWebView(!banner.getUrlTarget().equals("") ? banner.getUrlTarget(): banner.getMainCampaignUrl(), MsAdsSdk.getInstance().getWebviewDroid());
 
-                                    }
-                                }
-                                return false;
-                            }
-                        });
-
-                         */
                     }
                 });
+
 
                 MsAdsVideoSponsorView.this.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
                         if(videoDelegate!=null){
                             videoDelegate.videoDelegate(MsAdsPreRollStatus.VIDEO_FINISHED, banner.getBannerId());
+                            if(!developerId.equals(""))
+                                MsAdsSdk.getInstance().listOfPlayingVideos.remove(developerId);
                         }
                     }
                 });
@@ -123,6 +112,131 @@ public class MsAdsVideoSponsorView extends VideoView {
                         return true;
                     }
                 });
+
+
+                if(recyclerView!=null) {
+                    recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                            super.onScrolled(recyclerView, dx, dy);
+                            if (MsAdsVideoSponsorView.this.isPlaying()) {
+                                if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) < 50) {
+                                    stopPosition = MsAdsVideoSponsorView.this.getCurrentPosition();
+                                    MsAdsVideoSponsorView.this.pause();
+
+                                }
+                            } else if (!MsAdsVideoSponsorView.this.isPlaying()) {
+                                if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) >= 50) {
+                                    MsAdsVideoSponsorView.this.requestFocus();
+                                    MsAdsVideoSponsorView.this.seekTo(stopPosition);
+                                    MsAdsVideoSponsorView.this.start();
+                                }
+                            }
+                        }
+                    });
+                }
+
+                if(scrollView!=null){
+                    scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                        @Override
+                        public void onScrollChanged() {
+                            if (MsAdsVideoSponsorView.this.isPlaying()) {
+                                if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) < 50) {
+                                    stopPosition = MsAdsVideoSponsorView.this.getCurrentPosition();
+                                    MsAdsVideoSponsorView.this.pause();
+
+                                }
+                            } else if (!MsAdsVideoSponsorView.this.isPlaying()) {
+                                if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) >= 50) {
+                                    MsAdsVideoSponsorView.this.requestFocus();
+                                    MsAdsVideoSponsorView.this.seekTo(stopPosition);
+                                    MsAdsVideoSponsorView.this.start();
+                                }
+                            }
+                        }
+                    });
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            MsAdsVideoSponsorView.this.getLayoutParams().height = 0;
+        }
+
+
+    }
+
+
+    public void loadVideo(Context context, MsAdsBanner banner, RecyclerView recyclerView, ScrollView scrollView, MsAdsVideoDelegate videoDelegate,
+                          String replayMode, MsAdsFullScreenPopup msAdsFullScreenPopup, String developerId, String temp) {
+
+        if (!banner.getMediaUrl().contains("http")) {
+            banner.setMediaUrl("http://" + banner.getMediaUrl());
+        }
+        if (MsAdsUtil.isNetworkConnected(context)) {
+            try {
+                final MediaController mediaController = new MediaController(context);
+                final Uri video = Uri.parse(banner.getMediaUrl());
+                this.setVideoURI(video);
+                mediaController.setVisibility(View.GONE);
+                int screenWidth = MsAdsSdk.getInstance().getScreenWidth();
+                float ratio = Math.min((float) screenWidth / banner.getWidth(), (float) screenWidth / banner.getHeight());
+                int height = Math.round((float) ratio * banner.getHeight());
+                this.getLayoutParams().height = height;
+
+
+                if(!developerId.equals(""))
+                    MsAdsSdk.getInstance().listOfPlayingVideos.put(developerId, MsAdsVideoSponsorView.this);
+
+
+                this.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(final MediaPlayer mediaPlayer) {
+                        if(msAdsFullScreenPopup!=null) {
+                            if (replayMode.equals("1")) {
+                                mediaPlayer.setLooping(true);
+                            }
+                        }
+                        MsAdsVideoSponsorView.this.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (MsAdsVideoSponsorView.this.isPlaying()) {
+                                    stopPosition = MsAdsVideoSponsorView.this.getCurrentPosition();
+                                    MsAdsVideoSponsorView.this.pause();
+                                }
+                                MsAdsUtil.collectUserStats(banner.getBannerId(), "click", MsAdsSdk.getInstance().getUserId(), banner.getFiltersForStats());
+                                MsAdsUtil.openWebView(banner.getAndroidSubLink());
+                                if(msAdsFullScreenPopup!=null){
+                                    msAdsFullScreenPopup.removeDialog();
+                                }
+                            }
+                        });
+
+                    }
+                });
+
+
+                MsAdsVideoSponsorView.this.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        if(videoDelegate!=null){
+                            videoDelegate.videoDelegate(MsAdsPreRollStatus.VIDEO_FINISHED, banner.getBannerId());
+                            if(!developerId.equals(""))
+                                MsAdsSdk.getInstance().listOfPlayingVideos.remove(developerId);
+                        }
+                    }
+                });
+
+                MsAdsVideoSponsorView.this.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+
+                    @Override
+                    public boolean onError(MediaPlayer mp, int what, int extra) {
+                        return true;
+                    }
+                });
+
 
                 if(recyclerView!=null) {
                     recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -241,19 +355,17 @@ public class MsAdsVideoSponsorView extends VideoView {
         }
     }
 
-
-    @Override
-    protected void onWindowVisibilityChanged(int visibility) {
-        super.onWindowVisibilityChanged(visibility);
-        Log.i("visibility_change", String.valueOf(visibility));
-        if(visibility == 0){
+    public void resumeVideo(){
+        if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) >= 50) {
             MsAdsVideoSponsorView.this.requestFocus();
             MsAdsVideoSponsorView.this.seekTo(stopPosition);
             MsAdsVideoSponsorView.this.start();
-        }else if(visibility == 8){
-            stopPosition = MsAdsVideoSponsorView.this.getCurrentPosition();
-            MsAdsVideoSponsorView.this.pause();
         }
+    }
+
+    public void pauseVideo(){
+        stopPosition = MsAdsVideoSponsorView.this.getCurrentPosition();
+        MsAdsVideoSponsorView.this.pause();
     }
 
 }

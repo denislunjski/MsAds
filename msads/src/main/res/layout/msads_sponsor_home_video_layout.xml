@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#000000">
 
-    <com.meritumads.elements.MsAdsVideoSponsorView
+    <com.meritumads.settings.MsAdsVideoSponsorView
         android:id="@+id/pvSponsor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

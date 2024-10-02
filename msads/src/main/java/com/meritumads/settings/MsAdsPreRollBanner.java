@@ -3,9 +3,12 @@ package com.meritumads.settings;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -25,7 +28,6 @@ import com.meritumads.elements.MsAdsBannerTypes;
 import com.meritumads.elements.MsAdsImageSponsorView;
 import com.meritumads.elements.MsAdsPreRollHolder;
 import com.meritumads.elements.MsAdsVideoDelegate;
-import com.meritumads.elements.MsAdsVideoSponsorView;
 import com.meritumads.pojo.MsAdsBanner;
 import com.meritumads.pojo.MsAdsPosition;
 
@@ -165,15 +167,15 @@ class MsAdsPreRollBanner implements MsAdsVideoDelegate {
                 handler = null;
                 runnable = null;
             }
-            TextView skip = new TextView(holderNative.getContext());
-            skip.setText("SKIP");
-            skip.setTextColor(Color.parseColor("#ffffff"));
-            skip.setBackground(ContextCompat.getDrawable(holderNative.getContext(), R.drawable.rounded_skip_layout));
+            ImageView skip = new ImageView(holderNative.getContext());
+            skip.setBackground(ContextCompat.getDrawable(holderNative.getContext(), R.drawable.close_x));
             skip.setVisibility(View.GONE);
             RelativeLayout.LayoutParams paramsForSkip = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
             paramsForSkip.addRule(RelativeLayout.ALIGN_PARENT_END);
             paramsForSkip.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             paramsForSkip.setMargins(0, 0, 15, 15);
+            paramsForSkip.width = dpToPx(holderNative.getContext());
+            paramsForSkip.height = dpToPx(holderNative.getContext());
             skip.setLayoutParams(paramsForSkip);
             if (itherator <= tempBanners.size() - 1) {
                 if (tempBanners.get(itherator).getBannerType().equals(MsAdsBannerTypes.video)) {
@@ -186,7 +188,7 @@ class MsAdsPreRollBanner implements MsAdsVideoDelegate {
                     paramsForVideoAndImage.height = WRAP_CONTENT;
                     paramsForVideoAndImage.addRule(RelativeLayout.CENTER_IN_PARENT);
                     videoView.setLayoutParams(paramsForVideoAndImage);
-                    videoView.loadVideo(holderNative.getContext(), tempBanners.get(itherator), recyclerView, scrollView, this::videoDelegate, position.getReplayMode(), null);
+                    videoView.loadVideo(holderNative.getContext(), tempBanners.get(itherator), recyclerView, scrollView, this::videoDelegate, position.getReplayMode(), null, "");
                     new android.os.Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -295,5 +297,10 @@ class MsAdsPreRollBanner implements MsAdsVideoDelegate {
                 preRollService.preRollVideoImageDelegate(developerId, MsAdsPreRollStatus.ALL_CONTENT_FINISHED, id);
             }
         }
+    }
+
+    public int dpToPx(Context context) {
+        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, context.getResources().getDisplayMetrics());
+        return px;
     }
 }

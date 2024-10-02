@@ -25,7 +25,7 @@ public class ListActivity extends AppCompatActivity {
         binding = ActivityListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        mainAdapter = new MainAdapter(binding.recycler);
+        mainAdapter = new MainAdapter(getSupportFragmentManager(),binding.recycler);
         binding.recycler.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1));
         binding.recycler.setItemAnimator(new DefaultItemAnimator());
         binding.recycler.setAdapter(mainAdapter);
@@ -49,7 +49,7 @@ public class ListActivity extends AppCompatActivity {
         }
 
 
-        mainAdapter.addItem(inListBanners.get("csh_top_home_banner"), new InListBannerItem("csh_top_home_banner"));
+        mainAdapter.addItem(inListBanners.get("csh_news_banner"), new InListBannerItem("csh_news_banner"));
 
         //popraviti bug ako nema id taj u xml-u
         //mainAdapter.addItem(inListBanners.get("home_banners"), new InListBannerItem("home_banners"));

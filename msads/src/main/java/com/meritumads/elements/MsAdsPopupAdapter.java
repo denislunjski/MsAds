@@ -136,13 +136,36 @@ public class MsAdsPopupAdapter extends RecyclerView.Adapter<MsAdsHolder> {
 
         MsAdsGeneraltem generaltem = (MsAdsGeneraltem)items.get(position);
 
-        TextView text = view.findViewById(R.id.sponsor_name);
         RelativeLayout btn = view.findViewById(R.id.btn);
-
-        text.setText(generaltem.getBanner().getPopupButtonText());
-        text.setTextColor(Color.parseColor(generaltem.getBanner().getPopupButtonColortext()));
-        Drawable drawable = btn.getBackground();
-        DrawableCompat.setTint(drawable, Color.parseColor(generaltem.getBanner().getPopupButtonColorback()));
+        ImageView icon = view.findViewById(R.id.icon);
+        TextView text = view.findViewById(R.id.sponsor_name);
+        ImageView backImg = view.findViewById(R.id.back_image);
+        backImg.setImageDrawable(null);
+        icon.setImageDrawable(null);
+        text.setText("");
+        btn.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.msads_rounded_layout));
+        if(generaltem.getBanner().getInternalBannerType() == 1){
+            Glide.with(holder.itemView.getContext())
+                    .load(generaltem.getBanner().getMediaUrl() + "?="
+                            + generaltem.getBanner().getMediaTs())
+                    .signature(new ObjectKey(generaltem.getBanner().getMediaTs()))
+                    .into(backImg);
+        }else if(generaltem.getBanner().getInternalBannerType() == 2){
+            Glide.with(holder.itemView.getContext())
+                    .load(generaltem.getBanner().getMediaUrl() + "?="
+                            + generaltem.getBanner().getMediaTs())
+                    .signature(new ObjectKey(generaltem.getBanner().getMediaTs()))
+                    .into(icon);
+            text.setText(generaltem.getBanner().getPopupButtonText());
+            text.setTextColor(Color.parseColor(generaltem.getBanner().getPopupButtonColortext()));
+            Drawable drawable = btn.getBackground();
+            DrawableCompat.setTint(drawable, Color.parseColor(generaltem.getBanner().getPopupButtonColorback()));
+        }else{
+            text.setText(generaltem.getBanner().getPopupButtonText());
+            text.setTextColor(Color.parseColor(generaltem.getBanner().getPopupButtonColortext()));
+            Drawable drawable = btn.getBackground();
+            DrawableCompat.setTint(drawable, Color.parseColor(generaltem.getBanner().getPopupButtonColorback()));
+        }
 
         btn.setOnClickListener(new MsAdsSafeClickListener() {
             @Override

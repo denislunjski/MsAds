@@ -7,10 +7,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.meritumads.settings.MsAdsBanners;
+import com.meritumads.settings.MsAdsSdk;
 import com.merritumdemo.R;
+import com.merritumdemo.activites.TestActivityFragment;
 
 import java.util.ArrayList;
 
@@ -18,8 +21,10 @@ public class MainAdapter extends RecyclerView.Adapter<Holder> {
 
     public ArrayList<Item> items = new ArrayList<Item>();
     public RecyclerView recyclerView;
+    public FragmentManager fragmentManager;
 
-    public MainAdapter(RecyclerView recyclerView) {
+    public MainAdapter(FragmentManager fragmentManager, RecyclerView recyclerView) {
+        this.fragmentManager = fragmentManager;
         this.recyclerView = recyclerView;
     }
 
@@ -73,6 +78,17 @@ public class MainAdapter extends RecyclerView.Adapter<Holder> {
 
         TextView text = view.findViewById(R.id.text);
         text.setText("Position od item: " + String.valueOf(position));
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TestActivityFragment fragment = new TestActivityFragment();
+                fragment.show(fragmentManager, "test_dialog");
+                MsAdsSdk.getInstance().pauseVideo("csh_news_banner");
+
+
+            }
+        });
 
     }
 

@@ -5,6 +5,7 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 
 import com.meritumads.elements.MsAdsDelegate;
 import com.meritumads.pojo.MsAdsPosition;
@@ -28,6 +29,7 @@ public abstract class MsAdsSdk{
     protected ArrayList<MsAdsPosition> popupBanners;
     protected ArrayList<MsAdsPosition> fullScreenBanners;
     protected ArrayList<MsAdsPosition> prerollBanners;
+    protected LinkedHashMap<String, MsAdsVideoSponsorView> listOfPlayingVideos;
 
     LinkedHashMap<String, String> activeFilters;
 
@@ -56,6 +58,8 @@ public abstract class MsAdsSdk{
     private String userId = "0";
 
     protected boolean appInBackground = false;
+
+    protected FragmentManager fragmentManager;
 
     /**
      * Begin a load of ms ads
@@ -89,6 +93,7 @@ public abstract class MsAdsSdk{
         mainService.callDeviceInfo(appId, token, null);
         MsAdsUserDataService userDataService = new MsAdsUserDataService(context);
         userDataService.addObserver();
+
 
     }
 
@@ -207,6 +212,7 @@ public abstract class MsAdsSdk{
     void setupMainSetting(){
         inListBanners = new ArrayList<>();
         inListBannerIds = new LinkedHashMap<>();
+        listOfPlayingVideos = new LinkedHashMap<>();
         popupBanners = new ArrayList<>();
         fullScreenBanners = new ArrayList<>();
         prerollBanners = new ArrayList<>();
@@ -341,5 +347,21 @@ public abstract class MsAdsSdk{
 
     public void setAppInBackground(boolean appInBackground) {
         this.appInBackground = appInBackground;
+    }
+
+    public void setFragmentManager(FragmentManager supportFragmentManager) {
+        this.fragmentManager = fragmentManager;
+    }
+
+    public FragmentManager getFragmentManager() {
+        return fragmentManager;
+    }
+
+    public void pauseVideo(String developerId){
+        mainService.pauseVideo(developerId);
+    }
+
+    public void resumeVideo(String developerId){
+        mainService.resumeVideo(developerId);
     }
 }

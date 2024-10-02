@@ -324,4 +324,27 @@ class MsAdsMainService extends MsAdsSdk{
             return new LinkedHashMap<>();
         }
     }
+
+    public void pauseVideo(String developerId){
+        if(MsAdsSdk.getInstance().listOfPlayingVideos!=null){
+            if(MsAdsSdk.getInstance().listOfPlayingVideos.containsKey(developerId)){
+                if(((MsAdsVideoSponsorView)MsAdsSdk.getInstance().listOfPlayingVideos.get(developerId)).isPlaying()){
+                    ((MsAdsVideoSponsorView)MsAdsSdk.getInstance().listOfPlayingVideos.get(developerId)).pauseVideo();
+                }
+            }
+        }
+    }
+
+    public void resumeVideo(String developerId){
+        if(MsAdsSdk.getInstance().listOfPlayingVideos!=null){
+            if(MsAdsSdk.getInstance().listOfPlayingVideos.containsKey(developerId)){
+                if(!((MsAdsVideoSponsorView)MsAdsSdk.getInstance().listOfPlayingVideos.get(developerId)).isPlaying()){
+                    ((MsAdsVideoSponsorView)MsAdsSdk.getInstance().listOfPlayingVideos.get(developerId)).resumeVideo();
+                }
+            }
+        }
+    }
+
+
+
 }
