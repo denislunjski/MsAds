@@ -1,4 +1,4 @@
-package com.meritumads.elements;
+package com.meritumads.settings;
 
 import android.graphics.Rect;
 import android.util.Log;
@@ -19,11 +19,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.signature.ObjectKey;
 import com.meritumads.R;
+import com.meritumads.elements.MsAdsFullScreenPopup;
 import com.meritumads.pojo.MsAdsBanner;
-import com.meritumads.settings.MsAdsSafeClickListener;
-import com.meritumads.settings.MsAdsSdk;
-import com.meritumads.settings.MsAdsUtil;
-import com.meritumads.settings.MsAdsVideoSponsorView;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -93,7 +90,12 @@ public class MsAdsAdapter extends PagerAdapter {
             view = LayoutInflater.from(container.getContext()).inflate(R.layout.msads_sponsor_home_video_layout, container, false);
             view.setTag("video-" + String.valueOf(position));
             MsAdsVideoSponsorView videoSponsorView = view.findViewById(R.id.pvSponsor);
-            videoSponsorView.loadVideo(container.getContext(), banners.get(position), recyclerView, scrollView, null, replayMode, msAdsFullScreenPopup, developerId, "");
+            videoSponsorView.loadVideo(container.getContext(), banners.get(position), recyclerView, scrollView,
+                    null, replayMode, msAdsFullScreenPopup, developerId, position);
+
+            if(!developerId.equals(""))
+                MsAdsSdk.getInstance().listOfPlayingVideos.put(developerId + "-" + String.valueOf(position), videoSponsorView);
+
         }else {
             view = LayoutInflater.from(container.getContext()).inflate(R.layout.msads_sponsor_home_layout, container, false);
             view.setTag("other-" + String.valueOf(position));

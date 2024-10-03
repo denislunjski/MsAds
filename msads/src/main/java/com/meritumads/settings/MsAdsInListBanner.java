@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.meritumads.elements.MsAdsAdapter;
 import com.meritumads.elements.MsAdsHeightWrappingViewPager;
 import com.meritumads.pojo.MsAdsBanner;
 import com.meritumads.pojo.MsAdsPosition;
@@ -123,7 +122,7 @@ class MsAdsInListBanner {
 
                 @Override
                 public void onPageSelected(int position) {
-                    Log.i("page_selected", String.valueOf(heightWrappingViewPager[0].getCurrentItem()));
+                    MsAdsSdk.getInstance().setActivePositionInViewPager(heightWrappingViewPager[0].getCurrentItem());
                     for(int i = 0; i < heightWrappingViewPager[0].getChildCount(); i++){
                         if(heightWrappingViewPager[0].getChildAt(i).getTag().toString().contains("video")) {
                             if (heightWrappingViewPager[0].getChildAt(i).getTag().equals("video-" + String.valueOf(position))) {

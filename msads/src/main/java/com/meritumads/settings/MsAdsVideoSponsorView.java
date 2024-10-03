@@ -28,6 +28,8 @@ public class MsAdsVideoSponsorView extends VideoView {
 
     private boolean videoStarted = false;
 
+    private int pos;
+
 
     public MsAdsVideoSponsorView(Context context) {
         super(context);
@@ -46,8 +48,9 @@ public class MsAdsVideoSponsorView extends VideoView {
     }
 
     public void loadVideo(Context context, MsAdsBanner banner, RecyclerView recyclerView, ScrollView scrollView, MsAdsVideoDelegate videoDelegate,
-                          String replayMode, MsAdsFullScreenPopup msAdsFullScreenPopup, String developerId) {
+                          String replayMode, MsAdsFullScreenPopup msAdsFullScreenPopup, String developerId, int pos) {
 
+        this.pos = pos;
         if (!banner.getMediaUrl().contains("http")) {
             banner.setMediaUrl("http://" + banner.getMediaUrl());
         }
@@ -61,10 +64,6 @@ public class MsAdsVideoSponsorView extends VideoView {
                 float ratio = Math.min((float) screenWidth / banner.getWidth(), (float) screenWidth / banner.getHeight());
                 int height = Math.round((float) ratio * banner.getHeight());
                 this.getLayoutParams().height = height;
-
-                MsAdsVideoSponsorView.this.start();
-                if(!developerId.equals(""))
-                    MsAdsSdk.getInstance().listOfPlayingVideos.put(developerId, MsAdsVideoSponsorView.this);
 
 
                 this.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -100,7 +99,7 @@ public class MsAdsVideoSponsorView extends VideoView {
                         if(videoDelegate!=null){
                             videoDelegate.videoDelegate(MsAdsPreRollStatus.VIDEO_FINISHED, banner.getBannerId());
                             if(!developerId.equals(""))
-                                MsAdsSdk.getInstance().listOfPlayingVideos.remove(developerId);
+                                MsAdsSdk.getInstance().listOfPlayingVideos.remove(developerId + "-" + String.valueOf(pos));
                         }
                     }
                 });
@@ -170,7 +169,7 @@ public class MsAdsVideoSponsorView extends VideoView {
 
 
     public void loadVideo(Context context, MsAdsBanner banner, RecyclerView recyclerView, ScrollView scrollView, MsAdsVideoDelegate videoDelegate,
-                          String replayMode, MsAdsFullScreenPopup msAdsFullScreenPopup, String developerId, String temp) {
+                          String replayMode, MsAdsFullScreenPopup msAdsFullScreenPopup, String developerId) {
 
         if (!banner.getMediaUrl().contains("http")) {
             banner.setMediaUrl("http://" + banner.getMediaUrl());
@@ -186,6 +185,7 @@ public class MsAdsVideoSponsorView extends VideoView {
                 int height = Math.round((float) ratio * banner.getHeight());
                 this.getLayoutParams().height = height;
 
+                MsAdsVideoSponsorView.this.start();
 
                 if(!developerId.equals(""))
                     MsAdsSdk.getInstance().listOfPlayingVideos.put(developerId, MsAdsVideoSponsorView.this);

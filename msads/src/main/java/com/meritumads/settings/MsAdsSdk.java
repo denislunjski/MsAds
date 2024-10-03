@@ -48,6 +48,8 @@ public abstract class MsAdsSdk{
     private int screenWidth = 0;
     private int screenHeight = 0;
 
+    protected int activePositionInViewPager = 0;
+
     private String arrowBackColor = "#ffffff";
     private String actionBarColor = "#000000";
 
@@ -363,5 +365,13 @@ public abstract class MsAdsSdk{
 
     public void resumeVideo(String developerId){
         mainService.resumeVideo(developerId);
+    }
+
+    public int getActivePositionInViewPager() {
+        return activePositionInViewPager;
+    }
+
+    public void setActivePositionInViewPager(int activePositionInViewPager) {
+        this.activePositionInViewPager = activePositionInViewPager;
     }
 }

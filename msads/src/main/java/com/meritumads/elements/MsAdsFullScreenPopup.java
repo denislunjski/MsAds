@@ -22,6 +22,7 @@ import com.bumptech.glide.signature.ObjectKey;
 import com.meritumads.R;
 import com.meritumads.pojo.MsAdsBanner;
 import com.meritumads.pojo.MsAdsPosition;
+import com.meritumads.settings.MsAdsAdapter;
 import com.meritumads.settings.MsAdsSdk;
 import com.meritumads.settings.MsAdsUtil;
 

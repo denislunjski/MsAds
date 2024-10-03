@@ -327,9 +327,10 @@ class MsAdsMainService extends MsAdsSdk{
 
     public void pauseVideo(String developerId){
         if(MsAdsSdk.getInstance().listOfPlayingVideos!=null){
-            if(MsAdsSdk.getInstance().listOfPlayingVideos.containsKey(developerId)){
-                if(((MsAdsVideoSponsorView)MsAdsSdk.getInstance().listOfPlayingVideos.get(developerId)).isPlaying()){
-                    ((MsAdsVideoSponsorView)MsAdsSdk.getInstance().listOfPlayingVideos.get(developerId)).pauseVideo();
+            String id = developerId + "-" + MsAdsSdk.getInstance().getActivePositionInViewPager();
+            if(MsAdsSdk.getInstance().listOfPlayingVideos.containsKey(id)){
+                if(((MsAdsVideoSponsorView)MsAdsSdk.getInstance().listOfPlayingVideos.get(id)).isPlaying()){
+                    ((MsAdsVideoSponsorView)MsAdsSdk.getInstance().listOfPlayingVideos.get(id)).pauseVideo();
                 }
             }
         }
@@ -337,9 +338,10 @@ class MsAdsMainService extends MsAdsSdk{
 
     public void resumeVideo(String developerId){
         if(MsAdsSdk.getInstance().listOfPlayingVideos!=null){
-            if(MsAdsSdk.getInstance().listOfPlayingVideos.containsKey(developerId)){
-                if(!((MsAdsVideoSponsorView)MsAdsSdk.getInstance().listOfPlayingVideos.get(developerId)).isPlaying()){
-                    ((MsAdsVideoSponsorView)MsAdsSdk.getInstance().listOfPlayingVideos.get(developerId)).resumeVideo();
+            String id = developerId + "-" + MsAdsSdk.getInstance().getActivePositionInViewPager();
+            if(MsAdsSdk.getInstance().listOfPlayingVideos.containsKey(id)){
+                if(!((MsAdsVideoSponsorView)MsAdsSdk.getInstance().listOfPlayingVideos.get(id)).isPlaying()){
+                    ((MsAdsVideoSponsorView)MsAdsSdk.getInstance().listOfPlayingVideos.get(id)).resumeVideo();
                 }
             }
         }
