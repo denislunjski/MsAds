@@ -41,6 +41,8 @@
 	public setListOfActiveFilters(java.util.LinkedHashMap);
 	public setUserId(java.lang.String);
 	public getUserId();
+	public pauseVideo(java.lang.String);
+	public resumeVideo(java.lang.String);
 
 }
 -keep class com.meritumads.elements.MsAdsDelegate{
