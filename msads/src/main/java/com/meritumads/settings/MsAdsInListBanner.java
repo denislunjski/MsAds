@@ -128,12 +128,14 @@ class MsAdsInListBanner {
                             if (heightWrappingViewPager[0].getChildAt(i).getTag().equals("video-" + String.valueOf(position))) {
                                 if (heightWrappingViewPager[0].getChildAt(i) instanceof RelativeLayout) {
                                     if (((RelativeLayout) heightWrappingViewPager[0].getChildAt(i)).getChildAt(0) instanceof MsAdsVideoSponsorView) {
+                                        ((MsAdsVideoSponsorView) ((RelativeLayout) heightWrappingViewPager[0].getChildAt(i)).getChildAt(0)).setVisibleToUser(true);
                                         ((MsAdsVideoSponsorView) ((RelativeLayout) heightWrappingViewPager[0].getChildAt(i)).getChildAt(0)).resumeVideo();
                                     }
                                 }
                             }else{
                                 if (heightWrappingViewPager[0].getChildAt(i) instanceof RelativeLayout) {
                                     if (((RelativeLayout) heightWrappingViewPager[0].getChildAt(i)).getChildAt(0) instanceof MsAdsVideoSponsorView) {
+                                        ((MsAdsVideoSponsorView) ((RelativeLayout) heightWrappingViewPager[0].getChildAt(i)).getChildAt(0)).setVisibleToUser(false);
                                         ((MsAdsVideoSponsorView) ((RelativeLayout) heightWrappingViewPager[0].getChildAt(i)).getChildAt(0)).pauseVideo();
                                     }
                                 }

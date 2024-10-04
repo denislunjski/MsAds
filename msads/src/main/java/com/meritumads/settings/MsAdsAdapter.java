@@ -93,6 +93,10 @@ public class MsAdsAdapter extends PagerAdapter {
             videoSponsorView.loadVideo(container.getContext(), banners.get(position), recyclerView, scrollView,
                     null, replayMode, msAdsFullScreenPopup, developerId, position);
 
+            if(position == 0){
+                videoSponsorView.setVisibleToUser(true);
+            }
+
             if(!developerId.equals(""))
                 MsAdsSdk.getInstance().listOfPlayingVideos.put(developerId + "-" + String.valueOf(position), videoSponsorView);
 

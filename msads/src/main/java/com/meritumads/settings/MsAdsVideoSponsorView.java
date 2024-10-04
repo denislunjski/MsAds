@@ -5,8 +5,6 @@ import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.MediaController;
@@ -29,6 +27,8 @@ public class MsAdsVideoSponsorView extends VideoView {
     private boolean videoStarted = false;
 
     private int pos;
+
+    private boolean isVisibleToUser = false;
 
 
     public MsAdsVideoSponsorView(Context context) {
@@ -243,17 +243,19 @@ public class MsAdsVideoSponsorView extends VideoView {
                         @Override
                         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                             super.onScrolled(recyclerView, dx, dy);
-                            if (MsAdsVideoSponsorView.this.isPlaying()) {
-                                if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) < 50) {
-                                    stopPosition = MsAdsVideoSponsorView.this.getCurrentPosition();
-                                    MsAdsVideoSponsorView.this.pause();
+                            if(isVisibleToUser){
+                                if (MsAdsVideoSponsorView.this.isPlaying()) {
+                                    if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) < 50) {
+                                        stopPosition = MsAdsVideoSponsorView.this.getCurrentPosition();
+                                        MsAdsVideoSponsorView.this.pause();
 
-                                }
-                            } else if (!MsAdsVideoSponsorView.this.isPlaying()) {
-                                if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) >= 50) {
-                                    MsAdsVideoSponsorView.this.requestFocus();
-                                    MsAdsVideoSponsorView.this.seekTo(stopPosition);
-                                    MsAdsVideoSponsorView.this.start();
+                                    }
+                                } else if (!MsAdsVideoSponsorView.this.isPlaying()) {
+                                    if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) >= 50) {
+                                        MsAdsVideoSponsorView.this.requestFocus();
+                                        MsAdsVideoSponsorView.this.seekTo(stopPosition);
+                                        MsAdsVideoSponsorView.this.start();
+                                    }
                                 }
                             }
                         }
@@ -264,17 +266,19 @@ public class MsAdsVideoSponsorView extends VideoView {
                     scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
                         @Override
                         public void onScrollChanged() {
-                            if (MsAdsVideoSponsorView.this.isPlaying()) {
-                                if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) < 50) {
-                                    stopPosition = MsAdsVideoSponsorView.this.getCurrentPosition();
-                                    MsAdsVideoSponsorView.this.pause();
+                            if(isVisibleToUser) {
+                                if (MsAdsVideoSponsorView.this.isPlaying()) {
+                                    if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) < 50) {
+                                        stopPosition = MsAdsVideoSponsorView.this.getCurrentPosition();
+                                        MsAdsVideoSponsorView.this.pause();
 
-                                }
-                            } else if (!MsAdsVideoSponsorView.this.isPlaying()) {
-                                if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) >= 50) {
-                                    MsAdsVideoSponsorView.this.requestFocus();
-                                    MsAdsVideoSponsorView.this.seekTo(stopPosition);
-                                    MsAdsVideoSponsorView.this.start();
+                                    }
+                                } else if (!MsAdsVideoSponsorView.this.isPlaying()) {
+                                    if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) >= 50) {
+                                        MsAdsVideoSponsorView.this.requestFocus();
+                                        MsAdsVideoSponsorView.this.seekTo(stopPosition);
+                                        MsAdsVideoSponsorView.this.start();
+                                    }
                                 }
                             }
                         }
@@ -356,10 +360,12 @@ public class MsAdsVideoSponsorView extends VideoView {
     }
 
     public void resumeVideo(){
-        if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) >= 50) {
-            MsAdsVideoSponsorView.this.requestFocus();
-            MsAdsVideoSponsorView.this.seekTo(stopPosition);
-            MsAdsVideoSponsorView.this.start();
+        if(isVisibleToUser){
+            if (getVisibilitPercentHeight(MsAdsVideoSponsorView.this) >= 50) {
+                MsAdsVideoSponsorView.this.requestFocus();
+                MsAdsVideoSponsorView.this.seekTo(stopPosition);
+                MsAdsVideoSponsorView.this.start();
+            }
         }
     }
 
@@ -368,4 +374,11 @@ public class MsAdsVideoSponsorView extends VideoView {
         MsAdsVideoSponsorView.this.pause();
     }
 
+    public boolean isVisibleToUser() {
+        return isVisibleToUser;
+    }
+
+    public void setVisibleToUser(boolean visibleToUser) {
+        isVisibleToUser = visibleToUser;
+    }
 }
