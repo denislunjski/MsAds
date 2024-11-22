@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
 
 
         //initialization of MsAdsSdk
-        MsAdsSdk.getInstance().init(getApplicationContext(),  "187",
+        MsAdsSdk.getInstance().init(getApplicationContext(),  "212",
                "ms_ads_666ff4fdc406c0.93898688_666ff4fdc406f3.01463578", this);
 
         MsAdsSdk.getInstance().setArrowBackColor("#fff000");
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements MsAdsDelegate {
             binding.popupBanner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MsAdsPopups.getInstance("csh_main_popup", MainActivity.this);
+                    MsAdsPopups.getInstance("roj_main_popup_normal", MainActivity.this);
                 }
             });
 

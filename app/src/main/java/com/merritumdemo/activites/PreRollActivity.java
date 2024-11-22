@@ -21,7 +21,7 @@ public class PreRollActivity extends AppCompatActivity implements MsAdsPreRollSe
         binding = ActivityPreRollBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        MsAdsPreRolls.getInstance("csh_news_preroll", binding.prerollHolder, this);
+        MsAdsPreRolls.getInstance("roj_news_preroll", binding.prerollHolder, this);
 
     }
 

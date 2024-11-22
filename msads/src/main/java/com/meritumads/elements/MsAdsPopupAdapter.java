@@ -195,6 +195,8 @@ public class MsAdsPopupAdapter extends RecyclerView.Adapter<MsAdsHolder> {
                             + generaltem.getBanner().getMediaTs())
                     .signature(new ObjectKey(generaltem.getBanner().getMediaTs()))
                     .into(backImg);
+            text.setText(generaltem.getBanner().getPopupButtonText());
+            text.setTextColor(Color.parseColor(generaltem.getBanner().getPopupButtonColortext()));
         }else if(generaltem.getBanner().getInternalBannerType() == 2){
             Glide.with(holder.itemView.getContext())
                     .load(generaltem.getBanner().getMediaUrl() + "?="

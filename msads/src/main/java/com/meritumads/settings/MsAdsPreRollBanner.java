@@ -93,7 +93,8 @@ class MsAdsPreRollBanner implements MsAdsVideoDelegate {
             }
             params = (RelativeLayout.LayoutParams) view.getLayoutParams();
             params.width = MsAdsSdk.getInstance().getScreenWidth();
-            params.height = (int) ((int) MsAdsSdk.getInstance().getScreenWidth() * boxRatio);
+            //params.height = (int) ((int) MsAdsSdk.getInstance().getScreenWidth() * boxRatio);
+            //params.height = MATCH_PARENT;
             params.addRule(RelativeLayout.CENTER_HORIZONTAL);
             holderNative.setLayoutParams(params);
 
