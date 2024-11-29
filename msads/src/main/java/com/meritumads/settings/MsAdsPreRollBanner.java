@@ -199,6 +199,8 @@ class MsAdsPreRollBanner implements MsAdsVideoDelegate {
                     skip.setOnClickListener(new MsAdsSafeClickListener() {
                         @Override
                         public void onSingleClick(View v) {
+                            videoView.pause();
+                            videoView = null;
                             videoDelegate(MsAdsPreRollStatus.VIDEO_FINISHED, tempBanners.get(itherator).getBannerId());
                         }
                     });
