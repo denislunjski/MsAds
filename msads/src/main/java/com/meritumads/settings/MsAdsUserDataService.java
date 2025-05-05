@@ -13,7 +13,6 @@ import androidx.work.WorkManager;
 public class MsAdsUserDataService implements DefaultLifecycleObserver {
 
     private Context context;
-    private boolean isAppInBAckground = false;
     public MsAdsUserDataService(Context context) {
         this.context = context;
     }
@@ -35,17 +34,5 @@ public class MsAdsUserDataService implements DefaultLifecycleObserver {
         MsAdsSdk.getInstance().setAppInBackground(true);
         OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(MsAdsBackupWorker.class).build();
         WorkManager.getInstance (context).enqueue(request);
-
-        /*
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(BackupWorker.class).build();
-            WorkManager.getInstance (getApplicationContext()).enqueue(request);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            getApplicationContext().startForegroundService(intent);
-        } else {
-            getApplicationContext().startService(intent);
-        }
-
-         */
     }
 }
